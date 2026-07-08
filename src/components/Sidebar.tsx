@@ -11,6 +11,7 @@ import {
   ShoppingBag, 
   Bot, 
   Zap, 
+  Sparkles,
   BarChart3, 
   Database, 
   Server, 
@@ -18,18 +19,21 @@ import {
   CreditCard, 
   Store, 
   ShieldAlert, 
+  ShieldCheck,
   Code2, 
   LifeBuoy, 
   Settings as SettingsIcon, 
   Crown,
   ChevronDown,
   ChevronRight,
-  X
+  X,
+  Target
 } from 'lucide-react';
 
 interface SidebarItem {
   name: string;
   id: string;
+  disabled?: boolean;
 }
 
 interface SidebarSection {
@@ -40,92 +44,30 @@ interface SidebarSection {
 
 export const sidebarData: SidebarSection[] = [
   {
-    title: 'Organization',
-    icon: Building2,
-    items: [
-      { name: 'Organization', id: 'org-organization' },
-      { name: 'Business Units', id: 'org-units' },
-      { name: 'Workspaces', id: 'org-workspaces' },
-      { name: 'Teams', id: 'org-teams' },
-      { name: 'Users', id: 'org-users' },
-      { name: 'Roles & Permissions', id: 'org-roles' },
-      { name: 'Departments', id: 'org-departments' },
-      { name: 'Locations', id: 'org-locations' },
-      { name: 'API Keys', id: 'org-apikeys' }
-    ]
-  },
-  {
-    title: 'CRM & Sales',
+    title: 'CRM & Sales Platform',
     icon: Users,
     items: [
-      { name: 'Overview', id: 'crm-overview' },
-      { name: 'Leads', id: 'crm-leads' },
-      { name: 'Contacts', id: 'crm-contacts' },
-      { name: 'Companies', id: 'crm-companies' },
-      { name: 'Deals', id: 'crm-deals' },
-      { name: 'Pipeline', id: 'crm-pipeline' },
-      { name: 'Tasks', id: 'crm-tasks' },
-      { name: 'Calendar', id: 'crm-calendar' },
-      { name: 'Meetings', id: 'crm-meetings' },
-      { name: 'Proposals', id: 'crm-proposals' },
-      { name: 'Quotes', id: 'crm-quotes' },
-      { name: 'Contracts', id: 'crm-contracts' },
-      { name: 'Invoices', id: 'crm-invoices' },
-      { name: 'Commission', id: 'crm-commission' },
-      { name: 'Forecasting', id: 'crm-forecasting' }
+      { name: 'Lead Management', id: 'crm-leads' },
+      { name: 'Pipeline', id: 'crm-deals' },
+      { name: 'Opportunity Tracking', id: 'crm-opp' },
+      { name: 'Sales Automation', id: 'crm-automation' },
+      { name: 'Proposal Generator', id: 'crm-proposals' },
+      { name: 'Contract Management', id: 'crm-contracts' },
+      { name: 'Quote Builder', id: 'crm-quotes' },
+      { name: 'AI Sales Assistant', id: 'crm-sales-assistant' },
+      { name: 'Forecasting', id: 'crm-forecasting' },
+      { name: 'Commission Tracking', id: 'crm-commission' }
     ]
   },
   {
-    title: 'Marketing',
-    icon: Megaphone,
+    title: 'AI Search Engine',
+    icon: Search,
     items: [
-      { name: 'Campaigns', id: 'mkt-campaigns' },
-      { name: 'Campaign Builder', id: 'mkt-builder' },
-      { name: 'Campaign Templates', id: 'mkt-templates' },
-      { name: 'Audience Manager', id: 'mkt-audience' },
-      { name: 'Customer Segments', id: 'mkt-segments' },
-      { name: 'Customer Journey', id: 'mkt-journey' },
-      { name: 'Personalization', id: 'mkt-personalization' },
-      { name: 'Marketing Calendar', id: 'mkt-calendar' }
-    ]
-  },
-  {
-    title: 'Advertising',
-    icon: BarChart3,
-    items: [
-      { name: 'Google Ads', id: 'adv-google' },
-      { name: 'Meta Ads', id: 'adv-meta' },
-      { name: 'LinkedIn Ads', id: 'adv-linkedin' },
-      { name: 'TikTok Ads', id: 'adv-tiktok' },
-      { name: 'Amazon Ads', id: 'adv-amazon' },
-      { name: 'Microsoft Ads', id: 'adv-microsoft' },
-      { name: 'DSP', id: 'adv-dsp' },
-      { name: 'SSP', id: 'adv-ssp' },
-      { name: 'RTB Exchange', id: 'adv-rtb' },
-      { name: 'Publisher Management', id: 'adv-publishers' },
-      { name: 'Native Ads', id: 'adv-native' },
-      { name: 'Display Ads', id: 'adv-display' },
-      { name: 'Video Ads', id: 'adv-video' },
-      { name: 'CTV', id: 'adv-ctv' },
-      { name: 'DOOH', id: 'adv-dooh' },
-      { name: 'Affiliate Marketing', id: 'adv-affiliate' },
-      { name: 'Influencer Marketing', id: 'adv-influencer' }
-    ]
-  },
-  {
-    title: 'SEO',
-    icon: Globe,
-    items: [
-      { name: 'Projects', id: 'seo-projects' },
-      { name: 'Keyword Research', id: 'seo-keywords' },
-      { name: 'Rank Tracker', id: 'seo-rank' },
-      { name: 'Competitor Analysis', id: 'seo-competitors' },
-      { name: 'Site Audit', id: 'seo-audit' },
-      { name: 'Backlinks', id: 'seo-backlinks' },
-      { name: 'Technical SEO', id: 'seo-technical' },
-      { name: 'Content Optimizer', id: 'seo-optimizer' },
-      { name: 'SERP Analysis', id: 'seo-serp' },
-      { name: 'Local SEO', id: 'seo-local' }
+      { name: 'Semantic Search', id: 'search-semantic' },
+      { name: 'Vector Search', id: 'search-vector' },
+      { name: 'AI Knowledge Base', id: 'search-kb' },
+      { name: 'Enterprise Search', id: 'search-enterprise' },
+      { name: 'Document Intelligence', id: 'search-docintel' }
     ]
   },
   {
@@ -161,21 +103,19 @@ export const sidebarData: SidebarSection[] = [
     ]
   },
   {
-    title: 'E-Commerce',
+    title: 'E-commerce Marketing',
     icon: ShoppingBag,
     items: [
-      { name: 'Products', id: 'ecom-products' },
-      { name: 'Categories', id: 'ecom-categories' },
-      { name: 'Inventory', id: 'ecom-inventory' },
-      { name: 'Product Feed', id: 'ecom-feed' },
-      { name: 'Merchant Center', id: 'ecom-merchant' },
-      { name: 'Catalogs', id: 'ecom-catalogs' },
-      { name: 'Dynamic Ads', id: 'ecom-dynads' },
-      { name: 'Recommendations', id: 'ecom-recs' },
-      { name: 'Upsell Engine', id: 'ecom-upsell' },
-      { name: 'Cross Sell', id: 'ecom-cross' },
+      { name: 'Product Feed Management', id: 'ecom-feed' },
+      { name: 'Google Merchant Center Integration', id: 'ecom-merchant' },
+      { name: 'Meta Catalog', id: 'ecom-meta' },
+      { name: 'TikTok Catalog', id: 'ecom-tiktok' },
+      { name: 'Dynamic Product Ads', id: 'ecom-dynads' },
       { name: 'Cart Recovery', id: 'ecom-recovery' },
-      { name: 'Coupons', id: 'ecom-coupons' }
+      { name: 'AI Upsell', id: 'ecom-upsell' },
+      { name: 'AI Cross Sell', id: 'ecom-cross' },
+      { name: 'Customer Lifetime Value Prediction', id: 'ecom-clv' },
+      { name: 'Product Recommendation Engine', id: 'ecom-recs' }
     ]
   },
   {
@@ -185,17 +125,22 @@ export const sidebarData: SidebarSection[] = [
       { name: 'Marketing Agent', id: 'agent-marketing' },
       { name: 'SEO Agent', id: 'agent-seo' },
       { name: 'PPC Agent', id: 'agent-ppc' },
+      { name: 'DSP Agent', id: 'agent-dsp' },
+      { name: 'SSP Agent', id: 'agent-ssp' },
+      { name: 'Affiliate Agent', id: 'agent-affiliate' },
+      { name: 'Publisher Agent', id: 'agent-publisher' },
       { name: 'Sales Agent', id: 'agent-sales' },
-      { name: 'Content Agent', id: 'agent-content' },
-      { name: 'Creative Agent', id: 'agent-creative' },
-      { name: 'Support Agent', id: 'agent-support' },
-      { name: 'Compliance Agent', id: 'agent-compliance' },
       { name: 'Finance Agent', id: 'agent-finance' },
-      { name: 'Analytics Agent', id: 'agent-analytics' },
-      { name: 'Campaign Optimizer', id: 'agent-opt' },
-      { name: 'Business Analyst', id: 'agent-biz' },
-      { name: 'DevOps Agent', id: 'agent-devops' },
-      { name: 'Data Scientist', id: 'agent-datasci' }
+      { name: 'Compliance Agent', id: 'agent-compliance' },
+      { name: 'Fraud Detection Agent', id: 'agent-fraud' },
+      { name: 'Customer Support Agent', id: 'agent-support' },
+      { name: 'Business Analyst Agent', id: 'agent-biz' },
+      { name: 'Product Manager Agent', id: 'agent-pm' },
+      { name: 'Campaign Optimizer Agent', id: 'agent-opt' },
+      { name: 'Creative Designer Agent', id: 'agent-creative' },
+      { name: 'Content Writer Agent', id: 'agent-content' },
+      { name: 'Data Scientist Agent', id: 'agent-datasci' },
+      { name: 'DevOps Agent', id: 'agent-devops' }
     ]
   },
   {
@@ -247,151 +192,173 @@ export const sidebarData: SidebarSection[] = [
     ]
   },
   {
-    title: 'Data Platform',
+    title: 'Data Warehouse',
     icon: Server,
     items: [
-      { name: 'Data Warehouse', id: 'data-warehouse' },
-      { name: 'Data Lake', id: 'data-lake' },
-      { name: 'ETL', id: 'data-etl' },
-      { name: 'ELT', id: 'data-elt' },
       { name: 'BigQuery', id: 'data-bigquery' },
       { name: 'Snowflake', id: 'data-snowflake' },
       { name: 'ClickHouse', id: 'data-clickhouse' },
-      { name: 'Vector Database', id: 'data-vector' },
-      { name: 'Search Index', id: 'data-search' }
+      { name: 'Data Lake', id: 'data-lake' },
+      { name: 'ETL', id: 'data-etl' },
+      { name: 'ELT', id: 'data-elt' },
+      { name: 'AI Analytics Engine', id: 'data-analytics' }
     ]
   },
   {
-    title: 'Communication',
+    title: 'Agency Management Platform',
+    icon: Building2,
+    items: [
+      { name: 'Agency Dashboard', id: 'agency-dashboard' },
+      { name: 'Client Workspaces', id: 'agency-workspaces' },
+      { name: 'White Label Portals', id: 'agency-portals' },
+      { name: 'Team Management', id: 'agency-team' },
+      { name: 'Time Tracking', id: 'agency-time' },
+      { name: 'Client Billing', id: 'agency-billing' },
+      { name: 'Client Approvals', id: 'agency-approvals' },
+      { name: 'Campaign Workspace', id: 'agency-campaigns' },
+      { name: 'Resource Planning', id: 'agency-resources' }
+    ]
+  },
+  {
+    title: 'Omnichannel Communication Platform',
     icon: MessageSquare,
     items: [
       { name: 'Email', id: 'comm-email' },
       { name: 'WhatsApp', id: 'comm-whatsapp' },
-      { name: 'SMS', id: 'comm-sms' },
       { name: 'Telegram', id: 'comm-telegram' },
-      { name: 'Push Notifications', id: 'comm-push' },
+      { name: 'SMS', id: 'comm-sms' },
       { name: 'Voice Calls', id: 'comm-voice' },
+      { name: 'Push Notifications', id: 'comm-push' },
+      { name: 'In-App Messaging', id: 'comm-inapp' },
       { name: 'Live Chat', id: 'comm-chat' },
-      { name: 'Inbox', id: 'comm-inbox' },
-      { name: 'Chatbot', id: 'comm-bot' },
-      { name: 'Templates', id: 'comm-templates' }
-    ]
-  },
-  {
-    title: 'Billing',
-    icon: CreditCard,
-    items: [
-      { name: 'Plans', id: 'bill-plans' },
-      { name: 'Subscriptions', id: 'bill-subs' },
-      { name: 'Invoices', id: 'bill-invoices' },
-      { name: 'Payments', id: 'bill-payments' },
-      { name: 'Transactions', id: 'bill-transactions' },
-      { name: 'Usage', id: 'bill-usage' },
-      { name: 'Credits', id: 'bill-credits' },
-      { name: 'Taxes', id: 'bill-taxes' }
+      { name: 'AI Chatbot', id: 'comm-bot' },
+      { name: 'Video Messaging', id: 'comm-video' },
+      { name: 'Omnichannel Inbox', id: 'comm-inbox' }
     ]
   },
   {
     title: 'Marketplace',
     icon: Store,
     items: [
-      { name: 'Plugins', id: 'mktplace-plugins' },
-      { name: 'Themes', id: 'mktplace-themes' },
-      { name: 'Templates', id: 'mktplace-templates' },
-      { name: 'AI Prompts', id: 'mktplace-prompts' },
-      { name: 'Extensions', id: 'mktplace-extensions' },
-      { name: 'Apps', id: 'mktplace-apps' },
-      { name: 'SDKs', id: 'mktplace-sdks' },
-      { name: 'Freelancers', id: 'mktplace-freelancers' },
-      { name: 'Agencies', id: 'mktplace-agencies' }
+      { name: 'Plugin Marketplace', id: 'mktplace-plugins' },
+      { name: 'Template Marketplace', id: 'mktplace-templates' },
+      { name: 'Theme Marketplace', id: 'mktplace-themes' },
+      { name: 'AI Prompt Marketplace', id: 'mktplace-prompts' },
+      { name: 'Agency Marketplace', id: 'mktplace-agencies' },
+      { name: 'Freelancer Marketplace', id: 'mktplace-freelancers' },
+      { name: 'Influencer Marketplace', id: 'mktplace-influencers' },
+      { name: 'Service Marketplace', id: 'mktplace-services' }
     ]
   },
   {
-    title: 'Security',
+    title: 'AI Security Center',
     icon: ShieldAlert,
     items: [
-      { name: 'Security Center', id: 'sec-center' },
       { name: 'Threat Detection', id: 'sec-threat' },
-      { name: 'Audit Logs', id: 'sec-logs' },
-      { name: 'API Security', id: 'sec-api' },
-      { name: 'Secrets Manager', id: 'sec-secrets' },
-      { name: 'WAF', id: 'sec-waf' },
       { name: 'DDoS Protection', id: 'sec-ddos' },
-      { name: 'Compliance', id: 'sec-compliance' },
-      { name: 'Privacy Center', id: 'sec-privacy' }
+      { name: 'API Security', id: 'sec-api' },
+      { name: 'WAF', id: 'sec-waf' },
+      { name: 'Secrets Manager', id: 'sec-secrets' },
+      { name: 'Audit Logs', id: 'sec-logs' },
+      { name: 'Compliance Dashboard', id: 'sec-compliance' },
+      { name: 'Zero Trust Access', id: 'sec-zerotrust' },
+      { name: 'Security Monitoring', id: 'sec-monitoring' }
     ]
   },
   {
-    title: 'Developer',
+    title: 'Developer Platform',
     icon: Code2,
     items: [
-      { name: 'REST API', id: 'dev-rest' },
-      { name: 'GraphQL', id: 'dev-graphql' },
+      { name: 'REST APIs', id: 'dev-rest' },
+      { name: 'GraphQL APIs', id: 'dev-graphql' },
       { name: 'Webhooks', id: 'dev-webhooks' },
-      { name: 'SDKs', id: 'dev-sdks' },
+      { name: 'SDKs (JavaScript, Node.js, Python, PHP, Java, Go)', id: 'dev-sdks' },
       { name: 'CLI', id: 'dev-cli' },
-      { name: 'Sandbox', id: 'dev-sandbox' },
-      { name: 'API Logs', id: 'dev-logs' },
+      { name: 'API Sandbox', id: 'dev-sandbox' },
+      { name: 'Event Bus', id: 'dev-event-bus' },
+      { name: 'Marketplace APIs', id: 'dev-mkt-apis' },
       { name: 'API Analytics', id: 'dev-analytics' }
     ]
   },
   {
-    title: 'Customer Success',
+    title: 'Customer Success Platform',
     icon: LifeBuoy,
     items: [
-      { name: 'Tickets', id: 'cs-tickets' },
-      { name: 'Knowledge Base', id: 'cs-kb' },
       { name: 'Help Center', id: 'cs-help' },
-      { name: 'Community', id: 'cs-community' },
-      { name: 'Live Support', id: 'cs-support' },
-      { name: 'Customer Health', id: 'cs-health' },
-      { name: 'SLA', id: 'cs-sla' }
+      { name: 'Ticket System', id: 'cs-tickets' },
+      { name: 'Knowledge Base', id: 'cs-kb' },
+      { name: 'Live Chat', id: 'cs-support' },
+      { name: 'AI Support Agent', id: 'cs-agent' },
+      { name: 'Community Forum', id: 'cs-community' },
+      { name: 'SLA Management', id: 'cs-sla' },
+      { name: 'Customer Health Score', id: 'cs-health' }
     ]
   },
   {
-    title: 'Settings',
-    icon: SettingsIcon,
+    title: 'Compliance & Privacy',
+    icon: ShieldCheck,
     items: [
-      { name: 'General', id: 'settings-general' },
-      { name: 'Branding', id: 'settings-branding' },
-      { name: 'Domains', id: 'settings-domains' },
-      { name: 'Integrations', id: 'settings-integrations' },
-      { name: 'Notifications', id: 'settings-notifications' },
-      { name: 'Languages', id: 'settings-languages' },
-      { name: 'Localization', id: 'settings-localization' },
-      { name: 'Storage', id: 'settings-storage' },
-      { name: 'Backups', id: 'settings-backups' },
-      { name: 'Feature Flags', id: 'settings-flags' },
-      { name: 'Email Settings', id: 'settings-email' },
-      { name: 'SMS Settings', id: 'settings-sms' },
-      { name: 'AI Settings', id: 'settings-ai' },
-      { name: 'Billing Settings', id: 'settings-billing' },
-      { name: 'Security Settings', id: 'settings-security' }
+      { name: 'GDPR', id: 'privacy-gdpr' },
+      { name: 'CCPA', id: 'privacy-ccpa' },
+      { name: 'LGPD', id: 'privacy-lgpd' },
+      { name: 'Cookie Consent', id: 'privacy-cookie' },
+      { name: 'CMP', id: 'privacy-cmp' },
+      { name: 'Data Retention Policies', id: 'privacy-retention' },
+      { name: 'Data Residency', id: 'privacy-residency' },
+      { name: 'Consent Logs', id: 'privacy-logs' },
+      { name: 'Right to Erasure', id: 'privacy-erasure' },
+      { name: 'Privacy Center', id: 'privacy-center' }
     ]
   },
   {
-    title: 'Super Admin',
-    icon: Crown,
+    title: 'AI Recommendation Engine',
+    icon: Sparkles,
     items: [
-      { name: 'Tenant Management', id: 'admin-tenant' },
-      { name: 'Organizations', id: 'admin-orgs' },
-      { name: 'Users', id: 'admin-users' },
-      { name: 'Subscriptions', id: 'admin-subs' },
-      { name: 'Billing', id: 'admin-billing' },
-      { name: 'Marketplace', id: 'admin-market' },
-      { name: 'AI Models', id: 'admin-models' },
-      { name: 'System Health', id: 'admin-health' },
-      { name: 'Infrastructure', id: 'admin-infra' },
-      { name: 'Logs', id: 'admin-logs' },
-      { name: 'Monitoring', id: 'admin-monitoring' },
-      { name: 'Queues', id: 'admin-queues' },
-      { name: 'Cron Jobs', id: 'admin-cron' },
-      { name: 'Database', id: 'admin-db' },
-      { name: 'Cache', id: 'admin-cache' },
-      { name: 'Storage', id: 'admin-storage' },
-      { name: 'Feature Flags', id: 'admin-flags' },
-      { name: 'System Settings', id: 'admin-settings' },
-      { name: 'License Manager', id: 'admin-license' }
+      { name: 'Product Recommendations', id: 'reco-product' },
+      { name: 'Campaign Recommendations', id: 'reco-campaign' },
+      { name: 'Budget Recommendations', id: 'reco-budget' },
+      { name: 'Audience Recommendations', id: 'reco-audience' },
+      { name: 'Keyword Recommendations', id: 'reco-keyword' },
+      { name: 'Creative Recommendations', id: 'reco-creative' },
+      { name: 'Pricing Recommendations', id: 'reco-pricing' }
+    ]
+  },
+  {
+    title: 'Enterprise SaaS Features',
+    icon: Building2,
+    items: [
+      { name: 'Multi-Tenant Architecture', id: 'saas-multitenant' },
+      { name: 'White Label Platform', id: 'saas-whitelabel' },
+      { name: 'Multiple Business Units', id: 'saas-businessunits' },
+      { name: 'Regional Data Centers', id: 'saas-datacenters' },
+      { name: 'High Availability', id: 'saas-ha' },
+      { name: 'Disaster Recovery', id: 'saas-dr' },
+      { name: 'Backup & Restore', id: 'saas-backup' },
+      { name: 'Feature Flags', id: 'saas-flags' },
+      { name: 'Tenant-Level Customization', id: 'saas-customization' },
+      { name: 'Usage-Based Billing', id: 'saas-billing' },
+      { name: 'Subscription Management', id: 'saas-subscription' },
+      { name: 'Audit Trails', id: 'saas-audit' },
+      { name: 'API Rate Limiting', id: 'saas-ratelimit' },
+      { name: 'SCIM Provisioning', id: 'saas-scim' },
+      { name: 'Enterprise SSO (SAML/OIDC)', id: 'saas-sso' }
+    ]
+  },
+  {
+    title: 'Conversion Rate Optimization (CRO)',
+    icon: Target,
+    items: [
+      { name: 'Session Recording', id: 'cro-session' },
+      { name: 'Heatmaps', id: 'cro-heatmaps' },
+      { name: 'Scroll Maps', id: 'cro-scroll' },
+      { name: 'Click Maps', id: 'cro-click' },
+      { name: 'Funnel Analysis', id: 'cro-funnel' },
+      { name: 'User Journey Mapping', id: 'cro-journey' },
+      { name: 'AI UX Recommendations', id: 'cro-ux' },
+      { name: 'Form Analytics', id: 'cro-forms' },
+      { name: 'Exit Intent', id: 'cro-exit' },
+      { name: 'Smart Popups', id: 'cro-popups' },
+      { name: 'Website Personalization', id: 'cro-personalization' }
     ]
   }
 ];
@@ -415,7 +382,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-    'CRM & Sales': true // Expand CRM & Sales by default since it is active
+    'Communication': true // Expand Communication by default since it is active
   });
 
   const toggleSection = (sectionTitle: string) => {
@@ -676,13 +643,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         <div
                           key={item.id}
                           onClick={() => {
+                            if (item.disabled) return;
                             setActiveId(item.id);
                             setMobileOpen(false);
                           }}
                           style={{
                             padding: '6px 12px',
                             borderRadius: '6px',
-                            cursor: 'pointer',
+                            cursor: item.disabled ? 'not-allowed' : 'pointer',
+                            opacity: item.disabled ? 0.4 : 1,
                             fontSize: '13px',
                             color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
                             backgroundColor: isActive ? 'rgba(255,255,255,0.05)' : 'transparent',
