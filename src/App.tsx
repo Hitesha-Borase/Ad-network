@@ -74,6 +74,25 @@ import {
   EcomClvPrediction, EcomProductRecommendation 
 } from './components/ecommerce/ECommerceMarketingPages';
 
+import {
+  CROSessionRecording, CROHeatmaps, CROScrollMaps, CROClickMaps,
+  CROFunnelAnalysis, CROUserJourneyMapping, CROAiUxRecommendations,
+  CROFormAnalytics, CROExitIntent, CROSmartPopups, CROWebsitePersonalization
+} from './components/cro/CROPages';
+
+import {
+  IndustryHealthcare, IndustryFinance, IndustryRealEstate, IndustryEducation,
+  IndustryAutomotive, IndustryTravel, IndustryHospitality, IndustryEcommerce,
+  IndustrySaaS, IndustryGaming, IndustryIGaming, IndustryLogistics,
+  IndustryManufacturing, IndustryGovernment, IndustryNonProfit
+} from './components/industry/IndustryPages';
+
+import {
+  AiMlModelRegistry, AiMlFeatureStore, AiMlPromptManagement, AiMlRagBase,
+  AiMlFineTuning, AiMlVectorDb, AiMlObservability, AiMlCostManagement,
+  AiMlExperimentTracking, AiMlGovernance, AiMlLongTermVision
+} from './components/aiml/AiMlPlatformPages';
+
 import { 
   SearchSemantic, SearchVector, SearchKb, SearchEnterprise, SearchDocIntel 
 } from './components/search/AiSearchEnginePages';
@@ -160,7 +179,13 @@ function App() {
       const customEvent = e as CustomEvent<string>;
       showToast(customEvent.detail);
     };
+    const handleNavigate = (e: Event) => {
+      const customEvent = e as CustomEvent<string>;
+      setActiveId(customEvent.detail);
+    };
+    
     window.addEventListener('show-toast', handleToastEvent);
+    window.addEventListener('navigate', handleNavigate);
 
     let timer: number;
     if (toastMessage) {
@@ -168,6 +193,7 @@ function App() {
     }
     return () => {
       window.removeEventListener('show-toast', handleToastEvent);
+      window.removeEventListener('navigate', handleNavigate);
       if (timer) clearTimeout(timer);
     };
   }, [toastMessage]);
@@ -325,27 +351,26 @@ function App() {
         return <AnalyticsDashboard />;
       case 'bi-revenue':
         return <RevenueReports />;
-      case 'analytics-funnels':
-      case 'cro-funnel-analysis':
-      case 'cro-journey-mapping':
-      case 'cro-form-analytics':
-        return <FunnelAnalysis />;
-      case 'analytics-heatmaps':
-      case 'cro-heatmaps':
-      case 'cro-scroll-maps':
-      case 'cro-click-maps':
-        return <Heatmaps />;
-      case 'analytics-replay':
-      case 'cro-session-recording':
-        return <SessionReplay />;
-      case 'bi-attribution':
-        return <Attribution />;
+      // CRO — Conversion Rate Optimization (dedicated components)
+      case 'cro-session': return <CROSessionRecording />;
+      case 'cro-heatmaps': return <CROHeatmaps />;
+      case 'cro-scroll': return <CROScrollMaps />;
+      case 'cro-click': return <CROClickMaps />;
+      case 'cro-funnel': return <CROFunnelAnalysis />;
+      case 'cro-journey': return <CROUserJourneyMapping />;
+      case 'cro-ux': return <CROAiUxRecommendations />;
+      case 'cro-forms': return <CROFormAnalytics />;
+      case 'cro-exit': return <CROExitIntent />;
+      case 'cro-popups': return <CROSmartPopups />;
+      case 'cro-personalization': return <CROWebsitePersonalization />;
+
+      // BI Analytics (kept)
+      case 'analytics-funnels': return <FunnelAnalysis />;
+      case 'analytics-heatmaps': return <Heatmaps />;
+      case 'analytics-replay': return <SessionReplay />;
+      case 'bi-attribution': return <Attribution />;
       case 'bi-ai-insights':
       case 'bi-ai-recommendations':
-      case 'cro-ux-recs':
-      case 'cro-exit-intent':
-      case 'cro-smart-popups':
-      case 'cro-personalization':
         return <AiInsights />;
 
       // CDP
@@ -372,6 +397,36 @@ function App() {
         return <AudienceBuilder />;
       case 'cdp-segments':
         return <Segments />;
+
+      // Industry-Specific Solutions
+      case 'industry-healthcare': return <IndustryHealthcare />;
+      case 'industry-finance': return <IndustryFinance />;
+      case 'industry-realestate': return <IndustryRealEstate />;
+      case 'industry-education': return <IndustryEducation />;
+      case 'industry-automotive': return <IndustryAutomotive />;
+      case 'industry-travel': return <IndustryTravel />;
+      case 'industry-hospitality': return <IndustryHospitality />;
+      case 'industry-ecommerce': return <IndustryEcommerce />;
+      case 'industry-saas': return <IndustrySaaS />;
+      case 'industry-gaming': return <IndustryGaming />;
+      case 'industry-igaming': return <IndustryIGaming />;
+      case 'industry-logistics': return <IndustryLogistics />;
+      case 'industry-manufacturing': return <IndustryManufacturing />;
+      case 'industry-government': return <IndustryGovernment />;
+      case 'industry-nonprofit': return <IndustryNonProfit />;
+
+      // AI & ML Platform
+      case 'aiml-registry': return <AiMlModelRegistry />;
+      case 'aiml-feature-store': return <AiMlFeatureStore />;
+      case 'aiml-prompts': return <AiMlPromptManagement />;
+      case 'aiml-rag': return <AiMlRagBase />;
+      case 'aiml-finetuning': return <AiMlFineTuning />;
+      case 'aiml-vector': return <AiMlVectorDb />;
+      case 'aiml-observability': return <AiMlObservability />;
+      case 'aiml-cost': return <AiMlCostManagement />;
+      case 'aiml-experiments': return <AiMlExperimentTracking />;
+      case 'aiml-governance': return <AiMlGovernance />;
+      case 'aiml-vision': return <AiMlLongTermVision />;
 
       // Fallback empty states
       default:

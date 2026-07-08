@@ -2,19 +2,16 @@ import React, { useState, useMemo } from 'react';
 import { 
   LayoutDashboard, 
   Building2, 
-  Users, 
   Megaphone, 
   Globe, 
   Search, 
-  PenTool, 
-  Palette, 
   ShoppingBag, 
   Bot, 
   Zap, 
   Sparkles,
   BarChart3, 
   Database, 
-  Server, 
+  Server,
   MessageSquare, 
   CreditCard, 
   Store, 
@@ -28,7 +25,9 @@ import {
   ChevronRight,
   MousePointerClick,
   X,
-  Target
+  Target,
+  Briefcase,
+  Cpu
 } from 'lucide-react';
 
 interface SidebarItem {
@@ -44,65 +43,6 @@ interface SidebarSection {
 }
 
 export const sidebarData: SidebarSection[] = [
-  {
-    title: 'CRM & Sales Platform',
-    icon: Users,
-    items: [
-      { name: 'Lead Management', id: 'crm-leads' },
-      { name: 'Pipeline', id: 'crm-deals' },
-      { name: 'Opportunity Tracking', id: 'crm-opp' },
-      { name: 'Sales Automation', id: 'crm-automation' },
-      { name: 'Proposal Generator', id: 'crm-proposals' },
-      { name: 'Contract Management', id: 'crm-contracts' },
-      { name: 'Quote Builder', id: 'crm-quotes' },
-      { name: 'AI Sales Assistant', id: 'crm-sales-assistant' },
-      { name: 'Forecasting', id: 'crm-forecasting' },
-      { name: 'Commission Tracking', id: 'crm-commission' }
-    ]
-  },
-  {
-    title: 'AI Search Engine',
-    icon: Search,
-    items: [
-      { name: 'Semantic Search', id: 'search-semantic' },
-      { name: 'Vector Search', id: 'search-vector' },
-      { name: 'AI Knowledge Base', id: 'search-kb' },
-      { name: 'Enterprise Search', id: 'search-enterprise' },
-      { name: 'Document Intelligence', id: 'search-docintel' }
-    ]
-  },
-  {
-    title: 'AI Content Marketing',
-    icon: PenTool,
-    items: [
-      { name: 'AI Blog Writer', id: 'aicontent-blog' },
-      { name: 'AI Press Release Generator', id: 'aicontent-press' },
-      { name: 'AI Social Media Content', id: 'aicontent-social' },
-      { name: 'AI Script Generator', id: 'aicontent-script' },
-      { name: 'AI Newsletter Builder', id: 'aicontent-newsletter' },
-      { name: 'AI Podcast Content', id: 'aicontent-podcast' },
-      { name: 'AI Translation', id: 'aicontent-translation' },
-      { name: 'AI Grammar', id: 'aicontent-grammar' },
-      { name: 'AI Content Personalization', id: 'aicontent-personalization' }
-    ]
-  },
-  {
-    title: 'AI Creative Studio',
-    icon: Palette,
-    items: [
-      { name: 'AI Banner Generator', id: 'aicreative-banner' },
-      { name: 'AI Video Ad Generator', id: 'aicreative-video' },
-      { name: 'AI Image Generator', id: 'aicreative-image' },
-      { name: 'AI Copywriter', id: 'aicontent-copywriter' },
-      { name: 'AI Landing Page Generator', id: 'aicontent-landing' },
-      { name: 'AI CTA Generator', id: 'aicreative-cta' },
-      { name: 'AI Product Description Generator', id: 'aicreative-product-desc' },
-      { name: 'AI Ad Variations', id: 'aicreative-ad-variations' },
-      { name: 'AI Creative Optimization', id: 'aicreative-opt' },
-      { name: 'AI Thumbnail Generator', id: 'aicreative-thumbnail' },
-      { name: 'AI Brand Asset Manager', id: 'aicreative-brand' }
-    ]
-  },
   {
     title: 'E-commerce Marketing',
     icon: ShoppingBag,
@@ -187,19 +127,6 @@ export const sidebarData: SidebarSection[] = [
       { name: 'Consent & Privacy Management', id: 'cdp-consent' },
       { name: 'Audience Activation', id: 'cdp-activation' },
       { name: 'Data Clean Rooms', id: 'cdp-clean-rooms' }
-    ]
-  },
-  {
-    title: 'Data Warehouse',
-    icon: Server,
-    items: [
-      { name: 'BigQuery', id: 'data-bigquery' },
-      { name: 'Snowflake', id: 'data-snowflake' },
-      { name: 'ClickHouse', id: 'data-clickhouse' },
-      { name: 'Data Lake', id: 'data-lake' },
-      { name: 'ETL', id: 'data-etl' },
-      { name: 'ELT', id: 'data-elt' },
-      { name: 'AI Analytics Engine', id: 'data-analytics' }
     ]
   },
   {
@@ -372,6 +299,44 @@ export const sidebarData: SidebarSection[] = [
       { name: 'Exit Intent', id: 'cro-exit' },
       { name: 'Smart Popups', id: 'cro-popups' },
       { name: 'Website Personalization', id: 'cro-personalization' }
+    ]
+  },
+  {
+    title: 'Industry-Specific Solutions',
+    icon: Briefcase,
+    items: [
+      { name: 'Healthcare', id: 'industry-healthcare' },
+      { name: 'Finance', id: 'industry-finance' },
+      { name: 'Real Estate', id: 'industry-realestate' },
+      { name: 'Education', id: 'industry-education' },
+      { name: 'Automotive', id: 'industry-automotive' },
+      { name: 'Travel', id: 'industry-travel' },
+      { name: 'Hospitality', id: 'industry-hospitality' },
+      { name: 'E-commerce', id: 'industry-ecommerce' },
+      { name: 'SaaS', id: 'industry-saas' },
+      { name: 'Gaming', id: 'industry-gaming' },
+      { name: 'iGaming', id: 'industry-igaming' },
+      { name: 'Logistics', id: 'industry-logistics' },
+      { name: 'Manufacturing', id: 'industry-manufacturing' },
+      { name: 'Government', id: 'industry-government' },
+      { name: 'Non-Profit', id: 'industry-nonprofit' }
+    ]
+  },
+  {
+    title: 'AI & ML Platform',
+    icon: Cpu,
+    items: [
+      { name: 'Model Registry', id: 'aiml-registry' },
+      { name: 'Feature Store', id: 'aiml-feature-store' },
+      { name: 'Prompt Management', id: 'aiml-prompts' },
+      { name: 'RAG Knowledge Base', id: 'aiml-rag' },
+      { name: 'Fine-Tuning Support', id: 'aiml-finetuning' },
+      { name: 'Vector Database', id: 'aiml-vector' },
+      { name: 'AI Observability', id: 'aiml-observability' },
+      { name: 'AI Cost Management', id: 'aiml-cost' },
+      { name: 'Experiment Tracking', id: 'aiml-experiments' },
+      { name: 'AI Governance', id: 'aiml-governance' },
+      { name: 'Long-Term Vision', id: 'aiml-vision' }
     ]
   }
 ];
