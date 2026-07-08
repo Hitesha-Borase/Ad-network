@@ -1,9 +1,37 @@
 import React, { useState } from 'react';
 import { Sparkles, Settings, Image as ImageIcon, Download, RefreshCw } from 'lucide-react';
 
-export const ImageGenerator: React.FC = () => {
-  const [prompt, setPrompt] = useState('A cinematic shot of a futuristic data center with neon blue and purple lighting, hyper-realistic, 8k resolution');
+export const ImageGenerator: React.FC<{ mode?: string }> = ({ mode = 'aicreative-image' }) => {
+  const getDefaultPrompt = () => {
+    switch (mode) {
+      case 'aicreative-thumbnail':
+        return 'A hyper-realistic youtube thumbnail design with neon glow showing an AI brain interface, high contrast text template layout';
+      case 'aicreative-logo':
+        return 'A minimalist modern clean vector logo of a flying bird, flat design, white background, high resolution vector';
+      case 'aicreative-image':
+      default:
+        return 'A cinematic shot of a futuristic data center with neon blue and purple lighting, hyper-realistic, 8k resolution';
+    }
+  };
+
+  const getTitle = () => {
+    switch (mode) {
+      case 'aicreative-thumbnail': return 'YouTube Thumbnail Creator';
+      case 'aicreative-logo': return 'AI Logo Designer';
+      case 'aicreative-image':
+      default:
+        return 'AI Image Studio';
+    }
+  };
+
+  const [prompt, setPrompt] = useState(getDefaultPrompt());
   const [isGenerating, setIsGenerating] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState(mode === 'aicreative-thumbnail' ? '16:9' : '1:1');
+
+  React.useEffect(() => {
+    setPrompt(getDefaultPrompt());
+    setAspectRatio(mode === 'aicreative-thumbnail' ? '16:9' : '1:1');
+  }, [mode]);
 
   return (
     <div className="fade-in responsive-layout" style={{ height: 'calc(100vh - 100px)' }}>
@@ -11,7 +39,7 @@ export const ImageGenerator: React.FC = () => {
       <div className="glass-card responsive-sidebar-wide" style={{ display: 'flex', flexDirection: 'column', gap: '20px', overflowY: 'auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
           <ImageIcon size={20} color="var(--primary)" />
-          <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>AI Image Studio</h2>
+          <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>{getTitle()}</h2>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -38,9 +66,9 @@ export const ImageGenerator: React.FC = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <label style={{ fontSize: '13px', fontWeight: 500 }}>Aspect Ratio</label>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button className="btn btn-secondary" style={{ flex: 1, padding: '8px' }}>1:1</button>
-            <button className="btn btn-primary" style={{ flex: 1, padding: '8px', background: 'rgba(99,102,241,0.1)', color: 'var(--primary)', border: '1px solid var(--primary)' }}>16:9</button>
-            <button className="btn btn-secondary" style={{ flex: 1, padding: '8px' }}>9:16</button>
+            <button className="btn btn-secondary" style={{ flex: 1, padding: '8px', background: aspectRatio === '1:1' ? 'rgba(99,102,241,0.1)' : 'transparent', color: aspectRatio === '1:1' ? 'var(--primary)' : 'inherit', border: aspectRatio === '1:1' ? '1px solid var(--primary)' : '1px solid var(--border-color)' }} onClick={() => setAspectRatio('1:1')}>1:1</button>
+            <button className="btn btn-secondary" style={{ flex: 1, padding: '8px', background: aspectRatio === '16:9' ? 'rgba(99,102,241,0.1)' : 'transparent', color: aspectRatio === '16:9' ? 'var(--primary)' : 'inherit', border: aspectRatio === '16:9' ? '1px solid var(--primary)' : '1px solid var(--border-color)' }} onClick={() => setAspectRatio('16:9')}>16:9</button>
+            <button className="btn btn-secondary" style={{ flex: 1, padding: '8px', background: aspectRatio === '9:16' ? 'rgba(99,102,241,0.1)' : 'transparent', color: aspectRatio === '9:16' ? 'var(--primary)' : 'inherit', border: aspectRatio === '9:16' ? '1px solid var(--primary)' : '1px solid var(--border-color)' }} onClick={() => setAspectRatio('9:16')}>9:16</button>
           </div>
         </div>
 
@@ -115,7 +143,7 @@ export const ImageGenerator: React.FC = () => {
                  <div style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
                    <ImageIcon size={48} style={{ marginBottom: '16px', opacity: 0.5 }} />
                    <div style={{ fontSize: '14px' }}>Generated Image Will Appear Here</div>
-                   <div style={{ fontSize: '12px', marginTop: '4px' }}>1920 x 1080 (16:9)</div>
+                   <div style={{ fontSize: '12px', marginTop: '4px' }}>{aspectRatio === '16:9' ? '1920 x 1080 (16:9)' : aspectRatio === '9:16' ? '1080 x 1920 (9:16)' : '1024 x 1024 (1:1)'}</div>
                  </div>
               </div>
             </div>

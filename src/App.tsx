@@ -111,6 +111,8 @@ import { BannerGenerator } from './components/ai/BannerGenerator';
 import { VideoGenerator } from './components/ai/VideoGenerator';
 import { ImageGenerator } from './components/ai/ImageGenerator';
 import { LandingPageGenerator } from './components/ai/LandingPageGenerator';
+import { Copywriter } from './components/ai/Copywriter';
+import { TemplateHub } from './components/ai/TemplateHub';
 // AI Content Marketing — 9 distinct components
 import { AiBlogWriter } from './components/ai/content/AiBlogWriter';
 import { AiPressRelease } from './components/ai/content/AiPressRelease';
@@ -289,10 +291,11 @@ function App() {
       case 'aicreative-cta':
       case 'aicreative-product-desc':
       case 'aicreative-ad-variations':
-        return <AiBlogWriter />;
+        return <Copywriter activeId={activeId} />;
       case 'aicontent-landing':
-      case 'aicreative-templates':
         return <LandingPageGenerator />;
+      case 'aicreative-templates':
+        return <TemplateHub />;
       case 'aicreative-banner':
         return <BannerGenerator />;
       case 'aicreative-video':
@@ -300,10 +303,10 @@ function App() {
       case 'aicreative-image':
       case 'aicreative-thumbnail':
       case 'aicreative-logo':
-        return <ImageGenerator />;
+        return <ImageGenerator mode={activeId} />;
       case 'aicreative-brand':
       case 'aicreative-assets':
-        return <BrandAssets />;
+        return <BrandAssets mode={activeId} />;
       case 'aicreative-opt':
         return <AiDashboard />;
       case 'ai-chat':
