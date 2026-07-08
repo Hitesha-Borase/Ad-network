@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { EmptyState } from './components/EmptyState';
+import { Login } from './components/Login';
 
 import { 
   CrmLeadManagement, CrmPipelineBoard, CrmOpportunityTracking, CrmSalesAutomation, 
@@ -126,6 +127,22 @@ import { Segments } from './components/cdp/Segments';
 import { LayoutGrid, Sparkles, Shield, ArrowRight } from 'lucide-react';
 
 function App() {
+  // Auth state — check localStorage (remember me) or sessionStorage
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
+    return (
+      localStorage.getItem('adnetwork_auth') === 'true' ||
+      sessionStorage.getItem('adnetwork_auth') === 'true'
+    );
+  });
+
+  const handleLogin = () => setIsLoggedIn(true);
+
+  const handleLogout = () => {
+    localStorage.removeItem('adnetwork_auth');
+    sessionStorage.removeItem('adnetwork_auth');
+    setIsLoggedIn(false);
+  };
+
   const [activeId, setActiveId] = useState<string>('comm-email');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -2215,6 +2232,11 @@ function App() {
     }
   };
 
+  // Show login page if not authenticated
+  if (!isLoggedIn) {
+    return <Login onLogin={handleLogin} />;
+  }
+
   return (
     <div className="app-container">
       {toastMessage && (
@@ -2251,6 +2273,7 @@ function App() {
         <Header 
           setMobileOpen={setMobileSidebarOpen}
           activeId={activeId}
+          onLogout={handleLogout}
         />
 
         {/* Content Body viewports */}

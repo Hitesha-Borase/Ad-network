@@ -90,25 +90,25 @@ export const RevenueReports: React.FC = () => {
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {toast && <div style={{ position: 'fixed', top: '80px', right: '24px', zIndex: 9999, background: 'var(--bg-secondary)', border: '1px solid var(--success)', borderRadius: '10px', padding: '12px 20px', fontSize: '14px', fontWeight: 500, boxShadow: '0 8px 24px rgba(0,0,0,0.3)', color: 'var(--success)' }}>{toast}</div>}
 
-      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)', border: '1px solid rgba(16, 185, 129, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 30px' }}>
+      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)', border: '1px solid rgba(16, 185, 129, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <DollarSign size={24} color="var(--success)"/> Revenue Analytics
+          <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <DollarSign size={22} color="var(--success)"/> Revenue Analytics
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>Detailed breakdown of your recurring, one-time, and ad revenue streams.</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>Detailed breakdown of your recurring, one-time, and ad revenue streams.</p>
         </div>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden' }}>
             {(['monthly','quarterly','yearly'] as const).map(opt => (
-              <button key={opt} onClick={() => setPeriod(opt)} style={{ padding: '7px 14px', fontSize: '12px', fontWeight: 600, background: period === opt ? 'var(--success)' : 'none', color: period === opt ? '#fff' : 'var(--text-secondary)', border: 'none', cursor: 'pointer', textTransform: 'capitalize' }}>{opt}</button>
+              <button key={opt} onClick={() => setPeriod(opt)} style={{ padding: '7px 10px', fontSize: '12px', fontWeight: 600, background: period === opt ? 'var(--success)' : 'none', color: period === opt ? '#fff' : 'var(--text-secondary)', border: 'none', cursor: 'pointer', textTransform: 'capitalize' }}>{opt}</button>
             ))}
           </div>
           <button className="btn btn-secondary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={() => showToast('📊 Filters applied')}><Filter size={14}/> Filters</button>
-          <button className="btn btn-primary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={handleExport}><Download size={14}/> Export CSV</button>
+          <button className="btn btn-primary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={handleExport}><Download size={14}/> Export</button>
         </div>
       </div>
 
-      <div className="grid-cols-3">
+      <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
         {[
           { label: 'Total ARR', val: p.arr, delta: '+24% YoY' },
           { label: 'MRR Growth', val: p.mrr, delta: '+5.2% MoM' },

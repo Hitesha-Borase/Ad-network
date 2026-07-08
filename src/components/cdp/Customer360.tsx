@@ -76,14 +76,14 @@ export const Customer360: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }} className="fade-in">
       {toast && <div style={{ position: 'fixed', top: '80px', right: '24px', zIndex: 9999, background: 'var(--bg-secondary)', border: '1px solid var(--success)', borderRadius: '10px', padding: '12px 20px', fontSize: '14px', fontWeight: 500, boxShadow: '0 8px 24px rgba(0,0,0,0.3)', color: 'var(--success)' }}>{toast}</div>}
 
-      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.15) 100%)', border: '1px solid rgba(99,102,241,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 30px' }}>
+      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.15) 100%)', border: '1px solid rgba(99,102,241,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>Customer 360° Profile</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>Unified identity graph resolving cross-device behaviors and touchpoints.</p>
+          <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>Customer 360° Profile</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>Unified identity graph resolving cross-device behaviors and touchpoints.</p>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           <div style={{ position: 'relative' }}>
-            <input type="text" placeholder="Search by name, email, or ID..." value={searchQuery} onChange={e => handleSearch(e.target.value)} style={{ padding: '9px 16px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.08)', border: '1px solid var(--border-color)', color: '#fff', fontSize: '13px', width: '280px' }}/>
+            <input type="text" placeholder="Search by name or email..." value={searchQuery} onChange={e => handleSearch(e.target.value)} style={{ padding: '9px 16px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.08)', border: '1px solid var(--border-color)', color: '#fff', fontSize: '13px', width: '220px' }}/>
             {searchQuery && profiles.find(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.email.toLowerCase().includes(searchQuery.toLowerCase())) && (
               <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden', zIndex: 100, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
                 {profiles.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.email.toLowerCase().includes(searchQuery.toLowerCase())).map(p => (
@@ -98,7 +98,7 @@ export const Customer360: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid-cols-3" style={{ gridTemplateColumns: '1fr 2fr' }}>
+      <div className="responsive-layout">
         {/* Profile Sidebar */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '30px 20px' }}>

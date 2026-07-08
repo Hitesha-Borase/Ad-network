@@ -114,9 +114,9 @@ export const AnalyticsDashboard: React.FC = () => {
       )}
 
       {/* Header Banner */}
-      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%)', border: '1px solid rgba(99, 102, 241, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 30px' }}>
+      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%)', border: '1px solid rgba(99, 102, 241, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>Executive Analytics</h1>
+          <h1 style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>Executive Analytics</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>AI-driven insights into your cross-channel marketing performance and user behavior.</p>
         </div>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -124,22 +124,22 @@ export const AnalyticsDashboard: React.FC = () => {
           <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden' }}>
             {RANGES.map(r => (
               <button key={r} onClick={() => setRange(r)} style={{ padding: '7px 14px', fontSize: '12px', fontWeight: 600, background: range === r ? 'var(--primary)' : 'none', color: range === r ? '#fff' : 'var(--text-secondary)', border: 'none', cursor: 'pointer', transition: 'all 0.2s' }}>
-                {r === '7d' ? 'Last 7 Days' : r === '30d' ? 'Last 30 Days' : 'Last 90 Days'}
+                {r === '7d' ? '7D' : r === '30d' ? '30D' : '90D'}
               </button>
             ))}
           </div>
           <button className="btn btn-secondary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: liveView ? 'var(--danger)' : 'var(--text-primary)', borderColor: liveView ? 'var(--danger)' : 'var(--border-color)' }} onClick={() => setLiveView(v => !v)}>
             <Radio size={14} style={{ animation: liveView ? 'pulse 1s infinite' : 'none' }} />
-            {liveView ? `Live: ${liveCount} visitors` : 'Live View'}
+            {liveView ? `Live: ${liveCount}` : 'Live'}
           </button>
           <button className="btn btn-primary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={handleExport}>
-            Export CSV <ArrowUpRight size={14} />
+            Export <ArrowUpRight size={14} />
           </button>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid-cols-4">
+      <div className="stats-grid">
         {[
           { label: 'Total Visitors', val: visitorsDisplay, delta: kpi.visitorsDelta, icon: <Users size={18}/>, color: 'var(--primary)', bg: 'var(--primary-light)', positive: true },
           { label: 'Avg. Conversion Rate', val: crDisplay, delta: kpi.crDelta, icon: <Target size={18}/>, color: 'var(--accent)', bg: 'var(--accent-light)', positive: true },
@@ -165,16 +165,16 @@ export const AnalyticsDashboard: React.FC = () => {
       </div>
 
       {/* Charts */}
-      <div className="grid-cols-3" style={{ gridTemplateColumns: '2fr 1fr' }}>
-        <div className="glass-card" style={{ height: '400px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="analytics-chart-grid">
+        <div className="glass-card" style={{ height: '380px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
             <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Traffic Overview</h2>
             <div style={{ display: 'flex', gap: '12px', fontSize: '12px', fontWeight: 500 }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--primary)' }} /> Organic</span>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--accent)' }} /> Paid</span>
             </div>
           </div>
-          <div style={{ flex: 1, width: '100%' }}>
+          <div style={{ flex: 1, width: '100%', minHeight: 0 }}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <defs>
@@ -191,9 +191,9 @@ export const AnalyticsDashboard: React.FC = () => {
             </ResponsiveContainer>
           </div>
         </div>
-        <div className="glass-card" style={{ height: '400px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div className="glass-card" style={{ height: '380px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Conversions by Channel</h2>
-          <div style={{ flex: 1, width: '100%' }}>
+          <div style={{ flex: 1, width: '100%', minHeight: 0 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={conversionData} layout="vertical" margin={{ top: 0, right: 20, left: 10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" horizontal vertical={false}/>
@@ -233,7 +233,17 @@ export const AnalyticsDashboard: React.FC = () => {
           </div>
         </div>
       </div>
-      <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }`}</style>
+      <style>{`
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .analytics-chart-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: 20px;
+        }
+        @media (max-width: 900px) {
+          .analytics-chart-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </div>
   );
 };

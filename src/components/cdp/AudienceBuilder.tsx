@@ -77,26 +77,26 @@ export const AudienceBuilder: React.FC = () => {
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {toast && <div style={{ position: 'fixed', top: '80px', right: '24px', zIndex: 9999, background: 'var(--bg-secondary)', border: '1px solid var(--success)', borderRadius: '10px', padding: '12px 20px', fontSize: '14px', fontWeight: 500, boxShadow: '0 8px 24px rgba(0,0,0,0.3)', color: 'var(--success)' }}>{toast}</div>}
 
-      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(236,72,153,0.15) 0%, rgba(99,102,241,0.15) 100%)', border: '1px solid rgba(236,72,153,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 30px' }}>
+      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(236,72,153,0.15) 0%, rgba(99,102,241,0.15) 100%)', border: '1px solid rgba(236,72,153,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Users size={24} color="var(--accent)"/> Visual Audience Builder
+          <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Users size={22} color="var(--accent)"/> Visual Audience Builder
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>Query your CDP data to create hyper-targeted segments without writing SQL.</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>Query your CDP data to create hyper-targeted segments without writing SQL.</p>
         </div>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={estimate} disabled={estimating}>
+        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }} onClick={estimate} disabled={estimating}>
             <Play size={14}/> {estimating ? 'Estimating...' : 'Estimate Size'}
           </button>
-          <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={() => setShowSave(true)}>
+          <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }} onClick={() => setShowSave(true)}>
             <Save size={14}/> Save Segment
           </button>
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: '24px' }}>
+      <div className="responsive-layout">
         {/* Builder */}
-        <div className="glass-card" style={{ flex: 2 }}>
+        <div className="glass-card" style={{ flex: 2, minWidth: 0 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
             <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Segment Rules</h2>
             <div style={{ display: 'flex', gap: '6px' }}>

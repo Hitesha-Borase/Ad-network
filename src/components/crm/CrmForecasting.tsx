@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Sparkles, TrendingUp } from 'lucide-react';
 
@@ -43,7 +43,7 @@ export const CrmForecasting: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid-cols-3" style={{ gridTemplateColumns: '2fr 1fr' }}>
+      <div className="responsive-layout">
         {/* Forecast Chart */}
         <div className="glass-card" style={{ height: '360px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <h2 style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>Revenue Projections (Actual vs. Forecast)</h2>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Plus, Trash2, Calculator, Receipt } from 'lucide-react';
 
 interface QuoteItem {
@@ -51,7 +51,7 @@ export const CrmQuotes: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }} className="fade-in">
-      <div className="grid-cols-3" style={{ gridTemplateColumns: '2fr 1fr' }}>
+      <div className="responsive-layout">
         {/* Quote Calculator list */}
         <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <h2 style={{ fontSize: '16px', fontWeight: 600, borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', margin: 0 }}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Plus, CheckCircle, Circle, Trash2, Calendar } from 'lucide-react';
 
 interface Task {
@@ -57,7 +57,7 @@ export const CrmTasks: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }} className="fade-in">
-      <div className="grid-cols-3" style={{ gridTemplateColumns: '2fr 1fr' }}>
+      <div className="responsive-layout">
         {/* Task List Panel */}
         <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

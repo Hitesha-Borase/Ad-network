@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import { DollarSign, Percent, Briefcase, UserCheck, TrendingUp, TrendingDown, ArrowUpRight } from 'lucide-react';
 
@@ -35,10 +35,10 @@ export const CrmOverview: React.FC = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '24px 30px'
+        padding: '20px 24px',
       }}>
         <div>
-          <h1 style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>
+          <h1 style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>
             CRM & Sales Overview
           </h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>
@@ -141,7 +141,7 @@ export const CrmOverview: React.FC = () => {
       </div>
 
       {/* Analytics Charts */}
-      <div className="grid-cols-3" style={{ gridTemplateColumns: '2fr 1fr' }}>
+      <div className="responsive-layout">
         {/* Sales Area Chart */}
         <div className="glass-card" style={{ height: '380px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <h2 style={{ fontSize: '16px', fontWeight: 600 }}>Monthly Revenue Growth</h2>

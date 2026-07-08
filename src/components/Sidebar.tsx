@@ -460,6 +460,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           bottom: 0,
           zIndex: 950,
           width: collapsed ? 'var(--sidebar-collapsed-width)' : 'var(--sidebar-width)',
+          maxWidth: '85vw',
           backgroundColor: 'var(--bg-secondary)',
           borderRight: '1px solid var(--border-color)',
           display: 'flex',
@@ -723,12 +724,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
         @media (max-width: 768px) {
           .sidebar {
             transform: translateX(-100%);
+            max-width: 85vw;
           }
           .sidebar.mobile-open {
             transform: translateX(0);
+            box-shadow: 4px 0 24px rgba(0,0,0,0.5);
           }
           .mobile-close-btn {
-            display: block !important;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
           }
           .sidebar-collapse-toggle {
             display: none !important;
@@ -741,6 +746,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
         .sidebar-sub-item:hover {
           color: var(--text-primary) !important;
           background-color: rgba(255, 255, 255, 0.02);
+        }
+        @media (max-width: 768px) {
+          .sidebar-nav-item,
+          .sidebar-section-header {
+            min-height: 44px;
+          }
+          .sidebar-sub-item {
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+          }
         }
       `}</style>
     </>

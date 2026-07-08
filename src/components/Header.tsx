@@ -7,9 +7,10 @@ import {
 interface HeaderProps {
   setMobileOpen: (open: boolean) => void;
   activeId: string;
+  onLogout?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
+export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId, onLogout }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -78,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 24px',
+        padding: '0 16px',
         position: 'sticky',
         top: 0,
         zIndex: 800,
@@ -102,8 +103,8 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
             <Menu size={22} />
           </button>
 
-          {/* Org Switcher */}
-          <div style={{ position: 'relative' }}>
+          {/* Org Switcher — hide on small mobile */}
+          <div style={{ position: 'relative' }} className="org-switcher-wrap">
             <button 
               onClick={() => setShowOrgSwitcher(!showOrgSwitcher)}
               style={{
@@ -520,7 +521,7 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
                   borderTop: '1px solid #333333',
                   marginTop: '6px',
                   color: '#bbbbbb'
-                }}>
+                }} onClick={() => { onLogout?.(); }}>
                   <LogOut size={14} /> Sign Out
                 </button>
               </div>
@@ -530,9 +531,12 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
 
         <style>{`
           @media (max-width: 768px) {
-            .mobile-menu-toggle {
-              display: flex !important;
-            }
+            .mobile-menu-toggle { display: flex !important; }
+            .org-switcher-wrap { display: none !important; }
+            .header-ai-btn { display: none !important; }
+          }
+          @media (max-width: 480px) {
+            .header-search-bar { display: none !important; }
           }
           .icon-button:hover {
             background-color: rgba(255,255,255,0.05);
@@ -557,10 +561,11 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '0 24px',
+      padding: '0 16px',
       position: 'sticky',
       top: 0,
-      zIndex: 800
+      zIndex: 800,
+      flexShrink: 0
     }}>
       {/* Left side: Mobile Toggle & Title */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -591,9 +596,9 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
       </div>
 
       {/* Right side: Search, Notifications, User profile */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
-        {/* Global Navigation Shortcut */}
-        <div style={{
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {/* Global Navigation Shortcut — hide on mobile */}
+        <div className="hide-on-mobile" style={{
           display: 'flex',
           alignItems: 'center',
           gap: '6px',
@@ -603,7 +608,8 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
           border: '1px solid rgba(99, 102, 241, 0.2)',
           fontSize: '12px',
           color: 'var(--primary)',
-          fontWeight: 500
+          fontWeight: 500,
+          whiteSpace: 'nowrap'
         }}>
           <Compass size={14} />
           <span>CRM Sandbox Active</span>
@@ -649,7 +655,7 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
               position: 'absolute',
               top: '45px',
               right: 0,
-              width: '320px',
+              width: 'min(320px, 90vw)',
               padding: '16px',
               zIndex: 1000,
               backgroundColor: 'var(--bg-secondary)',
@@ -779,7 +785,7 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
                 borderTop: '1px solid var(--border-color)',
                 marginTop: '6px',
                 color: 'var(--danger)'
-              }}>
+              }} onClick={() => { onLogout?.(); }}>
                 <LogOut size={16} /> Sign Out
               </button>
             </div>
@@ -789,9 +795,8 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId }) => {
 
       <style>{`
         @media (max-width: 768px) {
-          .mobile-menu-toggle {
-            display: flex !important;
-          }
+          .mobile-menu-toggle { display: flex !important; }
+          .hide-on-mobile { display: none !important; }
         }
         .icon-button:hover {
           background-color: rgba(255,255,255,0.05);
