@@ -19,22 +19,113 @@ const StatCard = ({ label, value, change, color, icon }: { label: string; value:
 );
 
 const SectionHeader = ({ icon, title, subtitle, accentColor, badge }: { icon: React.ReactNode; title: string; subtitle: string; accentColor: string; badge?: string }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [logs, setLogs] = useState<string[]>([]);
+  const [isRunning, setIsRunning] = useState(false);
+  const [healthStatus, setHealthStatus] = useState<'idle' | 'checking' | 'healthy'>('idle');
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setLogs([
+      `[info] Initializing ${title} secure environment...`,
+      `[info] Connecting to high-availability GPU cluster...`,
+      `[success] Established encrypted link (AES-256) on port 9443.`,
+      `[info] Loading model weights and cache databases...`
+    ]);
+
+    const timer1 = setTimeout(() => {
+      setLogs(prev => [...prev, `[info] Memory Buffer Allocation: 32GB initialized.`, `[success] Service cluster verified: 0 errors detected.`]);
+    }, 1500);
+
+    const timer2 = setTimeout(() => {
+      setLogs(prev => [...prev, `[ready] ${title} workspace is active and listening for remote execution calls.`]);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [isOpen, title]);
+
+  const runHealthCheck = () => {
+    setIsRunning(true);
+    setHealthStatus('checking');
+    setLogs(prev => [...prev, `[info] Dispatching cluster health check query...`]);
+    setTimeout(() => {
+      setIsRunning(false);
+      setHealthStatus('healthy');
+      setLogs(prev => [...prev, `[health] Connection OK · Latency: 14ms · Memory: 24.1% allocated · Service: STABLE`]);
+      window.dispatchEvent(new CustomEvent('show-toast', { detail: `✅ Health check complete for ${title}` }));
+    }, 2000);
+  };
+
   return (
-    <div className="glass-card" style={{ padding: '24px', background: `linear-gradient(135deg, ${accentColor}18 0%, ${accentColor}08 100%)`, border: `1px solid ${accentColor}30`, display: 'flex', alignItems: 'center', gap: '18px' }}>
-      <div style={{ width: 54, height: 54, borderRadius: '14px', background: `${accentColor}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: accentColor, fontSize: '28px', flexShrink: 0 }}>{icon}</div>
-      <div style={{ flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <h1 style={{ fontSize: '22px', fontWeight: 800, margin: 0 }}>{title}</h1>
-          {badge && <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', backgroundColor: `${accentColor}20`, color: accentColor, fontWeight: 600 }}>{badge}</span>}
+    <>
+      <div className="glass-card" style={{ padding: '24px', background: `linear-gradient(135deg, ${accentColor}18 0%, ${accentColor}08 100%)`, border: `1px solid ${accentColor}30`, display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap' }}>
+        <div style={{ width: 54, height: 54, borderRadius: '14px', background: `${accentColor}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: accentColor, fontSize: '28px', flexShrink: 0 }}>{icon}</div>
+        <div style={{ flex: 1, minWidth: '200px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+            <h1 style={{ fontSize: 'clamp(18px, 4vw, 22px)', fontWeight: 800, margin: 0 }}>{title}</h1>
+            {badge && <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', backgroundColor: `${accentColor}20`, color: accentColor, fontWeight: 600 }}>{badge}</span>}
+          </div>
+          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0 0 0', lineHeight: 1.5 }}>{subtitle}</p>
         </div>
-        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0 0 0', lineHeight: 1.5 }}>{subtitle}</p>
+        <button onClick={() => setIsOpen(true)} style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', backgroundColor: accentColor, color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: '13px', whiteSpace: 'nowrap', transition: 'opacity 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity = '0.9'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+          Access Workspace
+        </button>
       </div>
-      <button onClick={() => window.dispatchEvent(new CustomEvent('show-toast', { detail: `${title} module is active and ready.` }))} style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', backgroundColor: accentColor, color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: '13px', whiteSpace: 'nowrap', transition: 'opacity 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity = '0.9'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
-        Access Workspace
-      </button>
-    </div>
+
+      {isOpen && (
+        <div className="modal-overlay" onClick={() => setIsOpen(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '650px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ color: accentColor }}>{icon}</div>
+                <div>
+                  <h2 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>{title} Console</h2>
+                  <div style={{ fontSize: '11px', color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
+                    <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block', animation: 'pulse 1.5s infinite' }}></span>
+                    CONNECTED TO GPU CLUSTER
+                  </div>
+                </div>
+              </div>
+              <button onClick={() => setIsOpen(false)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}><X size={20}/></button>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>
+              <button onClick={runHealthCheck} disabled={isRunning} className="btn btn-secondary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                {isRunning ? <RefreshCw size={12} className="spin"/> : <Cpu size={12}/>} Run Health Check
+              </button>
+              <button onClick={() => { setLogs([`[info] Resetting console stream...`]); setTimeout(() => setLogs(prev => [...prev, `[info] Workspace initialized.`]), 500); }} className="btn btn-secondary btn-sm" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <History size={12}/> Clear Logs
+              </button>
+            </div>
+
+            <div style={{ backgroundColor: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '16px', fontFamily: 'monospace', fontSize: '12px', height: '240px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {logs.map((log, idx) => {
+                let color = 'var(--text-primary)';
+                if (log.startsWith('[success]')) { color = '#10b981'; log = log.replace('[success] ', ''); }
+                else if (log.startsWith('[ready]')) { color = '#06b6d4'; log = log.replace('[ready] ', '➔ '); }
+                else if (log.startsWith('[info]')) { color = 'var(--text-secondary)'; log = log.replace('[info] ', ''); }
+                else if (log.startsWith('[health]')) { color = '#a855f7'; log = log.replace('[health] ', ''); }
+                return (
+                  <div key={idx} style={{ color, whiteSpace: 'pre-wrap', lineHeight: 1.4 }}>
+                    {log}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px', gap: '10px' }}>
+              <button onClick={() => setIsOpen(false)} className="btn btn-primary" style={{ backgroundColor: accentColor, border: 'none' }}>Close Console</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
+
 
 const QuickActionBar = ({ actions }: { actions: { label: string; icon: React.ReactNode; onClick?: () => void }[] }) => (
   <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
