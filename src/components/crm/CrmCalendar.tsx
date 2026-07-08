@@ -1,188 +1,125 @@
 import React, { useState } from 'react';
-import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, ChevronLeft, ChevronRight, X, Check, Trash2 } from 'lucide-react';
 
 interface CalendarEvent {
   id: string;
   title: string;
   day: number;
+  month: number;
+  year: number;
   time: string;
   type: 'call' | 'demo' | 'deadline';
 }
 
-const initialEvents: CalendarEvent[] = [
-  { id: '1', title: 'Stark demo', day: 8, time: '10:00 AM', type: 'demo' },
-  { id: '2', title: 'Wayne contract due', day: 12, time: '5:00 PM', type: 'deadline' },
-  { id: '3', title: 'Diana sync call', day: 18, time: '2:30 PM', type: 'call' },
-  { id: '4', title: 'Cyberdyne sync', day: 22, time: '11:00 AM', type: 'call' }
-];
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const DAYS_ABBR = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-// Days in July 2026 (starts on a Wednesday)
-const DAYS_IN_MONTH = 31;
-const START_OFFSET = 3; // Wednesday offset (Sun=0, Mon=1, Tue=2, Wed=3)
+const now = new Date();
+
+const initialEvents: CalendarEvent[] = [
+  { id: '1', title: 'Stark Demo', day: 8, month: now.getMonth(), year: now.getFullYear(), time: '10:00 AM', type: 'demo' },
+  { id: '2', title: 'Wayne Contract Due', day: 12, month: now.getMonth(), year: now.getFullYear(), time: '5:00 PM', type: 'deadline' },
+  { id: '3', title: 'Diana Sync Call', day: 18, month: now.getMonth(), year: now.getFullYear(), time: '2:30 PM', type: 'call' },
+  { id: '4', title: 'Cyberdyne Sync', day: 22, month: now.getMonth(), year: now.getFullYear(), time: '11:00 AM', type: 'call' },
+];
 
 export const CrmCalendar: React.FC = () => {
   const [events, setEvents] = useState<CalendarEvent[]>(initialEvents);
-  const [showAddEventModal, setShowAddEventModal] = useState(false);
+  const [month, setMonth] = useState(now.getMonth());
+  const [year, setYear] = useState(now.getFullYear());
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [form, setForm] = useState({ title: '', time: '10:00 AM', type: 'call' as CalendarEvent['type'], day: 1 });
+  const [toast, setToast] = useState('');
 
-  // New Event Form State
-  const [newEventTitle, setNewEventTitle] = useState('');
-  const [newEventTime, setNewEventTime] = useState('12:00 PM');
-  const [newEventType, setNewEventType] = useState<CalendarEvent['type']>('call');
-  const [newEventDay, setNewEventDay] = useState(1);
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3000); };
 
-  const handleAddEvent = (e: React.FormEvent) => {
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDay = new Date(year, month, 1).getDay();
+
+  const prevMonth = () => { if (month === 0) { setMonth(11); setYear(y => y - 1); } else setMonth(m => m - 1); };
+  const nextMonth = () => { if (month === 11) { setMonth(0); setYear(y => y + 1); } else setMonth(m => m + 1); };
+
+  const goToday = () => { setMonth(now.getMonth()); setYear(now.getFullYear()); };
+
+  const addEvent = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newEventTitle.trim()) return;
-
-    const event: CalendarEvent = {
-      id: Date.now().toString(),
-      title: newEventTitle,
-      day: newEventDay,
-      time: newEventTime,
-      type: newEventType
-    };
-
-    setEvents([...events, event]);
-    setShowAddEventModal(false);
-    setNewEventTitle('');
-    setNewEventTime('12:00 PM');
-    setNewEventType('call');
+    if (!form.title.trim()) return;
+    setEvents(ev => [...ev, { id: Date.now().toString(), title: form.title, day: form.day, month, year, time: form.time, type: form.type }]);
+    setShowModal(false);
+    setForm({ title: '', time: '10:00 AM', type: 'call', day: 1 });
+    showToast('✅ Event scheduled!');
   };
 
-  // Generate calendar days
-  const calendarCells = [];
-  for (let i = 0; i < START_OFFSET; i++) {
-    calendarCells.push({ empty: true, dayNumber: 0 });
-  }
-  for (let i = 1; i <= DAYS_IN_MONTH; i++) {
-    calendarCells.push({ empty: false, dayNumber: i });
-  }
-
-  // Group events by day
-  const getEventsForDay = (day: number) => {
-    return events.filter(e => e.day === day);
+  const deleteEvent = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEvents(ev => ev.filter(ev2 => ev2.id !== id));
+    showToast('🗑 Event removed');
   };
+
+  const dayEvents = (day: number) => events.filter(e => e.day === day && e.month === month && e.year === year);
+
+  const openDay = (day: number) => {
+    setForm(f => ({ ...f, day }));
+    setSelectedDay(selectedDay === day ? null : day);
+    setShowModal(true);
+  };
+
+  const typeStyle = (type: CalendarEvent['type']) => ({
+    bg: type === 'call' ? 'var(--info-light)' : type === 'demo' ? 'var(--primary-light)' : 'var(--danger-light)',
+    color: type === 'call' ? 'var(--info)' : type === 'demo' ? 'var(--primary)' : 'var(--danger)',
+  });
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }} className="fade-in">
-      {/* Month Header Banner */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: '16px'
-      }}>
+      {toast && <div style={{ position: 'fixed', top: '80px', right: '24px', zIndex: 9999, background: 'var(--bg-secondary)', border: '1px solid var(--primary)', borderRadius: '10px', padding: '12px 20px', fontSize: '14px', fontWeight: 500, boxShadow: '0 8px 24px rgba(0,0,0,0.3)', color: 'var(--primary)' }}>{toast}</div>}
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 700, margin: 0 }}>July 2026</h2>
+          <h2 style={{ fontSize: '22px', fontWeight: 700, margin: 0 }}>{MONTHS[month]} {year}</h2>
           <div style={{ display: 'flex', gap: '4px' }}>
-            <button className="btn btn-secondary btn-sm" style={{ padding: '6px' }}><ChevronLeft size={16} /></button>
-            <button className="btn btn-secondary btn-sm" style={{ padding: '6px' }}><ChevronRight size={16} /></button>
+            <button className="btn btn-secondary btn-sm" style={{ padding: '6px' }} onClick={prevMonth}><ChevronLeft size={16}/></button>
+            <button className="btn btn-secondary btn-sm" onClick={goToday} style={{ fontSize: '11px', fontWeight: 700 }}>TODAY</button>
+            <button className="btn btn-secondary btn-sm" style={{ padding: '6px' }} onClick={nextMonth}><ChevronRight size={16}/></button>
           </div>
         </div>
-
-        <button 
-          onClick={() => {
-            setNewEventDay(new Date().getDate());
-            setShowAddEventModal(true);
-          }}
-          className="btn btn-primary"
-        >
-          <Plus size={16} /> Schedule Event
-        </button>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '12px', fontSize: '12px' }}>
+            {(['call','demo','deadline'] as const).map(t => (
+              <span key={t} style={{ display: 'flex', alignItems: 'center', gap: '4px', color: typeStyle(t).color }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: typeStyle(t).color }}/> {t.charAt(0).toUpperCase() + t.slice(1)}
+              </span>
+            ))}
+          </div>
+          <button onClick={() => { setForm(f => ({ ...f, day: now.getDate() })); setShowModal(true); }} className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Plus size={16}/> Schedule Event
+          </button>
+        </div>
       </div>
 
-      {/* Calendar Grid Container */}
       <div className="glass-card" style={{ padding: '16px', overflow: 'hidden' }}>
-        {/* Days of Week Header */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(7, 1fr)',
-          gap: '8px',
-          textAlign: 'center',
-          fontWeight: 600,
-          fontSize: '12px',
-          color: 'var(--text-secondary)',
-          borderBottom: '1px solid var(--border-color)',
-          paddingBottom: '10px',
-          marginBottom: '8px'
-        }}>
-          <div>SUN</div>
-          <div>MON</div>
-          <div>TUE</div>
-          <div>WED</div>
-          <div>THU</div>
-          <div>FRI</div>
-          <div>SAT</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px', textAlign: 'center', fontWeight: 600, fontSize: '11px', color: 'var(--text-secondary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px', marginBottom: '8px' }}>
+          {DAYS_ABBR.map(d => <div key={d}>{d}</div>)}
         </div>
-
-        {/* Calendar Days Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(7, 1fr)',
-          gridAutoRows: '100px',
-          gap: '8px'
-        }}>
-          {calendarCells.map((cell, idx) => {
-            if (cell.empty) {
-              return <div key={`empty-${idx}`} style={{ backgroundColor: 'rgba(255,255,255,0.01)', borderRadius: '8px', border: '1px solid transparent' }} />;
-            }
-
-            const dayEvents = getEventsForDay(cell.dayNumber);
-
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridAutoRows: '100px', gap: '6px' }}>
+          {Array.from({ length: firstDay }).map((_, i) => <div key={`e${i}`}/>)}
+          {Array.from({ length: daysInMonth }).map((_, i) => {
+            const day = i + 1;
+            const isToday = day === now.getDate() && month === now.getMonth() && year === now.getFullYear();
+            const evs = dayEvents(day);
             return (
-              <div 
-                key={`day-${cell.dayNumber}`}
-                onClick={() => {
-                  setNewEventDay(cell.dayNumber);
-                  setShowAddEventModal(true);
-                }}
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: '8px',
-                  padding: '8px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '4px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  overflow: 'hidden'
-                }}
-                className="calendar-day-cell"
-              >
-                <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)' }}>
-                  {cell.dayNumber}
-                </span>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', flex: 1, overflowY: 'auto' }}>
-                  {dayEvents.map(event => (
-                    <div 
-                      key={event.id}
-                      onClick={(e) => e.stopPropagation()} // Prevent double trigger
-                      style={{
-                        padding: '2px 6px',
-                        borderRadius: '4px',
-                        fontSize: '9.5px',
-                        fontWeight: 500,
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        backgroundColor: 
-                          event.type === 'call' ? 'var(--info-light)' : 
-                          event.type === 'demo' ? 'var(--primary-light)' : 'var(--danger-light)',
-                        color: 
-                          event.type === 'call' ? 'var(--info)' : 
-                          event.type === 'demo' ? 'var(--primary)' : 'var(--danger)',
-                        borderLeft: `2px solid ${
-                          event.type === 'call' ? 'var(--info)' : 
-                          event.type === 'demo' ? 'var(--primary)' : 'var(--danger)'
-                        }`
-                      }}
-                    >
-                      {event.time} - {event.title}
-                    </div>
-                  ))}
+              <div key={day} onClick={() => openDay(day)} className="calendar-day-cell" style={{ backgroundColor: 'rgba(255,255,255,0.02)', border: isToday ? '1px solid rgba(99,102,241,0.4)' : '1px solid var(--border-color)', borderRadius: '8px', padding: '6px', display: 'flex', flexDirection: 'column', gap: '3px', cursor: 'pointer', transition: 'all 0.2s', overflow: 'hidden' }}>
+                <span style={{ fontSize: '11px', fontWeight: isToday ? 800 : 500, color: isToday ? 'var(--primary)' : 'var(--text-secondary)' }}>{day}</span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, overflowY: 'auto' }}>
+                  {evs.map(ev => {
+                    const ts = typeStyle(ev.type);
+                    return (
+                      <div key={ev.id} onClick={e => e.stopPropagation()} style={{ padding: '2px 5px', borderRadius: '3px', fontSize: '9px', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', backgroundColor: ts.bg, color: ts.color, borderLeft: `2px solid ${ts.color}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2px' }}>
+                        <span>{ev.time} {ev.title}</span>
+                        <button onClick={e => deleteEvent(ev.id, e)} style={{ background: 'none', border: 'none', color: ts.color, cursor: 'pointer', padding: 0, lineHeight: 1, flexShrink: 0 }}><X size={8}/></button>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             );
@@ -190,78 +127,33 @@ export const CrmCalendar: React.FC = () => {
         </div>
       </div>
 
-      {/* Add Event Modal */}
-      {showAddEventModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '20px' }}>Schedule CRM Meeting/Event</h2>
-            <form onSubmit={handleAddEvent} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div>
-                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Event Name</label>
-                <input 
-                  type="text" 
-                  className="form-control" 
-                  required
-                  placeholder="e.g. Wayne follow-up sync"
-                  value={newEventTitle}
-                  onChange={(e) => setNewEventTitle(e.target.value)}
-                />
-              </div>
-
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: 600, margin: 0 }}>Schedule CRM Event</h2>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}><X size={20}/></button>
+            </div>
+            <form onSubmit={addEvent} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div><label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Event Name *</label><input type="text" className="form-control" required placeholder="e.g. Wayne follow-up sync" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}/></div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Day in July 2026</label>
-                  <input 
-                    type="number" 
-                    min={1} 
-                    max={31} 
-                    className="form-control"
-                    required
-                    value={newEventDay}
-                    onChange={(e) => setNewEventDay(Number(e.target.value))}
-                  />
-                </div>
-                <div>
-                  <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Time Slot</label>
-                  <input 
-                    type="text" 
-                    className="form-control" 
-                    required
-                    placeholder="e.g. 10:30 AM"
-                    value={newEventTime}
-                    onChange={(e) => setNewEventTime(e.target.value)}
-                  />
-                </div>
+                <div><label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Day in {MONTHS[month]}</label><input type="number" min={1} max={daysInMonth} className="form-control" required value={form.day} onChange={e => setForm(f => ({ ...f, day: Number(e.target.value) }))}/></div>
+                <div><label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Time Slot</label><input type="text" className="form-control" required placeholder="10:30 AM" value={form.time} onChange={e => setForm(f => ({ ...f, time: e.target.value }))}/></div>
               </div>
-
-              <div>
-                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Event Category</label>
-                <select 
-                  className="form-control"
-                  value={newEventType}
-                  onChange={(e) => setNewEventType(e.target.value as CalendarEvent['type'])}
-                >
-                  <option value="call">Call / Catch Up</option>
-                  <option value="demo">Demo / Walkthrough</option>
-                  <option value="deadline">Contract Deadline</option>
+              <div><label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Event Type</label>
+                <select className="form-control" value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value as CalendarEvent['type'] }))}>
+                  <option value="call">Call / Catch Up</option><option value="demo">Demo / Walkthrough</option><option value="deadline">Contract Deadline</option>
                 </select>
               </div>
-
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '10px' }}>
-                <button type="button" className="btn btn-secondary" onClick={() => setShowAddEventModal(false)}>Cancel</button>
-                <button type="submit" className="btn btn-primary">Schedule</button>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
+                <button type="submit" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Check size={14}/> Schedule</button>
               </div>
             </form>
           </div>
         </div>
       )}
-
-      <style>{`
-        .calendar-day-cell:hover {
-          background-color: rgba(255, 255, 255, 0.05) !important;
-          border-color: var(--border-color-hover) !important;
-        }
-      `}</style>
+      <style>{`.calendar-day-cell:hover { background-color: rgba(255,255,255,0.05) !important; border-color: rgba(99,102,241,0.3) !important; }`}</style>
     </div>
   );
 };

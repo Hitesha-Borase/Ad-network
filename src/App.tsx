@@ -84,6 +84,44 @@ import {
   AgentDataSci, AgentDevops 
 } from './components/agents/AiAgentsPages';
 
+// Import Person 3 (AI, Automation, Analytics, CDP) subcomponents
+import { AiDashboard } from './components/ai/AiDashboard';
+import { AiChat } from './components/ai/AiChat';
+import { BannerGenerator } from './components/ai/BannerGenerator';
+import { VideoGenerator } from './components/ai/VideoGenerator';
+import { ImageGenerator } from './components/ai/ImageGenerator';
+import { LandingPageGenerator } from './components/ai/LandingPageGenerator';
+// AI Content Marketing — 9 distinct components
+import { AiBlogWriter } from './components/ai/content/AiBlogWriter';
+import { AiPressRelease } from './components/ai/content/AiPressRelease';
+import { AiSocialMedia } from './components/ai/content/AiSocialMedia';
+import { AiScriptGenerator } from './components/ai/content/AiScriptGenerator';
+import { AiNewsletter } from './components/ai/content/AiNewsletter';
+import { AiPodcast } from './components/ai/content/AiPodcast';
+import { AiTranslation } from './components/ai/content/AiTranslation';
+import { AiGrammar } from './components/ai/content/AiGrammar';
+import { AiPersonalization } from './components/ai/content/AiPersonalization';
+import { BrandAssets } from './components/ai/BrandAssets';
+import { AiAgentsList } from './components/ai/AiAgentsList';
+
+import { WorkflowBuilder } from './components/automation/WorkflowBuilder';
+import { TriggersActions } from './components/automation/TriggersActions';
+import { Webhooks } from './components/automation/Webhooks';
+import { Scheduler } from './components/automation/Scheduler';
+
+import { AnalyticsDashboard } from './components/analytics/AnalyticsDashboard';
+import { RevenueReports } from './components/analytics/RevenueReports';
+import { FunnelAnalysis } from './components/analytics/FunnelAnalysis';
+import { Heatmaps } from './components/analytics/Heatmaps';
+import { SessionReplay } from './components/analytics/SessionReplay';
+import { Attribution } from './components/analytics/Attribution';
+import { AiInsights } from './components/analytics/AiInsights';
+
+import { Customer360 } from './components/cdp/Customer360';
+import { IdentityGraph } from './components/cdp/IdentityGraph';
+import { AudienceBuilder } from './components/cdp/AudienceBuilder';
+import { Segments } from './components/cdp/Segments';
+
 // Lucide icons for Dashboard
 import { LayoutGrid, Sparkles, Shield, ArrowRight } from 'lucide-react';
 
@@ -191,6 +229,132 @@ function App() {
         );
 
 
+
+      // Person 3 Additions
+      // AI Content Marketing — each has a unique UI
+      case 'aicontent-blog': return <AiBlogWriter />;
+      case 'aicontent-press': return <AiPressRelease />;
+      case 'aicontent-social': return <AiSocialMedia />;
+      case 'aicontent-script': return <AiScriptGenerator />;
+      case 'aicontent-newsletter': return <AiNewsletter />;
+      case 'aicontent-podcast': return <AiPodcast />;
+      case 'aicontent-translation': return <AiTranslation />;
+      case 'aicontent-grammar': return <AiGrammar />;
+      case 'aicontent-personalization': return <AiPersonalization />;
+      // Shared text-gen tools (Creative Studio)
+      case 'aicontent-copywriter':
+      case 'aicreative-cta':
+      case 'aicreative-product-desc':
+      case 'aicreative-ad-variations':
+        return <AiBlogWriter />;
+      case 'aicontent-landing':
+      case 'aicreative-templates':
+        return <LandingPageGenerator />;
+      case 'aicreative-banner':
+        return <BannerGenerator />;
+      case 'aicreative-video':
+        return <VideoGenerator />;
+      case 'aicreative-image':
+      case 'aicreative-thumbnail':
+      case 'aicreative-logo':
+        return <ImageGenerator />;
+      case 'aicreative-brand':
+      case 'aicreative-assets':
+        return <BrandAssets />;
+      case 'aicreative-opt':
+        return <AiDashboard />;
+      case 'ai-chat':
+        return <AiChat />;
+      case 'agent-marketing':
+      case 'agent-seo':
+      case 'agent-ppc':
+      case 'agent-sales':
+      case 'agent-content':
+      case 'agent-creative':
+      case 'agent-support':
+      case 'agent-compliance':
+      case 'agent-finance':
+      case 'agent-analytics':
+      case 'agent-opt':
+      case 'agent-biz':
+      case 'agent-devops':
+      case 'agent-datasci':
+        return <AiAgentsList />;
+
+      // Automation
+      case 'auto-builder':
+      case 'auto-trees':
+      case 'auto-events':
+      case 'auto-crm':
+      case 'auto-marketing':
+        return <WorkflowBuilder />;
+      case 'auto-triggers':
+      case 'auto-actions':
+      case 'auto-conditions':
+        return <TriggersActions />;
+      case 'auto-webhooks':
+      case 'auto-api':
+      case 'auto-integrations':
+        return <Webhooks />;
+      case 'auto-jobs':
+        return <Scheduler />;
+
+      // AI Business Intelligence (replaced Analytics)
+      case 'bi-exec-dashboards':
+      case 'bi-kpi':
+      case 'bi-marketing-mix':
+      case 'bi-predictive':
+      case 'bi-nl-analytics':
+        return <AnalyticsDashboard />;
+      case 'bi-revenue':
+        return <RevenueReports />;
+      case 'analytics-funnels':
+      case 'cro-funnel-analysis':
+      case 'cro-journey-mapping':
+      case 'cro-form-analytics':
+        return <FunnelAnalysis />;
+      case 'analytics-heatmaps':
+      case 'cro-heatmaps':
+      case 'cro-scroll-maps':
+      case 'cro-click-maps':
+        return <Heatmaps />;
+      case 'analytics-replay':
+      case 'cro-session-recording':
+        return <SessionReplay />;
+      case 'bi-attribution':
+        return <Attribution />;
+      case 'bi-ai-insights':
+      case 'bi-ai-recommendations':
+      case 'cro-ux-recs':
+      case 'cro-exit-intent':
+      case 'cro-smart-popups':
+      case 'cro-personalization':
+        return <AiInsights />;
+
+      // CDP
+      case 'cdp-c360':
+      case 'cdp-tracking':
+      case 'cdp-consent':
+      case 'cdp-activation':
+      case 'cdp-unified-profiles':
+      case 'cdp-id-resolution':
+      case 'cdp-clean-rooms':
+        return <Customer360 />;
+      case 'cdp-idgraph':
+        return <IdentityGraph />;
+      case 'cdp-audience':
+      case 'dmp-3p-audience':
+      case 'dmp-1p-audience':
+      case 'dmp-interest-categories':
+      case 'dmp-lookalike':
+      case 'dmp-ai-expansion':
+      case 'dmp-audience-scoring':
+      case 'dmp-demographic':
+      case 'dmp-interest-prediction':
+      case 'dmp-purchase-intent':
+        return <AudienceBuilder />;
+      case 'cdp-segments':
+        return <Segments />;
 
       // Fallback empty states
       default:

@@ -288,9 +288,48 @@ body {
 .sidebar-scroll::-webkit-scrollbar {
   width: 4px;
 }
-.sidebar-scroll::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.05);
+
+/* Responsive Utilities */
+.responsive-layout {
+  display: flex;
+  gap: 24px;
 }
-.sidebar-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.15);
+
+.responsive-sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.responsive-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.responsive-sidebar-wide {
+  width: 380px;
+  flex-shrink: 0;
+}
+
+.table-responsive-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+@media (max-width: 992px) {
+  .responsive-layout {
+    flex-direction: column;
+  }
+
+  .responsive-sidebar,
+  .responsive-sidebar-wide {
+    width: 100% !important;
+  }
+
+  .stack-on-mobile {
+    flex-direction: column !important;
+  }
 }

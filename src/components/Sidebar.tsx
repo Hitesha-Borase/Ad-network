@@ -26,6 +26,7 @@ import {
   Crown,
   ChevronDown,
   ChevronRight,
+  MousePointerClick,
   X,
   Target
 } from 'lucide-react';
@@ -71,35 +72,35 @@ export const sidebarData: SidebarSection[] = [
     ]
   },
   {
-    title: 'AI Content Studio',
+    title: 'AI Content Marketing',
     icon: PenTool,
     items: [
-      { name: 'AI Copywriter', id: 'aicontent-copywriter' },
-      { name: 'Blog Writer', id: 'aicontent-blog' },
-      { name: 'Landing Page Generator', id: 'aicontent-landing' },
-      { name: 'Email Generator', id: 'aicontent-email' },
-      { name: 'Social Media Generator', id: 'aicontent-social' },
-      { name: 'Press Release', id: 'aicontent-press' },
-      { name: 'Script Generator', id: 'aicontent-script' },
-      { name: 'Newsletter Builder', id: 'aicontent-newsletter' },
-      { name: 'Product Description', id: 'aicontent-products' },
-      { name: 'Translation', id: 'aicontent-translation' },
-      { name: 'Grammar Checker', id: 'aicontent-grammar' }
+      { name: 'AI Blog Writer', id: 'aicontent-blog' },
+      { name: 'AI Press Release Generator', id: 'aicontent-press' },
+      { name: 'AI Social Media Content', id: 'aicontent-social' },
+      { name: 'AI Script Generator', id: 'aicontent-script' },
+      { name: 'AI Newsletter Builder', id: 'aicontent-newsletter' },
+      { name: 'AI Podcast Content', id: 'aicontent-podcast' },
+      { name: 'AI Translation', id: 'aicontent-translation' },
+      { name: 'AI Grammar', id: 'aicontent-grammar' },
+      { name: 'AI Content Personalization', id: 'aicontent-personalization' }
     ]
   },
   {
     title: 'AI Creative Studio',
     icon: Palette,
     items: [
-      { name: 'Image Generator', id: 'aicreative-image' },
-      { name: 'Banner Generator', id: 'aicreative-banner' },
-      { name: 'Video Generator', id: 'aicreative-video' },
-      { name: 'Thumbnail Generator', id: 'aicreative-thumbnail' },
-      { name: 'Logo Generator', id: 'aicreative-logo' },
-      { name: 'Brand Kit', id: 'aicreative-brand' },
-      { name: 'Creative Templates', id: 'aicreative-templates' },
-      { name: 'Asset Library', id: 'aicreative-assets' },
-      { name: 'Creative Optimization', id: 'aicreative-opt' }
+      { name: 'AI Banner Generator', id: 'aicreative-banner' },
+      { name: 'AI Video Ad Generator', id: 'aicreative-video' },
+      { name: 'AI Image Generator', id: 'aicreative-image' },
+      { name: 'AI Copywriter', id: 'aicontent-copywriter' },
+      { name: 'AI Landing Page Generator', id: 'aicontent-landing' },
+      { name: 'AI CTA Generator', id: 'aicreative-cta' },
+      { name: 'AI Product Description Generator', id: 'aicreative-product-desc' },
+      { name: 'AI Ad Variations', id: 'aicreative-ad-variations' },
+      { name: 'AI Creative Optimization', id: 'aicreative-opt' },
+      { name: 'AI Thumbnail Generator', id: 'aicreative-thumbnail' },
+      { name: 'AI Brand Asset Manager', id: 'aicreative-brand' }
     ]
   },
   {
@@ -144,51 +145,48 @@ export const sidebarData: SidebarSection[] = [
     ]
   },
   {
-    title: 'Automation',
+    title: 'AI Automation Builder',
     icon: Zap,
     items: [
-      { name: 'Workflow Builder', id: 'auto-builder' },
-      { name: 'Triggers', id: 'auto-triggers' },
-      { name: 'Conditions', id: 'auto-conditions' },
-      { name: 'Actions', id: 'auto-actions' },
-      { name: 'AI Decision Trees', id: 'auto-trees' },
-      { name: 'Webhooks', id: 'auto-webhooks' },
-      { name: 'API Automation', id: 'auto-api' },
-      { name: 'Scheduled Jobs', id: 'auto-jobs' },
+      { name: 'Visual Workflow Builder', id: 'auto-builder' },
+      { name: 'Trigger System', id: 'auto-triggers' },
       { name: 'Event Engine', id: 'auto-events' },
-      { name: 'Integrations', id: 'auto-integrations' }
+      { name: 'API Automation', id: 'auto-api' },
+      { name: 'CRM Automation', id: 'auto-crm' },
+      { name: 'Marketing Automation', id: 'auto-marketing' },
+      { name: 'Webhook Automation', id: 'auto-webhooks' },
+      { name: 'AI Decision Trees', id: 'auto-trees' },
+      { name: 'Scheduled Workflows', id: 'auto-jobs' }
     ]
   },
   {
-    title: 'Analytics',
+    title: 'AI Business Intelligence',
     icon: BarChart3,
     items: [
-      { name: 'Executive Dashboard', id: 'analytics-exec' },
-      { name: 'Marketing Analytics', id: 'analytics-marketing' },
-      { name: 'Campaign Analytics', id: 'analytics-campaign' },
-      { name: 'Traffic Analytics', id: 'analytics-traffic' },
-      { name: 'Sales Analytics', id: 'analytics-sales' },
-      { name: 'Revenue Analytics', id: 'analytics-revenue' },
-      { name: 'Customer Analytics', id: 'analytics-customer' },
-      { name: 'Attribution', id: 'analytics-attribution' },
-      { name: 'Funnels', id: 'analytics-funnels' },
-      { name: 'Heatmaps', id: 'analytics-heatmaps' },
-      { name: 'Session Replay', id: 'analytics-replay' },
-      { name: 'Reports', id: 'analytics-reports' },
-      { name: 'Custom Dashboards', id: 'analytics-custom' }
+      { name: 'Executive Dashboards', id: 'bi-exec-dashboards' },
+      { name: 'KPI Monitoring', id: 'bi-kpi' },
+      { name: 'Revenue Forecasting', id: 'bi-revenue' },
+      { name: 'Marketing Mix Modeling', id: 'bi-marketing-mix' },
+      { name: 'Attribution Modeling', id: 'bi-attribution' },
+      { name: 'Predictive Analytics', id: 'bi-predictive' },
+      { name: 'AI Insights', id: 'bi-ai-insights' },
+      { name: 'Natural Language Analytics', id: 'bi-nl-analytics' },
+      { name: 'AI Recommendations', id: 'bi-ai-recommendations' }
     ]
   },
   {
-    title: 'Customer Data Platform',
+    title: 'AI Customer Data Platform (CDP)',
     icon: Database,
     items: [
-      { name: 'Customer 360', id: 'cdp-c360' },
-      { name: 'Identity Graph', id: 'cdp-idgraph' },
-      { name: 'Behavior Tracking', id: 'cdp-tracking' },
-      { name: 'Audience Builder', id: 'cdp-audience' },
-      { name: 'Predictive Segments', id: 'cdp-segments' },
-      { name: 'Consent Management', id: 'cdp-consent' },
-      { name: 'Data Activation', id: 'cdp-activation' }
+      { name: 'Unified Customer Profiles', id: 'cdp-unified-profiles' },
+      { name: 'Identity Resolution', id: 'cdp-id-resolution' },
+      { name: 'Cross-Device Identity Graph', id: 'cdp-idgraph' },
+      { name: 'Customer 360°', id: 'cdp-c360' },
+      { name: 'Behavioral Tracking', id: 'cdp-tracking' },
+      { name: 'Predictive Segmentation', id: 'cdp-segments' },
+      { name: 'Consent & Privacy Management', id: 'cdp-consent' },
+      { name: 'Audience Activation', id: 'cdp-activation' },
+      { name: 'Data Clean Rooms', id: 'cdp-clean-rooms' }
     ]
   },
   {
@@ -202,6 +200,21 @@ export const sidebarData: SidebarSection[] = [
       { name: 'ETL', id: 'data-etl' },
       { name: 'ELT', id: 'data-elt' },
       { name: 'AI Analytics Engine', id: 'data-analytics' }
+    ]
+  },
+  {
+    title: 'Data Management Platform (DMP)',
+    icon: Server,
+    items: [
+      { name: 'Third-party Audience Marketplace', id: 'dmp-3p-audience' },
+      { name: 'First-party Audience Management', id: 'dmp-1p-audience' },
+      { name: 'Interest Categories', id: 'dmp-interest-categories' },
+      { name: 'Lookalike Audience Builder', id: 'dmp-lookalike' },
+      { name: 'AI Audience Expansion', id: 'dmp-ai-expansion' },
+      { name: 'Audience Scoring', id: 'dmp-audience-scoring' },
+      { name: 'Demographic Targeting', id: 'dmp-demographic' },
+      { name: 'Interest Prediction', id: 'dmp-interest-prediction' },
+      { name: 'Purchase Intent Modeling', id: 'dmp-purchase-intent' }
     ]
   },
   {
