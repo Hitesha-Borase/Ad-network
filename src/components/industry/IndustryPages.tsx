@@ -20,25 +20,84 @@ const StatCard = ({ label, value, change, color, icon }: { label: string; value:
 );
 
 const SectionHeader = ({ icon, title, subtitle, accentColor, badge }: { icon: React.ReactNode; title: string; subtitle: string; accentColor: string; badge?: string }) => {
-  const handleGetStarted = () => {
-    // Show a success toast that onboarding has started
-    window.dispatchEvent(new CustomEvent('show-toast', { detail: `Initializing ${title} workspace...` }));
-    // Navigate to the dashboard
-    window.dispatchEvent(new CustomEvent('navigate', { detail: 'dashboard' }));
+  const [isOpen, setIsOpen] = useState(false);
+  const [step, setStep] = useState(1);
+  const [region, setRegion] = useState('North America');
+  const [budget, setBudget] = useState('5000');
+  const [isDeploying, setIsDeploying] = useState(false);
+
+  const handleLaunch = () => {
+    setIsDeploying(true);
+    setTimeout(() => {
+      setIsDeploying(false);
+      setIsOpen(false);
+      setStep(1);
+      window.dispatchEvent(new CustomEvent('show-toast', { detail: `🚀 ${title} Workspace successfully initialized for ${region} ($${budget}/mo)!` }));
+    }, 1500);
   };
 
   return (
-    <div className="glass-card" style={{ padding: '24px', background: `linear-gradient(135deg, ${accentColor}18 0%, ${accentColor}08 100%)`, border: `1px solid ${accentColor}30`, display: 'flex', alignItems: 'center', gap: '18px' }}>
-      <div style={{ width: 54, height: 54, borderRadius: '14px', background: `${accentColor}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: accentColor, fontSize: '28px', flexShrink: 0 }}>{icon}</div>
-      <div style={{ flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <h1 style={{ fontSize: '22px', fontWeight: 800, margin: 0 }}>{title}</h1>
-          {badge && <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', backgroundColor: `${accentColor}20`, color: accentColor, fontWeight: 600 }}>{badge}</span>}
+    <>
+      <div className="glass-card" style={{ padding: '24px', background: `linear-gradient(135deg, ${accentColor}18 0%, ${accentColor}08 100%)`, border: `1px solid ${accentColor}30`, display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap' }}>
+        <div style={{ width: 54, height: 54, borderRadius: '14px', background: `${accentColor}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: accentColor, fontSize: '28px', flexShrink: 0 }}>{icon}</div>
+        <div style={{ flex: 1, minWidth: '200px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+            <h1 style={{ fontSize: 'clamp(18px, 4vw, 22px)', fontWeight: 800, margin: 0 }}>{title}</h1>
+            {badge && <span style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '20px', backgroundColor: `${accentColor}20`, color: accentColor, fontWeight: 600 }}>{badge}</span>}
+          </div>
+          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0 0 0', lineHeight: 1.5 }}>{subtitle}</p>
         </div>
-        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0 0 0', lineHeight: 1.5 }}>{subtitle}</p>
+        <button onClick={() => setIsOpen(true)} style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', backgroundColor: accentColor, color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: '13px', whiteSpace: 'nowrap', transition: 'opacity 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity = '0.9'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}>Get Started</button>
       </div>
-      <button onClick={handleGetStarted} style={{ padding: '10px 20px', borderRadius: '10px', border: 'none', backgroundColor: accentColor, color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: '13px', whiteSpace: 'nowrap', transition: 'opacity 0.2s' }} onMouseEnter={e => e.currentTarget.style.opacity = '0.9'} onMouseLeave={e => e.currentTarget.style.opacity = '1'}>Get Started</button>
-    </div>
+
+      {isOpen && (
+        <div className="modal-overlay" onClick={() => setIsOpen(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '500px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ color: accentColor }}>{icon}</div>
+                <h2 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>Configure {title}</h2>
+              </div>
+              <button onClick={() => setIsOpen(false)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}>X</button>
+            </div>
+
+            {step === 1 ? (
+              <div>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: 1.5 }}>
+                  Select the primary geographic target market for your industry campaigns:
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+                  {['North America', 'Europe (EEA)', 'Asia-Pacific', 'Latin America'].map(r => (
+                    <button key={r} onClick={() => setRegion(r)} style={{ padding: '12px', borderRadius: '8px', border: region === r ? `1px solid ${accentColor}` : '1px solid var(--border-color)', backgroundColor: region === r ? `${accentColor}10` : 'transparent', color: '#fff', textAlign: 'left', cursor: 'pointer', fontSize: '13px' }}>
+                      {r} {region === r && '✓'}
+                    </button>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <button onClick={() => setStep(2)} className="btn btn-primary" style={{ backgroundColor: accentColor, border: 'none' }}>Next Step</button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: 1.5 }}>
+                  Set your monthly ad spend budget for {region}:
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+                  <label style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Estimated Monthly Budget ($ USD)</label>
+                  <input type="number" value={budget} onChange={e => setBudget(e.target.value)} style={{ padding: '10px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-color)', borderRadius: '8px', color: '#fff', fontSize: '14px', outline: 'none' }}/>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <button onClick={() => setStep(1)} className="btn btn-secondary">Back</button>
+                  <button onClick={handleLaunch} disabled={isDeploying} className="btn btn-primary" style={{ backgroundColor: accentColor, border: 'none' }}>
+                    {isDeploying ? 'Deploying...' : 'Launch Workspace'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
