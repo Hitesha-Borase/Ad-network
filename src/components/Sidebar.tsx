@@ -191,21 +191,6 @@ export const sidebarData: SidebarSection[] = [
     ]
   },
   {
-    title: 'AI Security Center',
-    icon: ShieldAlert,
-    items: [
-      { name: 'Threat Detection', id: 'sec-threat' },
-      { name: 'DDoS Protection', id: 'sec-ddos' },
-      { name: 'API Security', id: 'sec-api' },
-      { name: 'WAF', id: 'sec-waf' },
-      { name: 'Secrets Manager', id: 'sec-secrets' },
-      { name: 'Audit Logs', id: 'sec-logs' },
-      { name: 'Compliance Dashboard', id: 'sec-compliance' },
-      { name: 'Zero Trust Access', id: 'sec-zerotrust' },
-      { name: 'Security Monitoring', id: 'sec-monitoring' }
-    ]
-  },
-  {
     title: 'Developer Platform',
     icon: Code2,
     items: [
@@ -232,22 +217,6 @@ export const sidebarData: SidebarSection[] = [
       { name: 'Community Forum', id: 'cs-community' },
       { name: 'SLA Management', id: 'cs-sla' },
       { name: 'Customer Health Score', id: 'cs-health' }
-    ]
-  },
-  {
-    title: 'Compliance & Privacy',
-    icon: ShieldCheck,
-    items: [
-      { name: 'GDPR', id: 'privacy-gdpr' },
-      { name: 'CCPA', id: 'privacy-ccpa' },
-      { name: 'LGPD', id: 'privacy-lgpd' },
-      { name: 'Cookie Consent', id: 'privacy-cookie' },
-      { name: 'CMP', id: 'privacy-cmp' },
-      { name: 'Data Retention Policies', id: 'privacy-retention' },
-      { name: 'Data Residency', id: 'privacy-residency' },
-      { name: 'Consent Logs', id: 'privacy-logs' },
-      { name: 'Right to Erasure', id: 'privacy-erasure' },
-      { name: 'Privacy Center', id: 'privacy-center' }
     ]
   },
   {
