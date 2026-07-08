@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Menu, Bell, User, LogOut, Settings, Compass, Search, ChevronDown, 
   MessageSquare, Sparkles, Sun, Moon, ShoppingCart, Heart, Filter 
@@ -15,6 +15,28 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId, onLogou
   const [showProfile, setShowProfile] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [showOrgSwitcher, setShowOrgSwitcher] = useState(false);
+
+  const notificationRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const orgSwitcherRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+        setShowNotifications(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setShowProfile(false);
+      }
+      if (orgSwitcherRef.current && !orgSwitcherRef.current.contains(event.target as Node)) {
+        setShowOrgSwitcher(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // Format active layout title
   const getTitle = () => {
@@ -104,7 +126,7 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId, onLogou
           </button>
 
           {/* Org Switcher — hide on small mobile */}
-          <div style={{ position: 'relative' }} className="org-switcher-wrap">
+          <div ref={orgSwitcherRef} style={{ position: 'relative' }} className="org-switcher-wrap">
             <button 
               onClick={() => setShowOrgSwitcher(!showOrgSwitcher)}
               style={{
@@ -616,7 +638,7 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId, onLogou
         </div>
 
         {/* Notifications Icon with dropdown */}
-        <div style={{ position: 'relative' }}>
+        <div ref={notificationRef} style={{ position: 'relative' }}>
           <button 
             onClick={() => {
               setShowNotifications(!showNotifications);
@@ -687,7 +709,7 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId, onLogou
         </div>
 
         {/* Profile Avatar with dropdown */}
-        <div style={{ position: 'relative' }}>
+        <div ref={profileRef} style={{ position: 'relative' }}>
           <button 
             onClick={() => {
               setShowProfile(!showProfile);
