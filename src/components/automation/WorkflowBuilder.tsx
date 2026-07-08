@@ -53,8 +53,234 @@ const canvasNodes: Record<number, { trigger: string; nodes: { label: string; typ
   },
 };
 
-export const WorkflowBuilder: React.FC = () => {
-  const [workflows, setWorkflows] = useState<Workflow[]>(initialWorkflows);
+const getWorkflowsForMode = (mode: string): Workflow[] => {
+  switch (mode) {
+    case 'auto-trees':
+      return [
+        { id: 1, name: 'Lead Scoring Logic Tree', description: 'Evaluate demographics & behavior score', status: 'active', triggers: 2, actions: 3, runCount: 840 },
+        { id: 2, name: 'Enterprise Exemption Rules', description: 'Approve custom quote bounds automatically', status: 'active', triggers: 1, actions: 2, runCount: 190 },
+        { id: 3, name: 'Support SLA Tier Assigner', description: 'Categorize tickets into SLA queues', status: 'paused', triggers: 1, actions: 3, runCount: 430 }
+      ];
+    case 'auto-events':
+      return [
+        { id: 1, name: 'High Value Add-To-Cart Event', description: 'Capture cart value > $100 -> trigger pixel', status: 'active', triggers: 1, actions: 2, runCount: 1420 },
+        { id: 2, name: 'Scroll Depth Ingestion Trigger', description: 'Track 75% scroll -> load newsletter box', status: 'active', triggers: 1, actions: 1, runCount: 9340 },
+        { id: 3, name: 'Outbound Partner Click', description: 'Track referral redirect details', status: 'paused', triggers: 2, actions: 2, runCount: 10 }
+      ];
+    case 'auto-crm':
+      return [
+        { id: 1, name: 'HubSpot Lead Score Pipeline', description: 'Sync profile segment membership to CRM field', status: 'active', triggers: 1, actions: 3, runCount: 4210 },
+        { id: 2, name: 'Salesforce Deal Stage Alert', description: 'Won deal -> ping Slack & post to DB', status: 'active', triggers: 2, actions: 2, runCount: 1840 },
+        { id: 3, name: 'Intercom Contact Archiver', description: 'Archive idle leads automatically after 90d', status: 'paused', triggers: 1, actions: 1, runCount: 80 }
+      ];
+    case 'auto-marketing':
+      return [
+        { id: 1, name: 'Product Demo Drip Sequence', description: 'Sign up -> send 3 lessons -> buy prompt', status: 'active', triggers: 1, actions: 5, runCount: 3820 },
+        { id: 2, name: 'Black Friday Campaign Dispatch', status: 'active', description: 'Schedule promo email & SMS tags', triggers: 2, actions: 2, runCount: 12400 },
+        { id: 3, name: 'Inactive Subscriber Nudge', description: 'No email open in 30d -> trigger re-engagement', status: 'paused', triggers: 1, actions: 2, runCount: 990 }
+      ];
+    case 'auto-builder':
+    default:
+      return [
+        { id: 1, name: 'Lead Nurturing Sequence', description: 'Form submit → AI score → route to sales or drip', status: 'active', triggers: 1, actions: 4, runCount: 1240 },
+        { id: 2, name: 'Abandoned Cart Recovery', description: 'Cart abandoned → wait 1h → send email series', status: 'active', triggers: 2, actions: 3, runCount: 843 },
+        { id: 3, name: 'VIP Customer Onboarding', description: 'Deal won → assign CSM → send welcome series', status: 'paused', triggers: 1, actions: 6, runCount: 120 },
+        { id: 4, name: 'Support Ticket Escalation', description: 'Ticket priority high → Slack alert → assign senior', status: 'active', triggers: 3, actions: 2, runCount: 4530 }
+      ];
+  }
+};
+
+const getCanvasNodesForMode = (mode: string, selected: number) => {
+  const dataset: Record<string, Record<number, { trigger: string; nodes: { label: string; type: string; detail: string; color: string }[] }>> = {
+    'auto-trees': {
+      1: {
+        trigger: 'Evaluate Account Demographics',
+        nodes: [
+          { label: 'Check Employee Size > 500', type: 'Logic Rule', detail: 'Evaluate enterprise match', color: 'var(--accent)' },
+          { label: 'Route to Premium SLA Tier', type: 'Result (True)', detail: 'Priority: High', color: 'var(--success)' },
+          { label: 'Route to SMB Nurture List', type: 'Result (False)', detail: 'Priority: Medium', color: 'var(--text-muted)' }
+        ]
+      },
+      2: {
+        trigger: 'Quote Discrepancy > 20%',
+        nodes: [
+          { label: 'Trigger VP CFO Audit Request', type: 'Action', detail: 'Notification: CFO Inboxes', color: 'var(--danger)' },
+          { label: 'Hold Deal Stage Progress', type: 'Action', detail: 'CRM lock enabled', color: 'var(--warning)' }
+        ]
+      },
+      3: {
+        trigger: 'Support Ticket SLA Priority Check',
+        nodes: [
+          { label: 'Assign Tier-1 Agent support', type: 'Action', detail: 'Round robin', color: 'var(--primary)' }
+        ]
+      }
+    },
+    'auto-events': {
+      1: {
+        trigger: 'Add-To-Cart event detected',
+        nodes: [
+          { label: 'Verify Cart Valuation > $100', type: 'Event Condition', detail: 'Basket totals checkout check', color: 'var(--success)' },
+          { label: 'Inject High-Intent Target Cookie', type: 'Action', detail: 'Stitch profile cookie metrics', color: 'var(--primary)' }
+        ]
+      },
+      2: {
+        trigger: 'Scroll depth triggers >= 75%',
+        nodes: [
+          { label: 'Wait 3 Seconds', type: 'Delay', detail: 'Avoid page view overlays overload', color: 'var(--warning)' },
+          { label: 'Load Newsletter Modal', type: 'Trigger UI View', detail: 'Overlay popup active', color: 'var(--accent)' }
+        ]
+      },
+      3: {
+        trigger: 'Outbound Referral Redirect Event',
+        nodes: [
+          { label: 'Record Redirect IP & Coordinates', type: 'Logger', detail: 'Database mirror storage', color: 'var(--text-muted)' }
+        ]
+      }
+    },
+    'auto-crm': {
+      1: {
+        trigger: 'Contact added to segment "Enterprise Leads"',
+        nodes: [
+          { label: 'Fetch HubSpot Account ID', type: 'Sync Check', detail: 'API call: hubspot_leads_v2', color: 'var(--primary)' },
+          { label: 'Overwrite Target CRM Field', type: 'Action', detail: 'Segment: enterprise_qualified', color: 'var(--success)' }
+        ]
+      },
+      2: {
+        trigger: 'Salesforce Deal status = Closed-Won',
+        nodes: [
+          { label: 'Dispatch Slack Alert #sales-wins', type: 'Notification', detail: 'Template: victory_ping', color: 'var(--accent)' },
+          { label: 'Add user to VIP Active Segment', type: 'CDP Action', detail: 'Target database insertion', color: 'var(--success)' }
+        ]
+      },
+      3: {
+        trigger: 'Profile last activity check > 90 days',
+        nodes: [
+          { label: 'Mark Contact Idle In CRM', type: 'Update Field', detail: 'Active: false', color: 'var(--text-muted)' }
+        ]
+      }
+    },
+    'auto-marketing': {
+      1: {
+        trigger: 'User signs up for Trial Platform',
+        nodes: [
+          { label: 'Send Welcome Email Sequence', type: 'Marketing Email', detail: 'Template: welcome_day_1', color: 'var(--info)' },
+          { label: 'Wait 3 Days', type: 'Schedule Delay', detail: 'Wait before next lesson', color: 'var(--warning)' },
+          { label: 'Send Premium Feature Overview', type: 'Marketing Email', detail: 'Template: lesson_day_4', color: 'var(--primary)' }
+        ]
+      },
+      2: {
+        trigger: 'Black Friday Campaign Launch Timer',
+        nodes: [
+          { label: 'Broadcast Promo Blast Campaign', type: 'Bulk Dispatch', detail: 'Recipients: All Subscribers', color: 'var(--primary)' },
+          { label: 'Ping Campaign SMS Broadcast', type: 'Mobile SMS', detail: 'Rate limits active', color: 'var(--success)' }
+        ]
+      },
+      3: {
+        trigger: 'No email open in past 30 days',
+        nodes: [
+          { label: 'Apply Re-engagement tag', type: 'CRM Action', detail: 'Tag: idle_reengage', color: 'var(--warning)' }
+        ]
+      }
+    }
+  };
+
+  const modeConfig = dataset[mode];
+  if (modeConfig && modeConfig[selected]) {
+    return modeConfig[selected];
+  }
+
+  // Fallback to auto-builder config
+  const fallbackDataset: Record<number, { trigger: string; nodes: { label: string; type: string; detail: string; color: string }[] }> = {
+    1: {
+      trigger: 'Form Submitted → Website Lead Magnet',
+      nodes: [
+        { label: 'Analyze Lead Quality', type: 'AI Action', detail: 'Engine: GPT-4 Lead Scorer', color: 'var(--primary)' },
+        { label: 'Notify Sales Rep', type: 'Action (Score > 80)', detail: 'Via: Slack #leads-hot', color: 'var(--success)' },
+        { label: 'Add to Drip Campaign', type: 'Action (Score < 80)', detail: 'Sequence: 5-step nurture', color: 'var(--text-muted)' },
+      ],
+    },
+    2: {
+      trigger: 'Cart Abandoned → E-commerce Store',
+      nodes: [
+        { label: 'Wait 1 Hour', type: 'Delay', detail: 'Check if order completed', color: 'var(--warning)' },
+        { label: 'Send Recovery Email #1', type: 'Action', detail: 'Template: cart_recovery_1', color: 'var(--primary)' },
+        { label: 'Send 10% Coupon', type: 'Action (No Open)', detail: 'After 24h if not opened', color: 'var(--accent)' },
+      ],
+    },
+    3: {
+      trigger: 'Deal Stage = Won → CRM Pipeline',
+      nodes: [
+        { label: 'Assign Customer Success Manager', type: 'Action', detail: 'Round-robin assignment', color: 'var(--primary)' },
+        { label: 'Send Welcome Email', type: 'Action', detail: 'Template: vip_welcome', color: 'var(--success)' },
+        { label: 'Schedule Onboarding Call', type: 'Action', detail: 'Via Calendly integration', color: 'var(--info)' },
+      ],
+    },
+    4: {
+      trigger: 'Support Ticket Priority = High',
+      nodes: [
+        { label: 'Notify Slack Channel', type: 'Action', detail: '#support-urgent', color: 'var(--danger)' },
+        { label: 'Assign Senior Agent', type: 'Action', detail: 'Agent: On-call rotation', color: 'var(--primary)' },
+      ],
+    },
+  };
+
+  return fallbackDataset[selected] || { trigger: 'Custom Trigger', nodes: [] };
+};
+
+interface AutoModeConfig {
+  title: string;
+  description: string;
+  createLabel: string;
+  gradient: string;
+  borderColor: string;
+  accent: string;
+}
+
+const autoModeConfigs: Record<string, AutoModeConfig> = {
+  'auto-builder': {
+    title: 'Workflow Automation Builder',
+    description: 'Visually design AI-driven workflows that connect your apps, data, and communication channels.',
+    createLabel: 'Create Workflow',
+    gradient: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.15) 100%)',
+    borderColor: 'rgba(99,102,241,0.2)',
+    accent: 'var(--primary)'
+  },
+  'auto-trees': {
+    title: 'Decision Logic Trees',
+    description: 'Configure multi-branch logic checks, fallback statements, and custom score pathways.',
+    createLabel: 'Create Logic Tree',
+    gradient: 'linear-gradient(135deg, rgba(168,85,247,0.15) 0%, rgba(236,72,153,0.15) 100%)',
+    borderColor: 'rgba(168,85,247,0.2)',
+    accent: 'var(--accent)'
+  },
+  'auto-events': {
+    title: 'Event Capture Flowcharts',
+    description: 'Map event pipelines and trigger automated sequences based on custom user touchpoint actions.',
+    createLabel: 'Map Event Flow',
+    gradient: 'linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(99,102,241,0.15) 100%)',
+    borderColor: 'rgba(16,185,129,0.2)',
+    accent: 'var(--success)'
+  },
+  'auto-crm': {
+    title: 'CRM Integration Pipelines',
+    description: 'Sync pipeline changes, assign deals to sales reps, and schedule onboarding events.',
+    createLabel: 'Create Sync Rules',
+    gradient: 'linear-gradient(135deg, rgba(245,158,11,0.15) 0%, rgba(168,85,247,0.15) 100%)',
+    borderColor: 'rgba(245,158,11,0.2)',
+    accent: 'var(--warning)'
+  },
+  'auto-marketing': {
+    title: 'Marketing Campaign Sequencers',
+    description: 'Schedule automated drip emails, custom tagging routes, and subscriber list updates.',
+    createLabel: 'New Campaign Sequence',
+    gradient: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(59,130,246,0.15) 100%)',
+    borderColor: 'rgba(99,102,241,0.2)',
+    accent: 'var(--info)'
+  }
+};
+
+export const WorkflowBuilder: React.FC<{ mode?: string }> = ({ mode = 'auto-builder' }) => {
+  const [workflows, setWorkflows] = useState<Workflow[]>(getWorkflowsForMode(mode));
   const [selected, setSelected] = useState<number>(1);
   const [showCreate, setShowCreate] = useState(false);
   const [showDeleteId, setShowDeleteId] = useState<number | null>(null);
@@ -62,6 +288,11 @@ export const WorkflowBuilder: React.FC = () => {
   const [newDesc, setNewDesc] = useState('');
   const [toast, setToast] = useState('');
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    setWorkflows(getWorkflowsForMode(mode));
+    setSelected(1);
+  }, [mode]);
 
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3000); };
 
@@ -89,19 +320,21 @@ export const WorkflowBuilder: React.FC = () => {
   };
 
   const currentWf = workflows.find(w => w.id === selected);
-  const canvas = canvasNodes[selected] ?? { trigger: 'Custom Trigger', nodes: [] };
+  const canvas = getCanvasNodesForMode(mode, selected);
+
+  const config = autoModeConfigs[mode] || autoModeConfigs['auto-builder'];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }} className="fade-in">
       {toast && <div style={{ position: 'fixed', top: '80px', right: '24px', zIndex: 9999, background: 'var(--bg-secondary)', border: '1px solid var(--primary)', borderRadius: '10px', padding: '12px 20px', fontSize: '14px', fontWeight: 500, boxShadow: '0 8px 24px rgba(0,0,0,0.3)', color: 'var(--primary)' }}>{toast}</div>}
 
-      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.15) 100%)', border: '1px solid rgba(99,102,241,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
+      <div className="glass-card" style={{ background: config.gradient, border: `1px solid ${config.borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>Workflow Automation Builder</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>Visually design AI-driven workflows that connect your apps, data, and communication channels.</p>
+          <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>{config.title}</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>{config.description}</p>
         </div>
-        <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', whiteSpace: 'nowrap' }} onClick={() => setShowCreate(true)}>
-          <Plus size={16}/> Create Workflow
+        <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', whiteSpace: 'nowrap', backgroundColor: config.accent, border: 'none' }} onClick={() => setShowCreate(true)}>
+          <Plus size={16}/> {config.createLabel}
         </button>
       </div>
 

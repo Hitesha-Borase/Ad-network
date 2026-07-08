@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Zap, Plug, Server, MessageSquare, Mail, Box, Search, Plus, ChevronDown, ChevronUp, ToggleLeft, ToggleRight, X, Check } from 'lucide-react';
 
 interface TriggerItem {
@@ -43,7 +43,39 @@ const initialActions: ActionItem[] = [
 
 const ALL_CATS = 'All';
 
-export const TriggersActions: React.FC = () => {
+interface TriggersActionsConfig {
+  title: string;
+  description: string;
+  gradient: string;
+  borderColor: string;
+  accent: string;
+}
+
+const triggerActionConfigs: Record<string, TriggersActionsConfig> = {
+  'auto-triggers': {
+    title: 'Event Trigger Hub',
+    description: 'Manage active triggers that listen to web events, webhook calls, and CRM property changes.',
+    gradient: 'linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(99,102,241,0.15) 100%)',
+    borderColor: 'rgba(16,185,129,0.2)',
+    accent: 'var(--success)'
+  },
+  'auto-actions': {
+    title: 'Automated Action Directory',
+    description: 'Configure destination execution endpoints, automated alerts, and email notifications.',
+    gradient: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.15) 100%)',
+    borderColor: 'rgba(99,102,241,0.2)',
+    accent: 'var(--primary)'
+  },
+  'auto-conditions': {
+    title: 'Routing Conditions & Logic Gates',
+    description: 'Define branching parameters, value checks, and target path criteria for active flows.',
+    gradient: 'linear-gradient(135deg, rgba(245,158,11,0.15) 0%, rgba(168,85,247,0.15) 100%)',
+    borderColor: 'rgba(245,158,11,0.2)',
+    accent: 'var(--warning)'
+  }
+};
+
+export const TriggersActions: React.FC<{ mode?: string }> = ({ mode = 'auto-triggers' }) => {
   const [triggers, setTriggers] = useState<TriggerItem[]>(initialTriggers);
   const [actions, setActions] = useState<ActionItem[]>(initialActions);
   const [query, setQuery] = useState('');
@@ -110,53 +142,88 @@ export const TriggersActions: React.FC = () => {
   const tCategories = [ALL_CATS, ...Array.from(new Set(triggers.map(t => t.category)))];
   const aCategories = [ALL_CATS, ...Array.from(new Set(actions.map(a => a.category)))];
 
+  const config = triggerActionConfigs[mode] || triggerActionConfigs['auto-triggers'];
+
   return (
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {toast && <div style={{ position: 'fixed', top: '80px', right: '24px', zIndex: 9999, background: 'var(--bg-secondary)', border: '1px solid var(--primary)', borderRadius: '10px', padding: '12px 20px', fontSize: '14px', fontWeight: 500, boxShadow: '0 8px 24px rgba(0,0,0,0.3)', color: 'var(--primary)' }}>{toast}</div>}
 
-      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.15) 100%)', border: '1px solid rgba(99,102,241,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
+      <div className="glass-card" style={{ background: config.gradient, border: `1px solid ${config.borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 style={{ fontSize: 'clamp(18px, 4vw, 24px)', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Zap size={24} color="var(--primary)"/> Triggers & Actions Library
+            <Zap size={24} color={config.accent}/> {config.title}
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>Manage the integrations and events that power your automation workflows.</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>{config.description}</p>
         </div>
         <div style={{ display: 'flex', gap: '12px' }}>
           <div style={{ position: 'relative' }}>
             <Search size={16} style={{ position: 'absolute', left: '12px', top: '10px', color: 'var(--text-muted)' }}/>
             <input type="text" placeholder="Search library..." value={query} onChange={e => setQuery(e.target.value)} style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '8px 12px 8px 36px', color: '#fff', fontSize: '13px', width: '240px' }}/>
           </div>
-          <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={() => setShowAddModal(true)}><Plus size={14}/> Add Custom Integration</button>
+          <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: config.accent, border: 'none' }} onClick={() => setShowAddModal(true)}><Plus size={14}/> Add Custom Integration</button>
         </div>
       </div>
 
-      <div className="responsive-layout" style={{}}>
-        {/* Triggers */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Available Triggers <span style={{ color: 'var(--text-muted)', fontSize: '13px', fontWeight: 400 }}>({filteredTriggers.length})</span></h2>
-            <div style={{ display: 'flex', gap: '6px' }}>
-              {tCategories.map(c => <button key={c} onClick={() => setTCategory(c)} style={{ padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 600, background: tCategory === c ? 'var(--primary)' : 'rgba(255,255,255,0.05)', color: tCategory === c ? '#fff' : 'var(--text-muted)', border: 'none', cursor: 'pointer' }}>{c}</button>)}
+      {mode === 'auto-conditions' ? (
+        <div className="responsive-layout">
+          <div className="glass-card" style={{ flex: 2, minWidth: 0 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Defined Routing Logic Gates</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {[
+                { name: 'Lead Score Threshold', type: 'Numeric Compare', details: 'Value > 80', status: 'Active' },
+                { name: 'Exclude Target Segment', type: 'List Membership', details: 'Excluding: Churned Users', status: 'Active' },
+                { name: 'Country Exclusion Filter', type: 'String Match', details: 'Exclude: EU Countries', status: 'Inactive' }
+              ].map((cond, idx) => (
+                <div key={idx} style={{ padding: '14px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'rgba(255,255,255,0.01)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '14px' }}>{cond.name}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px' }}>{cond.type} · <code style={{ backgroundColor: 'rgba(0,0,0,0.2)', padding: '2px 6px', borderRadius: '4px' }}>{cond.details}</code></div>
+                  </div>
+                  <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '4px', backgroundColor: cond.status === 'Active' ? 'rgba(16,185,129,0.1)' : 'rgba(255,255,255,0.05)', color: cond.status === 'Active' ? 'var(--success)' : 'var(--text-secondary)' }}>{cond.status}</span>
+                </div>
+              ))}
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {filteredTriggers.length === 0 ? <div style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)', fontSize: '13px' }}>No triggers match your search.</div> : filteredTriggers.map(t => <TCard key={t.id} item={t} onToggle={toggleTrigger}/>)}
+          <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Condition Parameters</h2>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
+              Routing conditions allow logical branching (AND / OR gates) inside workflows to separate leads, assign tiers, or customize outbound campaign variables.
+            </p>
           </div>
         </div>
+      ) : (
+        <div className="responsive-layout" style={{}}>
+          {/* Triggers */}
+          {(mode === 'auto-triggers' || mode === 'auto-builder') && (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Available Triggers <span style={{ color: 'var(--text-muted)', fontSize: '13px', fontWeight: 400 }}>({filteredTriggers.length})</span></h2>
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  {tCategories.map(c => <button key={c} onClick={() => setTCategory(c)} style={{ padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 600, background: tCategory === c ? 'var(--primary)' : 'rgba(255,255,255,0.05)', color: tCategory === c ? '#fff' : 'var(--text-muted)', border: 'none', cursor: 'pointer' }}>{c}</button>)}
+                </div>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {filteredTriggers.length === 0 ? <div style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)', fontSize: '13px' }}>No triggers match your search.</div> : filteredTriggers.map(t => <TCard key={t.id} item={t} onToggle={toggleTrigger}/>)}
+              </div>
+            </div>
+          )}
 
-        {/* Actions */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Available Actions <span style={{ color: 'var(--text-muted)', fontSize: '13px', fontWeight: 400 }}>({filteredActions.length})</span></h2>
-            <div style={{ display: 'flex', gap: '6px' }}>
-              {aCategories.map(c => <button key={c} onClick={() => setACategory(c)} style={{ padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 600, background: aCategory === c ? 'var(--primary)' : 'rgba(255,255,255,0.05)', color: aCategory === c ? '#fff' : 'var(--text-muted)', border: 'none', cursor: 'pointer' }}>{c}</button>)}
+          {/* Actions */}
+          {(mode === 'auto-actions' || mode === 'auto-builder') && (
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Available Actions <span style={{ color: 'var(--text-muted)', fontSize: '13px', fontWeight: 400 }}>({filteredActions.length})</span></h2>
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  {aCategories.map(c => <button key={c} onClick={() => setACategory(c)} style={{ padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 600, background: aCategory === c ? 'var(--primary)' : 'rgba(255,255,255,0.05)', color: aCategory === c ? '#fff' : 'var(--text-muted)', border: 'none', cursor: 'pointer' }}>{c}</button>)}
+                </div>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {filteredActions.length === 0 ? <div style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)', fontSize: '13px' }}>No actions match your search.</div> : filteredActions.map(a => <TCard key={a.id} item={a} onToggle={toggleAction}/>)}
+              </div>
             </div>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {filteredActions.length === 0 ? <div style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)', fontSize: '13px' }}>No actions match your search.</div> : filteredActions.map(a => <TCard key={a.id} item={a} onToggle={toggleAction}/>)}
-          </div>
+          )}
         </div>
-      </div>
+      )}
 
       {/* Add Custom Modal */}
       {showAddModal && (
