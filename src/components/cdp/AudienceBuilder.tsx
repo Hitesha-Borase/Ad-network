@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Users, Plus, Save, Play, X, Activity, Check, Trash2, ChevronDown } from 'lucide-react';
+import { 
+  Users, Plus, Save, Play, X, Activity, Check, Trash2, ChevronDown,
+  Target, Compass, Zap, TrendingUp, DollarSign, Globe, Database, Store, Layers
+} from 'lucide-react';
 
 type RuleType = 'include' | 'exclude';
 type LogicOp = 'AND' | 'OR';
@@ -31,7 +34,99 @@ function genCount(rules: Rule[]): number {
   return Math.max(800, base - (rules.filter(r => r.type === 'exclude').length * 3100) + (rules.filter(r => r.type === 'include').length * 1200));
 }
 
-export const AudienceBuilder: React.FC = () => {
+interface ModeConfig {
+  title: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  gradient: string;
+  borderColor: string;
+  accent: string;
+}
+
+const modeConfigs: Record<string, ModeConfig> = {
+  'cdp-audience': {
+    title: 'Visual Audience Builder',
+    subtitle: 'Query your CDP data to create hyper-targeted segments without writing SQL.',
+    icon: <Users size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(236,72,153,0.15) 0%, rgba(99,102,241,0.15) 100%)',
+    borderColor: 'rgba(236,72,153,0.2)',
+    accent: 'var(--accent)'
+  },
+  'dmp-3p-audience': {
+    title: 'Third-Party Audience Marketplace',
+    subtitle: 'Browse, acquire, and target demographic data groups from verified third-party data brokers.',
+    icon: <Store size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(16,185,129,0.15) 100%)',
+    borderColor: 'rgba(99,102,241,0.2)',
+    accent: 'var(--primary)'
+  },
+  'dmp-1p-audience': {
+    title: 'First-Party Audience Manager',
+    subtitle: 'Ingest, organize, and segment direct customer data records collected from your own properties.',
+    icon: <Database size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(99,102,241,0.15) 100%)',
+    borderColor: 'rgba(16,185,129,0.2)',
+    accent: 'var(--success)'
+  },
+  'dmp-interest-categories': {
+    title: 'Interest Categories Taxonomy',
+    subtitle: 'Map user profiles to customized behavior topics, content channels, and buying patterns.',
+    icon: <Layers size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(245,158,11,0.15) 0%, rgba(99,102,241,0.15) 100%)',
+    borderColor: 'rgba(245,158,11,0.2)',
+    accent: 'var(--warning)'
+  },
+  'dmp-lookalike': {
+    title: 'Lookalike Audience Modeling',
+    subtitle: 'Deploy custom neural models to scan millions of user profiles for patterns matching your high-value customers.',
+    icon: <Target size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.15) 100%)',
+    borderColor: 'rgba(99,102,241,0.2)',
+    accent: 'var(--primary)'
+  },
+  'dmp-ai-expansion': {
+    title: 'AI Audience Expansion',
+    subtitle: 'Leverage machine learning clusters to automatically scale targeted groups with high-probability matches.',
+    icon: <Compass size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(168,85,247,0.15) 0%, rgba(99,102,241,0.15) 100%)',
+    borderColor: 'rgba(168,85,247,0.2)',
+    accent: 'var(--accent)'
+  },
+  'dmp-audience-scoring': {
+    title: 'Audience Scoring & Valuations',
+    subtitle: 'Rank customer profiles with predictive propensity scores for conversion, churn risk, and LTV.',
+    icon: <Zap size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(236,72,153,0.15) 0%, rgba(245,158,11,0.15) 100%)',
+    borderColor: 'rgba(236,72,153,0.2)',
+    accent: 'var(--accent)'
+  },
+  'dmp-demographic': {
+    title: 'Demographic Targeting Console',
+    subtitle: 'Filter users by age clusters, geographic grids, industry sectors, and income brackets.',
+    icon: <Globe size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(236,72,153,0.15) 100%)',
+    borderColor: 'rgba(16,185,129,0.2)',
+    accent: 'var(--success)'
+  },
+  'dmp-interest-prediction': {
+    title: 'Interest Prediction Engine',
+    subtitle: 'Track real-time intent queries to forecast upcoming purchasing trends and buyer interests.',
+    icon: <TrendingUp size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(245,158,11,0.15) 0%, rgba(236,72,153,0.15) 100%)',
+    borderColor: 'rgba(245,158,11,0.2)',
+    accent: 'var(--warning)'
+  },
+  'dmp-purchase-intent': {
+    title: 'Purchase Intent Predictor',
+    subtitle: 'Monitor high-value actions to isolate profiles currently actively looking to make a purchase.',
+    icon: <DollarSign size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(99,102,241,0.15) 100%)',
+    borderColor: 'rgba(16,185,129,0.2)',
+    accent: 'var(--success)'
+  }
+};
+
+export const AudienceBuilder: React.FC<{ mode?: string }> = ({ mode = 'cdp-audience' }) => {
   const [rules, setRules] = useState<Rule[]>([
     { id: 1, type: 'include', attribute: EVENTS[0], operator: OPERATORS_EVENT[0], value: '30 days' },
     { id: 2, type: 'exclude', attribute: ATTR_FIELDS[0], operator: OPERATORS_ATTR[0], value: STATUS_VALUES[0] },
@@ -73,16 +168,18 @@ export const AudienceBuilder: React.FC = () => {
   const count = genCount(rules);
   const intentColor = (intent: string) => intent === 'High Intent' ? 'var(--success)' : intent === 'Medium Intent' ? 'var(--warning)' : 'var(--text-muted)';
 
+  const activeConfig = modeConfigs[mode] || modeConfigs['cdp-audience'];
+
   return (
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {toast && <div style={{ position: 'fixed', top: '80px', right: '24px', zIndex: 9999, background: 'var(--bg-secondary)', border: '1px solid var(--success)', borderRadius: '10px', padding: '12px 20px', fontSize: '14px', fontWeight: 500, boxShadow: '0 8px 24px rgba(0,0,0,0.3)', color: 'var(--success)' }}>{toast}</div>}
 
-      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(236,72,153,0.15) 0%, rgba(99,102,241,0.15) 100%)', border: '1px solid rgba(236,72,153,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
+      <div className="glass-card" style={{ background: activeConfig.gradient, border: `1px solid ${activeConfig.borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Users size={22} color="var(--accent)"/> Visual Audience Builder
+            <span style={{ color: activeConfig.accent, display: 'flex', alignItems: 'center' }}>{activeConfig.icon}</span> {activeConfig.title}
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>Query your CDP data to create hyper-targeted segments without writing SQL.</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>{activeConfig.subtitle}</p>
         </div>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }} onClick={estimate} disabled={estimating}>

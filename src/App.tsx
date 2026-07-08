@@ -394,7 +394,7 @@ function App() {
       case 'dmp-demographic':
       case 'dmp-interest-prediction':
       case 'dmp-purchase-intent':
-        return <AudienceBuilder />;
+        return <AudienceBuilder mode={activeId} />;
       case 'cdp-segments':
         return <Segments />;
 
