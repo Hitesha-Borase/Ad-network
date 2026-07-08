@@ -308,21 +308,7 @@ function App() {
         return <AiDashboard />;
       case 'ai-chat':
         return <AiChat />;
-      case 'agent-marketing':
-      case 'agent-seo':
-      case 'agent-ppc':
-      case 'agent-sales':
-      case 'agent-content':
-      case 'agent-creative':
-      case 'agent-support':
-      case 'agent-compliance':
-      case 'agent-finance':
-      case 'agent-analytics':
-      case 'agent-opt':
-      case 'agent-biz':
-      case 'agent-devops':
-      case 'agent-datasci':
-        return <AiAgentsList />;
+
 
       // Automation
       case 'auto-builder':
