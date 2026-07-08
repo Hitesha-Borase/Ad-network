@@ -381,7 +381,7 @@ function App() {
       case 'cdp-unified-profiles':
       case 'cdp-id-resolution':
       case 'cdp-clean-rooms':
-        return <Customer360 />;
+        return <Customer360 mode={activeId} />;
       case 'cdp-idgraph':
         return <IdentityGraph />;
       case 'cdp-audience':

@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { User, Mail, Phone, MapPin, Building, Calendar, ShoppingBag, Globe, Tag, Activity, CreditCard, ChevronRight, Edit2, X, Check, Plus } from 'lucide-react';
+import { 
+  User, Mail, Phone, MapPin, Building, Calendar, ShoppingBag, Globe, Tag, 
+  Activity, CreditCard, ChevronRight, Edit2, X, Check, Plus, 
+  Shield, Zap, Users, Lock, RefreshCw, Play, FileCode2, Search
+} from 'lucide-react';
 
 interface Profile {
   initials: string; name: string; ltv: string; churnRisk: 'Low' | 'Medium' | 'High'; segment: string;
@@ -47,7 +51,75 @@ const profiles: Profile[] = [
 const TABS = ['Overview', 'Timeline', 'Attributes', 'Segments'] as const;
 type Tab = typeof TABS[number];
 
-export const Customer360: React.FC = () => {
+interface CdpConfig {
+  title: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  gradient: string;
+  borderColor: string;
+  accent: string;
+}
+
+const cdpConfigs: Record<string, CdpConfig> = {
+  'cdp-c360': {
+    title: 'Customer 360° Profile',
+    subtitle: 'Unified identity graph resolving cross-device behaviors and customer attributes.',
+    icon: <User size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%)',
+    borderColor: 'rgba(99, 102, 241, 0.2)',
+    accent: 'var(--primary)'
+  },
+  'cdp-unified-profiles': {
+    title: 'Unified Customer Profiles',
+    subtitle: 'Browse and query the entire master directory of verified customer identities.',
+    icon: <Users size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%)',
+    borderColor: 'rgba(99, 102, 241, 0.2)',
+    accent: 'var(--primary)'
+  },
+  'cdp-tracking': {
+    title: 'Behavioral Ingestion Console',
+    subtitle: 'Live tracking of client-side pixels, custom web hooks, and dynamic browser events.',
+    icon: <Activity size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
+    borderColor: 'rgba(16, 185, 129, 0.2)',
+    accent: 'var(--success)'
+  },
+  'cdp-consent': {
+    title: 'Consent & Privacy Manager',
+    subtitle: 'Setup cookie policies, monitor CCPA/GDPR compliance logs, and handle user consent audits.',
+    icon: <Shield size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)',
+    borderColor: 'rgba(239, 68, 68, 0.2)',
+    accent: 'var(--danger)'
+  },
+  'cdp-activation': {
+    title: 'Audience Activation Hub',
+    subtitle: 'Synchronize target CDP segment lists directly to outbound advertising channels and CRMs.',
+    icon: <Zap size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%)',
+    borderColor: 'rgba(245, 158, 11, 0.2)',
+    accent: 'var(--warning)'
+  },
+  'cdp-id-resolution': {
+    title: 'Identity Resolution Console',
+    subtitle: 'Define deterministic matching criteria and cross-device profile merging rules.',
+    icon: <ChevronRight size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%)',
+    borderColor: 'rgba(99, 102, 241, 0.2)',
+    accent: 'var(--primary)'
+  },
+  'cdp-clean-rooms': {
+    title: 'Data Clean Rooms Sandbox',
+    subtitle: 'Securely cross-match advertising overlapping groups with publishers under zero-trust privacy constraints.',
+    icon: <Lock size={22} />,
+    gradient: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.2) 100%)',
+    borderColor: 'var(--border-color)',
+    accent: 'var(--text-secondary)'
+  }
+};
+
+export const Customer360: React.FC<{ mode?: string }> = ({ mode = 'cdp-c360' }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentProfile, setCurrentProfile] = useState<Profile>(profiles[0]);
   const [activeTab, setActiveTab] = useState<Tab>('Overview');
@@ -72,33 +144,201 @@ export const Customer360: React.FC = () => {
   const riskColor = (risk: string) => risk === 'Low' ? 'var(--success)' : risk === 'Medium' ? 'var(--warning)' : 'var(--danger)';
   const riskBg = (risk: string) => risk === 'Low' ? 'var(--success-light)' : risk === 'Medium' ? 'var(--warning-light)' : 'var(--danger-light)';
 
+  const activeConfig = cdpConfigs[mode] || cdpConfigs['cdp-c360'];
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }} className="fade-in">
       {toast && <div style={{ position: 'fixed', top: '80px', right: '24px', zIndex: 9999, background: 'var(--bg-secondary)', border: '1px solid var(--success)', borderRadius: '10px', padding: '12px 20px', fontSize: '14px', fontWeight: 500, boxShadow: '0 8px 24px rgba(0,0,0,0.3)', color: 'var(--success)' }}>{toast}</div>}
 
-      <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(168,85,247,0.15) 100%)', border: '1px solid rgba(99,102,241,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
+      <div className="glass-card" style={{ background: activeConfig.gradient, border: `1px solid ${activeConfig.borderColor}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
-          <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px' }}>Customer 360° Profile</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>Unified identity graph resolving cross-device behaviors and touchpoints.</p>
+          <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ color: activeConfig.accent, display: 'flex', alignItems: 'center' }}>{activeConfig.icon}</span> {activeConfig.title}
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>{activeConfig.subtitle}</p>
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <div style={{ position: 'relative' }}>
-            <input type="text" placeholder="Search by name or email..." value={searchQuery} onChange={e => handleSearch(e.target.value)} style={{ padding: '9px 16px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.08)', border: '1px solid var(--border-color)', color: '#fff', fontSize: '13px', width: '220px' }}/>
-            {searchQuery && profiles.find(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.email.toLowerCase().includes(searchQuery.toLowerCase())) && (
-              <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden', zIndex: 100, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
-                {profiles.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.email.toLowerCase().includes(searchQuery.toLowerCase())).map(p => (
-                  <div key={p.email} onClick={() => { setCurrentProfile(p); setSearchQuery(''); }} style={{ padding: '10px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px', transition: 'background 0.2s' }} className="table-row-hover">
-                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 700 }}>{p.initials}</div>
-                    <div><div style={{ fontSize: '13px', fontWeight: 600 }}>{p.name}</div><div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{p.email}</div></div>
-                  </div>
-                ))}
-              </div>
-            )}
+        
+        {(mode === 'cdp-c360' || mode === 'cdp-unified-profiles') && (
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <div style={{ position: 'relative' }}>
+              <input type="text" placeholder="Search by name or email..." value={searchQuery} onChange={e => handleSearch(e.target.value)} style={{ padding: '9px 16px', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.08)', border: '1px solid var(--border-color)', color: '#fff', fontSize: '13px', width: '220px' }}/>
+              {searchQuery && profiles.find(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.email.toLowerCase().includes(searchQuery.toLowerCase())) && (
+                <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden', zIndex: 100, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
+                  {profiles.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.email.toLowerCase().includes(searchQuery.toLowerCase())).map(p => (
+                    <div key={p.email} onClick={() => { setCurrentProfile(p); setSearchQuery(''); }} style={{ padding: '10px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '12px', transition: 'background 0.2s' }} className="table-row-hover">
+                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 700 }}>{p.initials}</div>
+                      <div><div style={{ fontSize: '13px', fontWeight: 600 }}>{p.name}</div><div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{p.email}</div></div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      <div className="responsive-layout">
+      {mode === 'cdp-tracking' && (
+        <div className="responsive-layout">
+          <div className="glass-card" style={{ flex: 2, minWidth: 0 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Real-time Event Ingestion Stream</h2>
+            <div style={{ backgroundColor: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '16px', fontFamily: 'monospace', fontSize: '12px', height: '340px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {[
+                '[info] Pixel listener active on port 443...',
+                '[success] Received client event: pageview "/" from IP 92.142.1.84 (Today, 18:24:12)',
+                '[success] Received client event: click "Pricing Plan Basic" from IP 104.22.4.9 (Today, 18:24:15)',
+                '[info] Syncing identity cookies with browser fingerprint registry...',
+                '[success] Ingested Custom Metric: checkout_completed ($142.00 value) (Today, 18:24:20)',
+                '[success] Ingested Lead Event: email_signup "johndoe@email.com" (Today, 18:24:28)',
+                '[info] Dispatched segment sync updates for 3 dynamic cohorts.'
+              ].map((log, i) => {
+                let color = 'var(--text-primary)';
+                if (log.includes('[success]')) { color = '#10b981'; log = log.replace('[success] ', '➔ '); }
+                else if (log.includes('[info]')) { color = 'var(--text-secondary)'; log = log.replace('[info] ', 'ℹ '); }
+                return <div key={i} style={{ color, whiteSpace: 'pre-wrap', lineHeight: 1.4 }}>{log}</div>;
+              })}
+            </div>
+          </div>
+          <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Tracking SDK Setup</h2>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>Include this script header tag on your site to ingest events directly:</p>
+            <textarea readOnly value={`<!-- Ad Network Ingestion SDK -->\n<script src="https://cdn.adnetwork.com/sdk.js?id=an_cdp_9481"></script>`} style={{ width: '100%', height: '80px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-color)', color: '#fff', padding: '10px', borderRadius: '8px', fontFamily: 'monospace', fontSize: '11px', resize: 'none' }}/>
+            <button onClick={() => showToast('✅ Copied tracking code to clipboard!')} className="btn btn-primary btn-sm">Copy Script Tag</button>
+          </div>
+        </div>
+      )}
+
+      {mode === 'cdp-consent' && (
+        <div className="responsive-layout">
+          <div className="glass-card" style={{ flex: 2, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Compliance & Privacy Settings</h2>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>Configure compliance templates to handle consumer data privacy regulations:</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '6px' }}>
+              {[
+                { name: 'GDPR (Europe Union)', desc: 'Requires opt-in consent for cookie placements and profiling rules.', checked: true },
+                { name: 'CCPA / CPRA (California)', desc: 'Provides consumer opt-out consent mechanisms for 3rd party data shares.', checked: true },
+                { name: 'LGPD (Brazil Privacy Framework)', desc: 'Enforces data protection officer registry audits.', checked: false }
+              ].map((c, i) => (
+                <div key={i} style={{ padding: '12px', border: '1px solid var(--border-color)', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.01)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: '13.5px', fontWeight: 600 }}>{c.name}</div>
+                    <div style={{ fontSize: '11.5px', color: 'var(--text-secondary)', marginTop: '2px' }}>{c.desc}</div>
+                  </div>
+                  <input type="checkbox" defaultChecked={c.checked} style={{ accentColor: 'var(--danger)', width: '16px', height: '16px', cursor: 'pointer' }} onChange={() => showToast('Consent template settings updated.')}/>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="glass-card" style={{ flex: 1 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Consent Audit Logs</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <div>• User `usr_a9d3` Opt-in (Today, 18:14)</div>
+              <div>• User `usr_x2e9` Opt-out CCPA (Today, 17:42)</div>
+              <div>• User `usr_w3q2` Opt-in GDPR (Today, 16:30)</div>
+              <button onClick={() => showToast('📥 Exporting compliance audit log PDF...')} className="btn btn-secondary btn-sm" style={{ marginTop: '12px' }}>Export Audit Ledger</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {mode === 'cdp-activation' && (
+        <div className="responsive-layout">
+          <div className="glass-card" style={{ flex: 2, minWidth: 0 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Connected Destination Channels</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+              {[
+                { name: 'Meta Ads (Facebook / Instagram)', status: 'Connected', synced: '42K profiles', color: 'var(--success)' },
+                { name: 'Google Ads (Search / YouTube)', status: 'Connected', synced: '14K profiles', color: 'var(--success)' },
+                { name: 'TikTok Marketing Ads', status: 'Inactive', synced: '0 profiles', color: 'var(--text-muted)' },
+                { name: 'HubSpot CRM Sync', status: 'Connected', synced: '2.4K contacts', color: 'var(--success)' }
+              ].map((ch, idx) => (
+                <div key={idx} style={{ padding: '16px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'rgba(255,255,255,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ fontWeight: 600, fontSize: '14px' }}>{ch.name}</div>
+                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Synced: {ch.synced}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
+                    <span style={{ fontSize: '11px', color: ch.color }}>{ch.status}</span>
+                    <button onClick={() => showToast(`Sync triggered for ${ch.name}`)} className="btn btn-secondary btn-sm">Sync Now</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Sync Scheduler</h2>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>Define audience synchronization intervals for activated nodes:</p>
+            <select style={{ padding: '8px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-color)', borderRadius: '6px', color: '#fff', fontSize: '13px' }}>
+              <option>Real-time (HMR Stream)</option>
+              <option>Hourly batch updates</option>
+              <option>Daily at 00:00 UTC</option>
+            </select>
+          </div>
+        </div>
+      )}
+
+      {mode === 'cdp-id-resolution' && (
+        <div className="responsive-layout">
+          <div className="glass-card" style={{ flex: 2, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Stitching & Merging Criteria</h2>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>Select key identifier fields to stitch cross-device actions into a single master profile:</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {[
+                { name: 'Primary Key match: Email address', desc: 'Deterministic matching on primary email.', check: true },
+                { name: 'Secondary Key match: Telephone phone number', desc: 'Deterministic matching on international phone formats.', check: true },
+                { name: 'Browser Session Cookie match (1P Cookies)', desc: 'Stitch guest checkouts with previous session history.', check: true },
+                { name: 'Device Fingerprint canvas hash match', desc: 'Stops profiles duplicating when cookies are cleared.', check: false }
+              ].map((k, idx) => (
+                <label key={idx} style={{ padding: '12px', border: '1px solid var(--border-color)', borderRadius: '8px', backgroundColor: 'rgba(255,255,255,0.01)', display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
+                  <input type="checkbox" defaultChecked={k.check} style={{ accentColor: 'var(--primary)' }}/>
+                  <div>
+                    <div style={{ fontSize: '13px', fontWeight: 600 }}>{k.name}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{k.desc}</div>
+                  </div>
+                </label>
+              ))}
+            </div>
+            <button onClick={() => showToast('✅ Identity resolution parameters updated.')} className="btn btn-primary" style={{ alignSelf: 'flex-start' }}>Apply Merge Rules</button>
+          </div>
+          <div className="glass-card" style={{ flex: 1 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Resolution Metrics</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Raw Cookie ID nodes</span><span>1.2M</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Stitched Profiles</span><span>142K</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Compression Overlap</span><span style={{ color: 'var(--success)', fontWeight: 600 }}>88.1% overlap</span></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {mode === 'cdp-clean-rooms' && (
+        <div className="responsive-layout">
+          <div className="glass-card" style={{ flex: 2, minWidth: 0 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Secure Partner Sandboxes</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {[
+                { name: 'Amazon Ads cleanroom sync', partner: 'Amazon Web Services', overlap: '42.1%', status: 'Active (Audited)' },
+                { name: 'Google Ads Data Hub sync', partner: 'Google Ads Cloud', overlap: '58.4%', status: 'Active (Audited)' },
+                { name: 'Retailer Network Matcher', partner: 'Walmart Connect', overlap: '12.8%', status: 'Deploying (Testing)' }
+              ].map((r, idx) => (
+                <div key={idx} style={{ padding: '14px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'rgba(255,255,255,0.01)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: '14px' }}>{r.name}</div>
+                    <div style={{ fontSize: '11.5px', color: 'var(--text-secondary)', marginTop: '2px' }}>Partner: {r.partner} · Overlap: <strong style={{ color: 'var(--primary)' }}>{r.overlap}</strong></div>
+                  </div>
+                  <span style={{ fontSize: '11px', padding: '4px 10px', borderRadius: '12px', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)' }}>{r.status}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Zero-Trust Privacy</h2>
+            <div style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+              Data Clean Rooms enable secure multi-party computation. All user identities are hashed (SHA-256) locally and matched under mathematical differential privacy guarantees without sharing raw PHI/PII records.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {(mode === 'cdp-c360' || mode === 'cdp-unified-profiles') && (
+        <div className="responsive-layout">
         {/* Profile Sidebar */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '30px 20px' }}>
@@ -257,6 +497,7 @@ export const Customer360: React.FC = () => {
           )}
         </div>
       </div>
+      )}
 
       {/* Add to Segment Modal */}
       {showAddSeg && (
