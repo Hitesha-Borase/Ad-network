@@ -432,8 +432,153 @@ export const AudienceBuilder: React.FC<{ mode?: string }> = ({ mode = 'cdp-audie
         </div>
       )}
 
+      {mode === 'dmp-1p-audience' && (
+        <div className="responsive-layout">
+          <div className="glass-card" style={{ flex: 2, minWidth: 0 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>First-Party Ingestion Sources</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {[
+                { name: 'Website Pixel (JS SDK)', type: 'Real-time Stream', status: 'Live', events: '12.4M/day' },
+                { name: 'Mobile App SDK (iOS & Android)', type: 'Real-time Stream', status: 'Live', events: '4.8M/day' },
+                { name: 'CRM Integration (HubSpot)', type: 'Scheduled Sync', status: 'Active (Daily)', events: '42K profiles synced' },
+                { name: 'Transactional DB Ingestion', type: 'Database Mirror', status: 'Active (Hourly)', events: '1.2M rows synced' }
+              ].map((s, idx) => (
+                <div key={idx} style={{ padding: '14px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'rgba(255,255,255,0.01)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: '14px' }}>{s.name}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>{s.type} · {s.events}</div>
+                  </div>
+                  <span style={{ fontSize: '11px', padding: '4px 10px', borderRadius: '12px', backgroundColor: 'rgba(16,185,129,0.1)', color: 'var(--success)', fontWeight: 600 }}>{s.status}</span>
+                </div>
+              ))}
+            </div>
+            
+            <div style={{ marginTop: '20px', padding: '20px', border: '1px dashed var(--border-color)', borderRadius: '8px', textAlign: 'center', backgroundColor: 'rgba(255,255,255,0.01)' }}>
+              <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '10px' }}>Need to import offline contacts or user lists?</div>
+              <button onClick={() => showToast('📂 Launching list uploader...')} className="btn btn-secondary btn-sm"><Plus size={12}/> Ingest Offline User CSV</button>
+            </div>
+          </div>
+          <div className="glass-card" style={{ flex: 1 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Database Health</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Total Unique Profiles</span><span style={{ fontWeight: 600 }}>142,084</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Daily Ingestion Rate</span><span style={{ color: 'var(--success)', fontWeight: 600 }}>+4,200</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Data Freshness Lag</span><span>&lt; 500ms</span></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {mode === 'dmp-ai-expansion' && (
+        <div className="responsive-layout">
+          <div className="glass-card" style={{ flex: 2, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>AI Auto-Expansion Console</h2>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>Select your target expansion scale and let the machine learning model find similar high-probability matches:</p>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>BASE AUDIENCE COHORT</label>
+              <select style={{ padding: '10px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-color)', borderRadius: '8px', color: '#fff', fontSize: '13px', outline: 'none' }}>
+                <option>Active Enterprise Customers (1,492 profiles)</option>
+                <option>Cart Abandoners (7d) (5,821 profiles)</option>
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>EXPANSION SCALE MULTIPLIER</label>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                {['2x Scale', '5x Scale', '10x Scale'].map((scale, i) => (
+                  <button key={i} className="btn btn-secondary" style={{ flex: 1, backgroundColor: i === 1 ? 'rgba(168,85,247,0.15)' : '', borderColor: i === 1 ? 'var(--accent)' : '' }}>{scale}</button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>AI CRITERIA FILTER</label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', cursor: 'pointer' }}><input type="checkbox" defaultChecked style={{ accentColor: 'var(--accent)' }}/> High Churn Risk Prevention Filter</label>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', cursor: 'pointer' }}><input type="checkbox" defaultChecked style={{ accentColor: 'var(--accent)' }}/> Maximize Purchase Propensity Metric</label>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', cursor: 'pointer' }}><input type="checkbox" style={{ accentColor: 'var(--accent)' }}/> Cross-Channel Cookie Sync (3P Cookies Match)</label>
+              </div>
+            </div>
+
+            <button onClick={() => showToast('🚀 Starting AI Audience Expansion execution...')} className="btn btn-primary" style={{ backgroundColor: 'var(--accent)', border: 'none', alignSelf: 'flex-start' }}>Initialize Auto-Expansion</button>
+          </div>
+          <div className="glass-card" style={{ flex: 1 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Simulated Output Metrics</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Expected Reach</span><span style={{ fontWeight: 600 }}>29,105 profiles</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Model Confidence</span><span style={{ color: 'var(--success)', fontWeight: 600 }}>91.4% Match</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Expected CPC Change</span><span style={{ color: 'var(--success)' }}>-12% CPC Reduction</span></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {mode === 'dmp-interest-prediction' && (
+        <div className="responsive-layout">
+          <div className="glass-card" style={{ flex: 2, minWidth: 0 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Predicted High-Growth Consumer Interests</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {[
+                { keyword: 'AI-Enabled Hardware & Laptops', trend: '+340% weekly growth', probability: '94% buy intent', category: 'Technology' },
+                { keyword: 'Sustainable & Eco Travel Kits', trend: '+180% weekly growth', probability: '82% buy intent', category: 'Lifestyle' },
+                { keyword: 'SaaS Business Ingestion Hubs', trend: '+142% weekly growth', probability: '78% buy intent', category: 'Business' },
+                { keyword: 'Connected VR Home Fitness', trend: '+95% weekly growth', probability: '65% buy intent', category: 'Health' }
+              ].map((k, idx) => (
+                <div key={idx} style={{ padding: '14px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'rgba(255,255,255,0.01)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: '14px' }}>🔥 {k.keyword}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>{k.category} · {k.trend}</div>
+                  </div>
+                  <button onClick={() => showToast(`Added target keyword: ${k.keyword}`)} className="btn btn-secondary btn-sm" style={{ borderColor: 'rgba(245,158,11,0.3)', color: 'var(--warning)' }}>Target Audience</button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="glass-card" style={{ flex: 1 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Prediction Engine Status</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Keywords Processed</span><span>12,492 / hr</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Confidence Threshold</span><span>&gt; 80%</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Drift Detection</span><span style={{ color: 'var(--success)' }}>Optimal</span></div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {mode === 'dmp-purchase-intent' && (
+        <div className="responsive-layout">
+          <div className="glass-card" style={{ flex: 2, minWidth: 0 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Purchase Intent Funnel Groups</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
+              {[
+                { stage: 'Pricing Review', count: '14,208 profiles', action: 'Highly motivated to buy', accent: 'var(--success)' },
+                { stage: 'Product Comparison', count: '45,102 profiles', action: 'Comparing features/models', accent: 'var(--primary)' },
+                { stage: 'Active Checkout Started', count: '5,821 profiles', action: 'Cart recovery active', accent: 'var(--accent)' },
+                { stage: 'Returning Buyers', count: '1,492 profiles', action: 'High repeat conversion', accent: 'var(--warning)' }
+              ].map((s, idx) => (
+                <div key={idx} style={{ padding: '16px', borderRadius: '8px', border: `1px solid ${s.accent}30`, backgroundColor: 'rgba(255,255,255,0.01)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ fontWeight: 700, fontSize: '14px', color: s.accent }}>{s.stage}</div>
+                  <div style={{ fontSize: '18px', fontWeight: 800 }}>{s.count}</div>
+                  <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{s.action}</div>
+                  <button onClick={() => showToast(`Selected stage: ${s.stage}`)} className="btn btn-secondary btn-sm" style={{ marginTop: '4px' }}>Apply Target</button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="glass-card" style={{ flex: 1 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px' }}>Intent Analysis</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Active Buyers detected</span><span>66.6K</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Average Close Rate</span><span style={{ color: 'var(--success)', fontWeight: 600 }}>8.4%</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Signal Strength</span><span style={{ color: 'var(--success)' }}>Strong (9.4/10)</span></div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Fallback to Standard CDP Rule Builder layout */}
-      {mode !== 'dmp-3p-audience' && mode !== 'dmp-lookalike' && mode !== 'dmp-demographic' && mode !== 'dmp-audience-scoring' && mode !== 'dmp-interest-categories' && (
+      {mode !== 'dmp-3p-audience' && mode !== 'dmp-lookalike' && mode !== 'dmp-demographic' && mode !== 'dmp-audience-scoring' && mode !== 'dmp-interest-categories' && mode !== 'dmp-1p-audience' && mode !== 'dmp-ai-expansion' && mode !== 'dmp-interest-prediction' && mode !== 'dmp-purchase-intent' && (
         <div className="responsive-layout">
           {/* Builder */}
           <div className="glass-card" style={{ flex: 2, minWidth: 0 }}>
