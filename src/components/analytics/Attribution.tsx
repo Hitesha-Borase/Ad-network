@@ -1,6 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { Target, Share2, TrendingUp } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 type Model = 'data-driven' | 'first-touch' | 'last-touch' | 'linear' | 'time-decay';
 

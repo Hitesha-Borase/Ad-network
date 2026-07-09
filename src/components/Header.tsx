@@ -773,7 +773,7 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId, onLogou
                 cursor: 'pointer',
                 textAlign: 'left',
                 borderRadius: '6px'
-              }}>
+              }} onClick={() => { setShowProfile(false); window.dispatchEvent(new CustomEvent('navigate', { detail: 'settings-profile' })); }}>
                 <User size={16} /> Profile
               </button>
               
@@ -789,7 +789,7 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId, onLogou
                 cursor: 'pointer',
                 textAlign: 'left',
                 borderRadius: '6px'
-              }}>
+              }} onClick={() => { setShowProfile(false); window.dispatchEvent(new CustomEvent('navigate', { detail: 'settings-general' })); }}>
                 <Settings size={16} /> Account Settings
               </button>
 

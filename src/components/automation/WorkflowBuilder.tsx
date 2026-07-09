@@ -12,14 +12,14 @@ interface Workflow {
   runCount: number;
 }
 
-const initialWorkflows: Workflow[] = [
+export const initialWorkflows: Workflow[] = [
   { id: 1, name: 'Lead Nurturing Sequence', description: 'Form submit → AI score → route to sales or drip', status: 'active', triggers: 1, actions: 4, runCount: 1240 },
   { id: 2, name: 'Abandoned Cart Recovery', description: 'Cart abandoned → wait 1h → send email series', status: 'active', triggers: 2, actions: 3, runCount: 843 },
   { id: 3, name: 'VIP Customer Onboarding', description: 'Deal won → assign CSM → send welcome series', status: 'paused', triggers: 1, actions: 6, runCount: 120 },
   { id: 4, name: 'Support Ticket Escalation', description: 'Ticket priority high → Slack alert → assign senior', status: 'active', triggers: 3, actions: 2, runCount: 4530 },
 ];
 
-const canvasNodes: Record<number, { trigger: string; nodes: { label: string; type: string; detail: string; color: string }[] }> = {
+export const canvasNodes: Record<number, { trigger: string; nodes: { label: string; type: string; detail: string; color: string }[] }> = {
   1: {
     trigger: 'Form Submitted → Website Lead Magnet',
     nodes: [

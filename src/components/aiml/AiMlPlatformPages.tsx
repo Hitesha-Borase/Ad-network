@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Cpu, Database, MessageSquare, BookOpen, Settings, Layers, Activity,
-  DollarSign, FileCode2, Shield, Eye, TrendingUp, Zap, Search,
-  CheckCircle2, AlertTriangle, Plus, Download, Clock,
-  Server, Lock, History, Target, Network, Edit2, Save, X, Play, RefreshCw, BarChart
-} from 'lucide-react';
+import { Cpu, Database, MessageSquare, BookOpen, Settings, Layers, Activity, DollarSign, FileCode2, Shield, Eye, TrendingUp, Zap, Search, CheckCircle2, AlertTriangle, Plus, Clock, Server, Lock, History, Target, Edit2, Save, X, RefreshCw, BarChart } from 'lucide-react';
 
 // ─── SHARED UTILITIES ────────────────────────────────────────────
 const StatCard = ({ label, value, change, color, icon }: { label: string; value: string; change?: string; color: string; icon: React.ReactNode }) => (
@@ -85,7 +80,7 @@ const SectionHeader = ({ icon, title, subtitle, accentColor, badge }: { icon: Re
                   <h2 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>{title} Console</h2>
                   <div style={{ fontSize: '11px', color: '#10b981', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
                     <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block', animation: 'pulse 1.5s infinite' }}></span>
-                    CONNECTED TO GPU CLUSTER
+                    CONNECTED TO GPU CLUSTER {healthStatus === 'healthy' ? '· HEALTH OK' : (healthStatus === 'checking' ? '· RUNNING AUDIT...' : '')}
                   </div>
                 </div>
               </div>

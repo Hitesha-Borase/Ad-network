@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  User, Mail, Phone, MapPin, Building, Calendar, ShoppingBag, Globe, Tag, 
-  Activity, CreditCard, ChevronRight, Edit2, X, Check, Plus, 
-  Shield, Zap, Users, Lock, RefreshCw, Play, FileCode2, Search
-} from 'lucide-react';
+import { User, Mail, Phone, MapPin, Building, Calendar, ShoppingBag, Globe, Tag, Activity, CreditCard, ChevronRight, Edit2, X, Check, Plus, Shield, Zap, Users, Lock } from 'lucide-react';
 
 interface Profile {
   initials: string; name: string; ltv: string; churnRisk: 'Low' | 'Medium' | 'High'; segment: string;
@@ -126,7 +122,6 @@ export const Customer360: React.FC<{ mode?: string }> = ({ mode = 'cdp-c360' }) 
   const [showAddSeg, setShowAddSeg] = useState(false);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [toast, setToast] = useState('');
-  const [editValues, setEditValues] = useState({ email: currentProfile.email, phone: currentProfile.phone, title: currentProfile.title });
 
   const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3000); };
 
@@ -136,7 +131,7 @@ export const Customer360: React.FC<{ mode?: string }> = ({ mode = 'cdp-c360' }) 
     if (found) { setCurrentProfile(found); setActiveTab('Overview'); }
   };
 
-  const saveField = (field: string) => {
+  const saveField = () => {
     setEditingField(null);
     showToast('✅ Contact updated successfully!');
   };
@@ -372,7 +367,7 @@ export const Customer360: React.FC<{ mode?: string }> = ({ mode = 'cdp-c360' }) 
             {editingField && (
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginTop: '4px' }}>
                 <input className="form-control" defaultValue={currentProfile[editingField as 'email' | 'phone' | 'title']} style={{ fontSize: '12px' }}/>
-                <button onClick={() => saveField(editingField)} style={{ background: 'var(--success)', border: 'none', color: '#fff', borderRadius: '6px', padding: '6px', cursor: 'pointer' }}><Check size={14}/></button>
+                <button onClick={() => saveField()} style={{ background: 'var(--success)', border: 'none', color: '#fff', borderRadius: '6px', padding: '6px', cursor: 'pointer' }}><Check size={14}/></button>
                 <button onClick={() => setEditingField(null)} style={{ background: 'none', border: '1px solid var(--border-color)', color: 'var(--text-muted)', borderRadius: '6px', padding: '6px', cursor: 'pointer' }}><X size={14}/></button>
               </div>
             )}

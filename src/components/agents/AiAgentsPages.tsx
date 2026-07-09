@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Bot, Play, Settings, X, ShieldAlert, 
-  Activity, CheckCircle2, Terminal, HelpCircle 
-} from 'lucide-react';
+import { X } from 'lucide-react';
 
 /* Shared UI Styles */
 const cardStyle: React.CSSProperties = {
@@ -87,7 +84,7 @@ const BaseAgentPage: React.FC<BaseAgentProps> = ({
   defaultPrompt,
   metrics,
   initialLogs,
-  placeholderParam
+  placeholderParam: _placeholderParam
 }) => {
   const [running, setRunning] = useState(false);
   const [modal, setModal] = useState(false);
@@ -178,7 +175,7 @@ const BaseAgentPage: React.FC<BaseAgentProps> = ({
               {logs.map((l, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}><code>{l.timestamp}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', padding: '14px 16px' }}>{l.task}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', padding: '14px 16px' }}>{l.task}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: l.status === 'Success' ? '#10b981' : '#f59e0b' }}>{l.status}</span>
                   </td>

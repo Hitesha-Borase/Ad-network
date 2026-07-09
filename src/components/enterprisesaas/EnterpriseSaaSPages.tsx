@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Server, Shield, Cpu, Database, Settings, ShieldCheck, 
-  RefreshCw, Play, X, Download, Plus, HardDrive, 
-  Activity, Sliders, ToggleLeft, ToggleRight, List, AlertTriangle
-} from 'lucide-react';
+import { X, ToggleLeft, ToggleRight } from 'lucide-react';
 
 /* Standard styles */
 const cardStyle: React.CSSProperties = {
@@ -190,7 +186,7 @@ export const SaasMultiTenant: React.FC = () => {
               {tenants.map((t, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}><code>{t.id}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{t.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{t.name}</td>
                   <td style={tableCellStyle}><code>{t.dbName}</code></td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', backgroundColor: 'rgba(99,102,241,0.15)', color: '#818cf8', padding: '3px 8px', borderRadius: '4px' }}>{t.mode}</span>
@@ -317,7 +313,7 @@ export const SaasOrganization: React.FC = () => {
             <tbody>
               {orgs.map((o, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{o.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{o.name}</td>
                   <td style={tableCellStyle}><code>{o.seatLimit}</code></td>
                   <td style={tableCellStyle}>{o.activeUsers} users</td>
                   <td style={tableCellStyle}>{o.roleHierarchy}</td>
@@ -393,7 +389,7 @@ export const SaasBusinessUnits: React.FC = () => {
               {bus.map((b, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}><code>{b.id}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{b.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{b.name}</td>
                   <td style={tableCellStyle}><code>{b.costCenter}</code></td>
                   <td style={tableCellStyle}>{b.budget}</td>
                 </tr>
@@ -467,7 +463,7 @@ export const SaasDataCenters: React.FC = () => {
             <tbody>
               {regions.map((r, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.region}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.region}</td>
                   <td style={tableCellStyle}>{r.mode}</td>
                   <td style={tableCellStyle}><code>{r.latency}</code></td>
                   <td style={tableCellStyle}>
@@ -543,7 +539,7 @@ export const SaasHighAvailability: React.FC = () => {
             <tbody>
               {replicas.map((r, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.name}</td>
                   <td style={tableCellStyle}>{r.type}</td>
                   <td style={tableCellStyle}><code>{r.load}</code></td>
                   <td style={tableCellStyle}>
@@ -617,7 +613,7 @@ export const SaasDisasterRecovery: React.FC = () => {
             <tbody>
               {logs.map((l, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{l.event}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{l.event}</td>
                   <td style={tableCellStyle}><code>{l.rto}</code></td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: '#10b981' }}>{l.status}</span>
@@ -686,7 +682,7 @@ export const SaasBackupRestore: React.FC = () => {
                 <tr key={idx}>
                   <td style={tableCellStyle}><code>{b.id}</code></td>
                   <td style={tableCellStyle}>{b.size}</td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', padding: '14px 16px' }}>{b.timestamp}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', padding: '14px 16px' }}>{b.timestamp}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: '#10b981' }}>{b.status}</span>
                   </td>
@@ -709,7 +705,7 @@ export const SaasBackupRestore: React.FC = () => {
 
       <Modal isOpen={restoreModal} onClose={() => setRestoreModal(false)} title="Restore Database Point">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', fontSize: '13px' }}>
-          <p style={{ color: '#aaaaaa', color: '#ef4444' }}><strong>CAUTION:</strong> Restoring the database will overwrite all active transactions with the snapshot state. This action cannot be undone.</p>
+          <p style={{ color: '#ef4444' }}><strong>CAUTION:</strong> Restoring the database will overwrite all active transactions with the snapshot state. This action cannot be undone.</p>
           <div>
             <label style={{ fontSize: '12px', color: '#888888', display: 'block', marginBottom: '6px' }}>Target Backup Snapshot</label>
             <select style={selectStyle}>
@@ -768,7 +764,7 @@ export const SaasFeatureFlags: React.FC = () => {
             <tbody>
               {flags.map((f, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontFamily: 'monospace', fontSize: '12.5px', padding: '14px 16px' }}>{f.key}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontFamily: 'monospace', fontSize: '12.5px', padding: '14px 16px' }}>{f.key}</td>
                   <td style={tableCellStyle}>{f.description}</td>
                   <td style={tableCellStyle}><code>{f.target}</code></td>
                   <td style={tableCellStyle}>
@@ -866,7 +862,7 @@ export const SaasTenantCustomization: React.FC = () => {
    ============================================================================ */
 export const SaasUsageBilling: React.FC = () => {
   const [ledgerModal, setLedgerModal] = useState(false);
-  const [consumption, setConsumption] = useState([
+  const [consumption] = useState([
     { tenant: 'Starlight Globals', metric: 'API Queries', consumedUnits: '45,890 units', rate: '$0.002 / unit', totalCost: '$91.78' },
     { tenant: 'Infinity Techs', metric: 'DB Transmissions', consumedUnits: '1,200 GB', rate: '$0.15 / GB', totalCost: '$180.00' }
   ]);
@@ -900,11 +896,11 @@ export const SaasUsageBilling: React.FC = () => {
             <tbody>
               {consumption.map((c, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.tenant}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.tenant}</td>
                   <td style={tableCellStyle}>{c.metric}</td>
                   <td style={tableCellStyle}><code>{c.consumedUnits}</code></td>
                   <td style={tableCellStyle}>{c.rate}</td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{c.totalCost}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{c.totalCost}</td>
                 </tr>
               ))}
             </tbody>
@@ -931,7 +927,7 @@ export const SaasUsageBilling: React.FC = () => {
    ============================================================================ */
 export const SaasSubscription: React.FC = () => {
   const [renewModal, setRenewModal] = useState(false);
-  const [contracts, setContracts] = useState([
+  const [contracts] = useState([
     { client: 'Starlight Globals', plan: 'Enterprise Gold', value: '$12,000/yr', renewal: '09/01/2026' }
   ]);
 
@@ -963,9 +959,9 @@ export const SaasSubscription: React.FC = () => {
             <tbody>
               {contracts.map((c, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.client}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.client}</td>
                   <td style={tableCellStyle}>{c.plan}</td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{c.value}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{c.value}</td>
                   <td style={tableCellStyle}>{c.renewal}</td>
                 </tr>
               ))}
@@ -1043,7 +1039,7 @@ export const SaasAuditTrails: React.FC = () => {
             <tbody>
               {logs.map((l, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{l.actor}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{l.actor}</td>
                   <td style={tableCellStyle}>{l.action}</td>
                   <td style={tableCellStyle}><code>{l.module}</code></td>
                   <td style={tableCellStyle}>{l.timestamp}</td>
@@ -1064,8 +1060,8 @@ export const SaasAuditTrails: React.FC = () => {
 export const SaasRateLimiting: React.FC = () => {
   const [limitModal, setLimitModal] = useState(false);
   const [rules, setRules] = useState([
-    { path: '/api/v1/recommendations/*', maxRequests: '100 req/sec', penalty: '429 Throttle', status: 'Enforced' },
-    { path: '/api/v1/auth/*', maxRequests: '20 req/min', penalty: 'IP Block 1 hr', status: 'Enforced' }
+    { path: '/api/v1/recommendations/*', max: '100 req/sec', penalty: '429 Throttle', status: 'Enforced' },
+    { path: '/api/v1/auth/*', max: '20 req/min', penalty: 'IP Block 1 hr', status: 'Enforced' }
   ]);
   const [form, setForm] = useState({ path: '', max: '100 req/sec', penalty: '429 Throttle' });
 
@@ -1097,7 +1093,7 @@ export const SaasRateLimiting: React.FC = () => {
             <tbody>
               {rules.map((r, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontFamily: 'monospace', fontSize: '12.5px', padding: '14px 16px' }}>{r.path}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontFamily: 'monospace', fontSize: '12.5px', padding: '14px 16px' }}>{r.path}</td>
                   <td style={tableCellStyle}><code>{r.max}</code></td>
                   <td style={tableCellStyle}>{r.penalty}</td>
                   <td style={tableCellStyle}>

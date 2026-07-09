@@ -1,5 +1,5 @@
 import React from 'react';
-import { Briefcase, Upload, Type, Palette, FileText, Image as ImageIcon, Plus, Folder, Trash2, Download, Eye } from 'lucide-react';
+import { Briefcase, Upload, Type, Palette, FileText, Image as ImageIcon, Plus, Folder, Download, Eye } from 'lucide-react';
 
 export const BrandAssets: React.FC<{ mode?: string }> = ({ mode = 'aicreative-brand' }) => {
   const isBrand = mode === 'aicreative-brand';

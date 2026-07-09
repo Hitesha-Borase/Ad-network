@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Users, CheckCircle2, AlertCircle, Play, 
-  Settings, X, Plus, Activity, TrendingUp, 
-  BarChart3, DollarSign, Database, Award, 
-  FileText, ShieldCheck, Calculator, Sparkles, RefreshCw
-} from 'lucide-react';
+import { X } from 'lucide-react';
 
 /* Standard styles */
 const cardStyle: React.CSSProperties = {
@@ -185,7 +180,7 @@ export const CrmLeadManagement: React.FC = () => {
             <tbody>
               {leads.map((l, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{l.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{l.name}</td>
                   <td style={tableCellStyle}><code>{l.email}</code></td>
                   <td style={tableCellStyle}>{l.source}</td>
                   <td style={tableCellStyle}>
@@ -307,10 +302,10 @@ export const CrmOpportunityTracking: React.FC = () => {
             <tbody>
               {opps.map((o, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{o.client}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{o.client}</td>
                   <td style={tableCellStyle}>{o.tier}</td>
                   <td style={tableCellStyle}><code>{o.CloseDate}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{o.probability}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{o.probability}</td>
                 </tr>
               ))}
             </tbody>
@@ -371,7 +366,7 @@ export const CrmSalesAutomation: React.FC = () => {
               {rules.map((r, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}>{r.event}</td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.action}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.action}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: '#10b981' }}>{r.status}</span>
                   </td>
@@ -439,7 +434,7 @@ export const CrmProposalGenerator: React.FC = () => {
             <tbody>
               {proposals.map((p, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{p.title}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{p.title}</td>
                   <td style={tableCellStyle}>{p.recipient}</td>
                   <td style={tableCellStyle}><code>{p.estimatedPrice}</code></td>
                   <td style={tableCellStyle}>{p.status}</td>
@@ -506,7 +501,7 @@ export const CrmContractManagement: React.FC = () => {
             <tbody>
               {contracts.map((c, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.name}</td>
                   <td style={tableCellStyle}>{c.tier}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: '#10b981' }}>{c.status}</span>
@@ -577,10 +572,10 @@ export const CrmQuoteBuilder: React.FC = () => {
               {quotes.map((q, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}><code>{q.code}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{q.client}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{q.client}</td>
                   <td style={tableCellStyle}>{q.itemsPrice}</td>
                   <td style={tableCellStyle}><code>{q.tax}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{q.total}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{q.total}</td>
                 </tr>
               ))}
             </tbody>
@@ -656,7 +651,7 @@ export const CrmAiSalesAssistant: React.FC = () => {
    ============================================================================ */
 export const CrmForecastingDashboard: React.FC = () => {
   const [running, setRunning] = useState(false);
-  const [projections, setProjections] = useState([
+  const [projections] = useState([
     { quarter: 'Q3 2026', projectedRevenue: '$245,000', confidenceInterval: '92% Likelihood', status: 'Calculated' }
   ]);
 
@@ -696,8 +691,8 @@ export const CrmForecastingDashboard: React.FC = () => {
             <tbody>
               {projections.map((p, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{p.quarter}</td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{p.projectedRevenue}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{p.quarter}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{p.projectedRevenue}</td>
                   <td style={tableCellStyle}><code>{p.confidenceInterval}</code></td>
                   <td style={tableCellStyle}>{p.status}</td>
                 </tr>
@@ -743,10 +738,10 @@ export const CrmCommissionTracking: React.FC = () => {
             <tbody>
               {reps.map((r, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.name}</td>
                   <td style={tableCellStyle}>{r.margins}</td>
                   <td style={tableCellStyle}><code>{r.rate}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{r.payout}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{r.payout}</td>
                 </tr>
               ))}
             </tbody>

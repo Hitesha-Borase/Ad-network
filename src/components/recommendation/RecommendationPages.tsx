@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Sparkles, Bot, LineChart, TrendingUp, Sliders, 
-  HelpCircle, Eye, Check, X, FileText, Download, 
-  RefreshCw, CheckCircle2, ChevronRight, Activity
-} from 'lucide-react';
+import { X } from 'lucide-react';
 
 /* Standard styles */
 const cardStyle: React.CSSProperties = {
@@ -190,7 +186,7 @@ export const RecoProduct: React.FC = () => {
             <tbody>
               {associations.map((a, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{a.primaryProduct}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{a.primaryProduct}</td>
                   <td style={tableCellStyle}>{a.recommendedCrossSell}</td>
                   <td style={tableCellStyle}>{a.support}</td>
                   <td style={tableCellStyle}>
@@ -280,7 +276,7 @@ export const RecoCampaign: React.FC = () => {
             <tbody>
               {recommendations.map((r, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.campaign}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.campaign}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '12px', color: '#ef4444' }}>{r.alert}</span>
                   </td>
@@ -317,7 +313,7 @@ export const RecoCampaign: React.FC = () => {
    ============================================================================ */
 export const RecoBudget: React.FC = () => {
   const [redistributeModal, setRedistributeModal] = useState(false);
-  const [schedules, setSchedules] = useState([
+  const [schedules] = useState([
     { sourceCampaign: 'Google Brand Search', targetCampaign: 'Meta Lookalike Core', suggestedAmount: '$2,500.00', reason: 'Better ROAS calculated (4.2x vs 1.8x)', date: 'Today' }
   ]);
 
@@ -351,8 +347,8 @@ export const RecoBudget: React.FC = () => {
               {schedules.map((s, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}>{s.sourceCampaign}</td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{s.targetCampaign}</td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{s.suggestedAmount}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{s.targetCampaign}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{s.suggestedAmount}</td>
                   <td style={tableCellStyle}>{s.reason}</td>
                   <td style={tableCellStyle}>{s.date}</td>
                 </tr>
@@ -419,7 +415,7 @@ export const RecoAudience: React.FC = () => {
               {audiences.map((a, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}>{a.baseSegment}</td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{a.recommendedLookalike}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{a.recommendedLookalike}</td>
                   <td style={tableCellStyle}><code>{a.size}</code></td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: a.status === 'Synced' ? '#10b981' : '#f59e0b' }}>{a.status}</span>
@@ -491,7 +487,7 @@ export const RecoKeyword: React.FC = () => {
             <tbody>
               {keywords.map((k, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{k.term}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{k.term}</td>
                   <td style={tableCellStyle}><code>{k.monthlyVolume}</code></td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: k.competition === 'Low' ? '#10b981' : '#ef4444' }}>{k.competition}</span>
@@ -538,7 +534,7 @@ export const RecoKeyword: React.FC = () => {
    ============================================================================ */
 export const RecoCreative: React.FC = () => {
   const [abTestModal, setAbTestModal] = useState(false);
-  const [creatives, setCreatives] = useState([
+  const [creatives] = useState([
     { channel: 'Meta Newsfeed Feed', baselineCreative: 'Standard Product Headline', suggestedCreative: 'Ask a Question headline + vibrant overlay color', status: 'Pending Review' }
   ]);
 
@@ -572,7 +568,7 @@ export const RecoCreative: React.FC = () => {
                 <tr key={idx}>
                   <td style={tableCellStyle}>{c.channel}</td>
                   <td style={tableCellStyle}>{c.baselineCreative}</td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 500, padding: '14px 16px' }}>{c.suggestedCreative}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 500, padding: '14px 16px' }}>{c.suggestedCreative}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: '#f59e0b' }}>{c.status}</span>
                   </td>
@@ -643,9 +639,9 @@ export const RecoPricing: React.FC = () => {
             <tbody>
               {elasticity.map((e, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{e.tier}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{e.tier}</td>
                   <td style={tableCellStyle}>{e.currentPrice}</td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{e.suggestedPrice}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{e.suggestedPrice}</td>
                   <td style={tableCellStyle}>{e.forecastVolume}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: '#10b981' }}>{e.status}</span>

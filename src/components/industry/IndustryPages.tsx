@@ -3,8 +3,8 @@ import {
   Heart, TrendingUp, Home, BookOpen, Car, Plane, Hotel, ShoppingCart,
   Layers, Gamepad2, DollarSign, Truck, Factory, Landmark, HandHeart,
   Users, BarChart2, Globe, Shield, Zap, CheckCircle2, AlertTriangle,
-  Clock, ArrowUp, ArrowDown, Target, Star, Package, Wifi, Activity,
-  MapPin, Phone, Mail, Calendar, Plus, Download, ChevronRight, Bell
+  Clock, Target, Star, Package, Activity,
+  MapPin, Calendar, Plus, Download, ChevronRight, Bell
 } from 'lucide-react';
 
 // ─── SHARED UTILITIES ────────────────────────────────────────────

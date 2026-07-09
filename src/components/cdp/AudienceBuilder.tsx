@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  Users, Plus, Save, Play, X, Activity, Check, Trash2, ChevronDown,
-  Target, Compass, Zap, TrendingUp, DollarSign, Globe, Database, Store, Layers
-} from 'lucide-react';
+import { Users, Plus, Save, Play, X, Activity, Check, Target, Compass, Zap, TrendingUp, DollarSign, Globe, Database, Store, Layers } from 'lucide-react';
 
 type RuleType = 'include' | 'exclude';
 type LogicOp = 'AND' | 'OR';

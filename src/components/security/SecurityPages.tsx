@@ -3,9 +3,7 @@ import {
   AreaChart, Area, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip
 } from 'recharts';
 import { 
-  Shield, ShieldAlert, ShieldCheck, ShieldX, Key, Lock, FileText, 
-  Terminal, Activity, RefreshCw, Trash2, Eye, EyeOff, Search, 
-  Settings, Plus, HelpCircle, UserCheck, Play, Download
+  RefreshCw, Trash2, Eye, EyeOff
 } from 'lucide-react';
 
 // Common visual styles matching the dark premium theme
@@ -125,7 +123,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
    1. Threat Detection
    ---------------------------------------------------- */
 export const SecurityThreatDetection: React.FC = () => {
-  const [threats, setThreats] = useState([
+  const [threats] = useState([
     { id: 'TR-9902', vector: 'Brute Force Login Attempt', sev: 'High', sevColor: '#ef4444', ip: '198.51.100.42', status: 'IP Blocked (Permanent)' },
     { id: 'TR-9901', vector: 'SQL Injection Attempt', sev: 'Critical', sevColor: '#dc2626', ip: '203.0.113.88', status: 'Request Dropped & Logged' },
     { id: 'TR-9900', vector: 'XSS Payload in Form Field', sev: 'Medium', sevColor: '#f59e0b', ip: '192.0.2.55', status: 'Sanitized by WAF' },
@@ -1223,6 +1221,16 @@ export const SecurityMonitoring: React.FC = () => {
               required 
               value={slackUrl} 
               onChange={(e) => setSlackUrl(e.target.value)} 
+              style={inputStyle} 
+            />
+          </div>
+          <div style={formGroupStyle}>
+            <label style={labelStyle}>Target Slack Channels</label>
+            <input 
+              type="text" 
+              required 
+              value={channels} 
+              onChange={(e) => setChannels(e.target.value)} 
               style={inputStyle} 
             />
           </div>

@@ -3,6 +3,10 @@ import {
   Search, Mail, Plus, Send, X, Layout, Globe, Users, Bot, Zap
 } from 'lucide-react';
 
+const triggerToast = (msg: string) => {
+  window.dispatchEvent(new CustomEvent('show-toast', { detail: msg }));
+};
+
 /* ----------------------------------------------------
    1. COMMUNICATION INBOX
    ---------------------------------------------------- */

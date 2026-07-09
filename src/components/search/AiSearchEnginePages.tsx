@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Search, Link, RefreshCw, AlertCircle, Play, 
-  Settings, CheckCircle2, X, Plus, Activity, 
-  TrendingUp, BarChart3, Database, FileText, Layout
-} from 'lucide-react';
+import { X } from 'lucide-react';
 
 /* Standard styles */
 const cardStyle: React.CSSProperties = {
@@ -220,7 +216,7 @@ export const SearchSemantic: React.FC = () => {
 export const SearchVector: React.FC = () => {
   const [modal, setModal] = useState(false);
   const [syncing, setSyncing] = useState(false);
-  const [stats, setStats] = useState({ dimensions: 1536, indexedDocs: 140590, status: 'Synced' });
+  const [stats] = useState({ dimensions: 1536, indexedDocs: 140590, status: 'Synced' });
 
   useSearchEvents(
     'vector',
@@ -292,7 +288,7 @@ export const SearchVector: React.FC = () => {
 export const SearchKb: React.FC = () => {
   const [modal, setModal] = useState(false);
   const [syncing, setSyncing] = useState(false);
-  const [sources, setSources] = useState([
+  const [sources] = useState([
     { name: 'Developer API Guides Wiki', size: '12.4 MB', count: 48, status: 'Synced' },
     { name: 'HR Policies PDF directory', size: '4.8 MB', count: 12, status: 'Synced' }
   ]);
@@ -331,7 +327,7 @@ export const SearchKb: React.FC = () => {
             <tbody>
               {sources.map((s, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{s.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{s.name}</td>
                   <td style={tableCellStyle}>{s.size}</td>
                   <td style={tableCellStyle}><code>{s.count} docs</code></td>
                   <td style={tableCellStyle}>
@@ -398,7 +394,7 @@ export const SearchEnterprise: React.FC = () => {
             <tbody>
               {connectors.map((c, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.name}</td>
                   <td style={tableCellStyle}>{c.type}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: '#10b981' }}>{c.status}</span>
@@ -479,10 +475,10 @@ export const SearchDocIntel: React.FC = () => {
             <tbody>
               {documents.map((d, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{d.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{d.name}</td>
                   <td style={tableCellStyle}>{d.type}</td>
                   <td style={tableCellStyle}><code>{d.parsedFields} keys</code></td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{d.score}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{d.score}</td>
                 </tr>
               ))}
             </tbody>

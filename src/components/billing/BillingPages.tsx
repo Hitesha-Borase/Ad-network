@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   AreaChart, Area, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip
 } from 'recharts';
-import { 
-  CheckCircle, AlertCircle, X, Download, Plus, Settings, DollarSign, 
-  CreditCard, Percent, FileText, Check, FileSpreadsheet, History, 
-  UserPlus, RefreshCw, AlertTriangle, Activity, ShieldCheck, Tag
-} from 'lucide-react';
+import { CheckCircle, AlertCircle, X, Download } from 'lucide-react';
 
 const revenueData = [
   { month: 'Jan', revenue: 42000 },
@@ -1558,7 +1554,7 @@ export const BillingTransactions: React.FC = () => {
    7. BILLING USAGE
    ---------------------------------------------------- */
 export const BillingUsage: React.FC = () => {
-  const [usages, setUsages] = useState([
+  const [usages] = useState([
     { label: 'API Queries Processed', val: '842,450', limit: 1000000, used: 84.2, color: '#f59e0b' },
     { label: 'WhatsApp Segments Sent', val: '24,150', limit: 50000, used: 48.3, color: '#6366f1' },
     { label: 'Active LLM Tokens', val: '1.2M', limit: 5000000, used: 24, color: '#10b981' },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Search, Grid, Compass, Heart, Download } from 'lucide-react';
+import { Layout, Search, Download } from 'lucide-react';
 
 interface Template {
   id: string;

@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Building2, Briefcase, Settings2, Users, Clock, 
-  CreditCard, CheckSquare, Megaphone, Calendar, Plus, 
-  Trash2, Play, RefreshCw, X, Download, ShieldCheck
-} from 'lucide-react';
+import { Briefcase, X } from 'lucide-react';
 
 /* Standard styles */
 const cardStyle: React.CSSProperties = {
@@ -156,7 +152,7 @@ const triggerToast = (msg: string) => {
 export const AgencyDashboard: React.FC = () => {
   const [accountModal, setAccountModal] = useState(false);
   const [whiteLabelModal, setWhiteLabelModal] = useState(false);
-  const [stats, setStats] = useState([
+  const [stats] = useState([
     { label: 'Total Managed MRR', value: '$84,500/mo', sub: '+12% this month' },
     { label: 'Active Workspaces', value: '14 Clients', sub: '2 pending sync' },
     { label: 'Hours Logged (July)', value: '382 hrs', sub: '92% billable' },
@@ -291,7 +287,7 @@ export const AgencyClientWorkspaces: React.FC = () => {
             <tbody>
               {workspaces.map((w, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{w.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{w.name}</td>
                   <td style={tableCellStyle}><code>{w.database}</code></td>
                   <td style={tableCellStyle}>{w.location}</td>
                   <td style={tableCellStyle}>
@@ -439,7 +435,7 @@ export const AgencyTeamManagement: React.FC = () => {
             <tbody>
               {team.map((t, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{t.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{t.name}</td>
                   <td style={tableCellStyle}>{t.email}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', backgroundColor: 'rgba(99,102,241,0.15)', color: '#818cf8', padding: '3px 8px', borderRadius: '4px' }}>{t.role}</span>
@@ -528,7 +524,7 @@ export const AgencyTimeTracking: React.FC = () => {
             <tbody>
               {timeEntries.map((e, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{e.engineer}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{e.engineer}</td>
                   <td style={tableCellStyle}>{e.project}</td>
                   <td style={tableCellStyle}><code>{e.duration}</code></td>
                   <td style={tableCellStyle}>{e.description}</td>
@@ -611,7 +607,7 @@ export const AgencyClientBilling: React.FC = () => {
               {invoices.map((inv, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}><code>{inv.id}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{inv.client}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{inv.client}</td>
                   <td style={tableCellStyle}>{inv.amount}</td>
                   <td style={tableCellStyle}>{inv.terms}</td>
                   <td style={tableCellStyle}>
@@ -711,7 +707,7 @@ export const AgencyClientApprovals: React.FC = () => {
             <tbody>
               {approvals.map((a, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{a.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{a.name}</td>
                   <td style={tableCellStyle}>{a.format}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: a.status === 'Approved' ? '#10b981' : '#f59e0b' }}>{a.status}</span>
@@ -816,7 +812,7 @@ export const AgencyCampaignWorkspace: React.FC = () => {
               {campaigns.map((c, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}><code>{c.id}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.name}</td>
                   <td style={tableCellStyle}>{c.channels}</td>
                   <td style={tableCellStyle}>{c.budget}</td>
                   <td style={tableCellStyle}>
@@ -910,7 +906,7 @@ export const AgencyResourcePlanning: React.FC = () => {
             <tbody>
               {allocations.map((a, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{a.resource}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{a.resource}</td>
                   <td style={tableCellStyle}>{a.allocation}</td>
                   <td style={tableCellStyle}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

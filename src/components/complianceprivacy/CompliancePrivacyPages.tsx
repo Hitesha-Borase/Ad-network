@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  ShieldAlert, FileText, CheckCircle, Download, UserCheck, 
-  MapPin, Activity, Database, Trash2, Globe, Key, FileCheck, 
-  Eye, Settings, ExternalLink, X, AlertCircle
-} from 'lucide-react';
+import { FileText, CheckCircle, UserCheck, Activity, Globe, FileCheck, Settings, ExternalLink, X, AlertCircle } from 'lucide-react';
 
 /* Standard styles */
 const cardStyle: React.CSSProperties = {
@@ -663,7 +659,7 @@ export const ComplianceDataRetention: React.FC = () => {
             <tbody>
               {rules.map((rule, i) => (
                 <tr key={i}>
-                  <td style={tableCellStyle} style={{ fontWeight: 600, color: '#ffffff', padding: '14px 16px' }}>{rule.category}</td>
+                  <td style={{ ...tableCellStyle, fontWeight: 600, color: '#ffffff', padding: '14px 16px' }}>{rule.category}</td>
                   <td style={tableCellStyle}>{rule.retention}</td>
                   <td style={tableCellStyle}><code>{rule.trigger}</code></td>
                   <td style={tableCellStyle}>
@@ -750,7 +746,7 @@ export const ComplianceDataResidency: React.FC = () => {
             <tbody>
               {activeRegions.map((reg, i) => (
                 <tr key={i}>
-                  <td style={tableCellStyle} style={{ fontWeight: 600, color: '#ffffff', padding: '14px 16px' }}>{reg.region}</td>
+                  <td style={{ ...tableCellStyle, fontWeight: 600, color: '#ffffff', padding: '14px 16px' }}>{reg.region}</td>
                   <td style={tableCellStyle}><code>{reg.code}</code></td>
                   <td style={tableCellStyle}>{reg.usage}</td>
                   <td style={tableCellStyle}>
@@ -801,7 +797,7 @@ export const ComplianceDataResidency: React.FC = () => {
    ============================================================================ */
 export const ComplianceConsentLogs: React.FC = () => {
   const [filterModal, setFilterModal] = useState(false);
-  const [logs, setLogs] = useState([
+  const [logs] = useState([
     { id: 'TX-99081', ip: '192.168.1.45', category: 'GDPR Opt-In', status: 'Accepted', date: '07/08/2026 11:24:02' },
     { id: 'TX-99042', ip: '108.24.90.111', category: 'CCPA DNS Opt-Out', status: 'Withdrawn', date: '07/08/2026 09:12:11' },
     { id: 'TX-98991', ip: '82.204.14.89', category: 'Cookie consent banner choice', status: 'Accepted', date: '07/07/2026 18:45:30' }
@@ -923,7 +919,7 @@ export const ComplianceRightToErasure: React.FC = () => {
               {requests.map((r, i) => (
                 <tr key={i}>
                   <td style={tableCellStyle}><code>{r.ticket}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 500, padding: '14px 16px' }}>{r.email}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 500, padding: '14px 16px' }}>{r.email}</td>
                   <td style={tableCellStyle}>{r.scope}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: r.status === 'Completed' ? '#10b981' : '#f59e0b' }}>{r.status}</span>

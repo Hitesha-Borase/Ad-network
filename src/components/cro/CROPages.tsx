@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Play, Pause, Video, Monitor, Smartphone, Tablet, MousePointerClick,
-  Eye, ArrowDown, TrendingDown, Users, Target,
+  ArrowDown, TrendingDown, Users, Target,
   GitFork, AlertTriangle, CheckCircle2, X,
   RefreshCw, Download, Plus, ToggleLeft, ToggleRight,
   ChevronRight, ChevronDown,

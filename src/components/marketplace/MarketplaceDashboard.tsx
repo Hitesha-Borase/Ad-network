@@ -5,7 +5,7 @@ import {
 } from 'recharts';
 import { 
   Search, Filter, ShoppingCart, Heart, ChevronDown, Bot, Zap, 
-  Clock, Download, Star, Code, Layout, Palette, Briefcase, ShieldCheck, X, Plus, Upload, BookOpen
+  Clock, Download, Star, Code, Layout, Palette, Briefcase, ShieldCheck, X
 } from 'lucide-react';
 
 // App design system colors
@@ -23,19 +23,9 @@ const grayColors = {
   shades: ['#6366f1', '#a855f7', '#10b981', '#f59e0b', '#0ea5e9', '#ef4444']
 };
 
-const card: React.CSSProperties = {
-  background: 'var(--bg-card, rgba(22, 28, 38, 0.6))',
-  border: '1px solid var(--border-color, rgba(255, 255, 255, 0.08))',
-  borderRadius: '12px',
-  padding: '20px',
-};
 
-const statCard: React.CSSProperties = {
-  ...card,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-};
+
+
 
 const tableHead: React.CSSProperties = {
   padding: '12px 16px',
@@ -318,7 +308,7 @@ export const MarketplaceDashboard: React.FC<MarketplaceDashboardProps> = ({ acti
     { name: 'Meta Ads Copywriter', type: 'AI Prompt', instVer: 'v1.1.0', latVer: 'v1.1.0', status: 'Active', autoUp: true, updated: '2 days ago', license: 'Free' }
   ]);
 
-  const [purchasesData, setPurchasesData] = useState([
+  const [purchasesData] = useState([
     { id: 'INV-4409', item: 'HubSpot Sync Plugin (Annual Subscription)', cost: '$499.00', date: '06/15/2026', renewal: '06/15/2027', key: 'KOS-HBS-99120-X89', status: 'Active' },
     { id: 'INV-3982', item: 'NeoDark Pro Premium Theme', cost: '$59.00', date: '04/10/2026', renewal: 'N/A (Lifetime)', key: 'KOS-NDP-20381-Y12', status: 'Completed' },
     { id: 'INV-3210', item: 'SaaS Lead Gen Landing Page Template', cost: '$0.00', date: '03/01/2026', renewal: 'N/A', key: 'N/A (Free)', status: 'Completed' }

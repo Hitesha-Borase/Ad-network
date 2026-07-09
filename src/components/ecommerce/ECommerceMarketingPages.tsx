@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  ShoppingBag, Link, RefreshCw, AlertCircle, Play, 
-  Settings, CheckCircle2, X, Plus, Activity, 
-  TrendingUp, BarChart3, Users, DollarSign, Database
-} from 'lucide-react';
+import { X } from 'lucide-react';
 
 /* Standard styles */
 const cardStyle: React.CSSProperties = {
@@ -198,7 +194,7 @@ export const EcomProductFeed: React.FC = () => {
               {feeds.map((f, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}><code>{f.id}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{f.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{f.name}</td>
                   <td style={tableCellStyle}>{f.items} items</td>
                   <td style={tableCellStyle}>{f.interval}</td>
                   <td style={tableCellStyle}>{f.lastSync}</td>
@@ -242,7 +238,7 @@ export const EcomProductFeed: React.FC = () => {
    ============================================================================ */
 export const EcomGoogleMerchant: React.FC = () => {
   const [logsModal, setLogsModal] = useState(false);
-  const [stats, setStats] = useState({ accountId: '98124099', itemsApproved: 4492, itemsDisapproved: 18, connection: 'Authenticated' });
+  const [stats] = useState({ accountId: '98124099', itemsApproved: 4492, itemsDisapproved: 18, connection: 'Authenticated' });
 
   useEcomEvents(
     'merchant',
@@ -459,7 +455,7 @@ export const EcomDynamicAds: React.FC = () => {
             <tbody>
               {campaigns.map((c, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.name}</td>
                   <td style={tableCellStyle}><code>{c.budget}</code></td>
                   <td style={tableCellStyle}>{c.conversions} Sales</td>
                   <td style={tableCellStyle}>
@@ -531,7 +527,7 @@ export const EcomCartRecovery: React.FC = () => {
             <tbody>
               {sequences.map((s, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{s.triggerDelay}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{s.triggerDelay}</td>
                   <td style={tableCellStyle}>{s.channel}</td>
                   <td style={tableCellStyle}><code>{s.discount}</code></td>
                   <td style={tableCellStyle}>
@@ -616,9 +612,9 @@ export const EcomAiUpsell: React.FC = () => {
               {upsells.map((u, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}>{u.triggerTier}</td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{u.upsellOffer}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{u.upsellOffer}</td>
                   <td style={tableCellStyle}>{u.acceptRate}</td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{u.revenueLift}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{u.revenueLift}</td>
                 </tr>
               ))}
             </tbody>
@@ -686,7 +682,7 @@ export const EcomAiCrossSell: React.FC = () => {
               {crossSells.map((c, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}>{c.triggerCategory}</td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.recommendedCross}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{c.recommendedCross}</td>
                   <td style={tableCellStyle}><code>{c.supportRate}</code></td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: '#10b981' }}>{c.status}</span>
@@ -724,7 +720,7 @@ export const EcomAiCrossSell: React.FC = () => {
    ============================================================================ */
 export const EcomClvPrediction: React.FC = () => {
   const [running, setRunning] = useState(false);
-  const [predictions, setPredictions] = useState([
+  const [predictions] = useState([
     { segments: 'VIP Purchase Cohort', churnRisk: '2.4%', predictedClv: '$12,450.00', status: 'Calculated' }
   ]);
 
@@ -764,11 +760,11 @@ export const EcomClvPrediction: React.FC = () => {
             <tbody>
               {predictions.map((p, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{p.segments}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{p.segments}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '12px', color: '#10b981' }}>{p.churnRisk}</span>
                   </td>
-                  <td style={tableCellStyle} style={{ color: '#10b981', fontWeight: 700 }}>{p.predictedClv}</td>
+                  <td style={{ ...tableCellStyle, color: '#10b981', fontWeight: 700 }}>{p.predictedClv}</td>
                   <td style={tableCellStyle}>{p.status}</td>
                 </tr>
               ))}
@@ -819,7 +815,7 @@ export const EcomProductRecommendation: React.FC = () => {
             <tbody>
               {widgets.map((w, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{w.location}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{w.location}</td>
                   <td style={tableCellStyle}>{w.algorithm}</td>
                   <td style={tableCellStyle}><code>{w.maxItems} items</code></td>
                   <td style={tableCellStyle}>

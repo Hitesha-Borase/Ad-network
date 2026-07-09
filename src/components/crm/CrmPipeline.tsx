@@ -158,7 +158,10 @@ export const CrmPipeline: React.FC = () => {
               { icon: DollarSign, label: 'Close Date', val: selectedDeal.closeDate ?? 'TBD' },
             ].map(({ icon: Icon, label, val }) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px' }}>
-                <span style={{ color: 'var(--text-secondary)' }}>{label}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Icon size={14} style={{ color: 'var(--text-muted)' }}/>
+                  <span style={{ color: 'var(--text-secondary)' }}>{label}</span>
+                </div>
                 <span style={{ fontWeight: 600 }}>{val}</span>
               </div>
             ))}

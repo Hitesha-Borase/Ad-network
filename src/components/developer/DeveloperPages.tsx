@@ -3,9 +3,8 @@ import {
   AreaChart, Area, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip
 } from 'recharts';
 import { 
-  Code, Zap, Globe, Terminal, Database, TrendingUp, CheckCircle, 
-  AlertTriangle, Copy, Trash2, Key, HelpCircle, Shield, Play, 
-  RefreshCw, Layers, Compass, Download, Settings, Server, Plus
+  Code, Zap, Globe, Database, TrendingUp, CheckCircle, 
+  AlertTriangle, Copy, Trash2, Play, Layers
 } from 'lucide-react';
 
 // Common visual styles matching the main dark theme
@@ -936,7 +935,7 @@ export const DeveloperCli: React.FC = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* Terminal Emulator */}
       <div className="glass-card" style={{ background: '#080808', border: '1px solid #333333', fontFamily: 'monospace', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyItems: 'space-between', borderBottom: '1px solid #1a1a1a', pb: '10px', width: '100%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyItems: 'space-between', borderBottom: '1px solid #1a1a1a', paddingBottom: '10px', width: '100%' }}>
           <div style={{ display: 'flex', gap: '6px' }}>
             <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ef4444', display: 'inline-block' }}></span>
             <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#eab308', display: 'inline-block' }}></span>

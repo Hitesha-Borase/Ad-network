@@ -1,22 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {
-  AreaChart, Area, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip
-} from 'recharts';
 import { 
-  TrendingUp, CheckCircle, AlertTriangle, Zap, Users, Clock, Star, 
-  BookOpen, MessageCircle, Bot, X, Send, Sliders, Database, Search, 
-  ArrowRight, ShieldCheck, Mail, Sparkles, Filter 
+  TrendingUp, CheckCircle, AlertTriangle, Zap, Users, Star, 
+  BookOpen, MessageCircle, Bot, X, Send, Search 
 } from 'lucide-react';
-
-const ticketTrend = [
-  { day: 'Mon', tickets: 45 },
-  { day: 'Tue', tickets: 55 },
-  { day: 'Wed', tickets: 40 },
-  { day: 'Thu', tickets: 65 },
-  { day: 'Fri', tickets: 50 },
-  { day: 'Sat', tickets: 20 },
-  { day: 'Sun', tickets: 15 }
-];
 
 const thHead = { padding: '12px 14px', color: '#888888', fontWeight: 600, fontSize: '11px', textTransform: 'uppercase' as const, letterSpacing: '0.05em', borderBottom: '1px solid #333333' };
 const thCell = { padding: '12px 14px', color: '#aaaaaa', borderBottom: '1px solid #222222', fontSize: '13px' };
@@ -286,7 +272,7 @@ export const CustomerSuccessTickets: React.FC = () => {
                   <td style={thCell}>{row.agent}</td>
                   <td style={thCell}><span style={badge(row.sc)}>{row.status}</span></td>
                   <td style={thCell}>
-                    <button onClick={() => handleSelectTicket(row)} style={{ border: 'none', backgroundColor: '#222222', border: '1px solid #333333', color: '#ffffff', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer' }}>View Thread</button>
+                    <button onClick={() => handleSelectTicket(row)} style={{ backgroundColor: '#222222', border: '1px solid #333333', color: '#ffffff', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer' }}>View Thread</button>
                   </td>
                 </tr>
               ))}
@@ -295,7 +281,6 @@ export const CustomerSuccessTickets: React.FC = () => {
         </div>
       </div>
 
-      {/* MODAL: NEW TICKET */}
       <Modal isOpen={!!modalState['new-ticket']} onClose={() => closeModal('new-ticket')} title="Create Support Ticket">
         <form onSubmit={handleCreateTicket} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={formGroupStyle}>
@@ -332,7 +317,6 @@ export const CustomerSuccessTickets: React.FC = () => {
         </form>
       </Modal>
 
-      {/* MODAL: ASSIGN TICKET */}
       <Modal isOpen={!!modalState['assign']} onClose={() => closeModal('assign')} title="Assign Pending Support Ticket">
         <form onSubmit={handleAssignTicket} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={formGroupStyle}>
@@ -357,7 +341,6 @@ export const CustomerSuccessTickets: React.FC = () => {
         </form>
       </Modal>
 
-      {/* MODAL: TICKET CHAT WINDOW */}
       <Modal isOpen={!!modalState['ticket-details']} onClose={() => closeModal('ticket-details')} title={selectedTicket ? `Chat Logs: ${selectedTicket.id}` : ''}>
         {selectedTicket && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -482,7 +465,7 @@ export const CustomerSuccessKb: React.FC = () => {
                   <td style={{ ...thCell, color: '#ffffff', fontWeight: 600 }}>{row.views}</td>
                   <td style={thCell}><span style={badge(row.sc)}>{row.status}</span></td>
                   <td style={thCell}>
-                    <button onClick={() => handleSelectArticle(row)} style={{ border: 'none', backgroundColor: '#222222', border: '1px solid #333333', color: '#ffffff', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer' }}>Read Article</button>
+                    <button onClick={() => handleSelectArticle(row)} style={{ backgroundColor: '#222222', border: '1px solid #333333', color: '#ffffff', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer' }}>Read Article</button>
                   </td>
                 </tr>
               ))}
@@ -491,7 +474,6 @@ export const CustomerSuccessKb: React.FC = () => {
         </div>
       </div>
 
-      {/* MODAL: CREATE ARTICLE */}
       <Modal isOpen={!!modalState['create-article']} onClose={() => closeModal('create-article')} title="Create Help Article">
         <form onSubmit={handleCreateArticle} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={formGroupStyle}>
@@ -529,7 +511,6 @@ export const CustomerSuccessKb: React.FC = () => {
         </form>
       </Modal>
 
-      {/* MODAL: PUBLISH DRAFTS CHECKLIST */}
       <Modal isOpen={!!modalState['publish-drafts']} onClose={() => closeModal('publish-drafts')} title="Publish Pending Drafts">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <p style={{ fontSize: '13px', color: '#9ca3af', margin: 0 }}>Select draft articles to instantly publish to help center portals.</p>
@@ -554,7 +535,6 @@ export const CustomerSuccessKb: React.FC = () => {
         </div>
       </Modal>
 
-      {/* MODAL: READ ARTICLE */}
       <Modal isOpen={!!modalState['read-article']} onClose={() => closeModal('read-article')} title={selectedArticle ? selectedArticle.title : ''}>
         {selectedArticle && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '13px', lineHeight: '1.6', color: '#aaaaaa' }}>
@@ -580,7 +560,6 @@ export const CustomerSuccessHelp: React.FC = () => {
   const [searchVal, setSearchVal] = useState('');
   const [modalState, setModalState] = useState<{ [key: string]: boolean }>({});
   
-  // Custom mock questions database mapped by topics card
   const [selectedTopic, setSelectedTopic] = useState<any>(null);
   const [activeFAQ, setActiveFAQ] = useState<any>(null);
 
@@ -655,7 +634,6 @@ export const CustomerSuccessHelp: React.FC = () => {
         ))}
       </div>
 
-      {/* MODAL: SUBMIT REQUEST */}
       <Modal isOpen={!!modalState['submit-request']} onClose={() => closeModal('submit-request')} title="Submit Platform Inquiry Request">
         <form onSubmit={(e) => { e.preventDefault(); closeModal('submit-request'); window.dispatchEvent(new CustomEvent('show-toast', { detail: 'Inquiry request successfully submitted!' })); }} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={formGroupStyle}>
@@ -681,7 +659,6 @@ export const CustomerSuccessHelp: React.FC = () => {
         </form>
       </Modal>
 
-      {/* MODAL: CONTACT SUPPORT CALLBACK */}
       <Modal isOpen={!!modalState['contact-support']} onClose={() => closeModal('contact-support')} title="Contact Support Callback">
         <form onSubmit={(e) => { e.preventDefault(); closeModal('contact-support'); window.dispatchEvent(new CustomEvent('show-toast', { detail: 'Callback request registered!' })); }} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <div style={formGroupStyle}>
@@ -702,7 +679,6 @@ export const CustomerSuccessHelp: React.FC = () => {
         </form>
       </Modal>
 
-      {/* MODAL: TOPIC FAQS EXPLORER */}
       <Modal isOpen={!!modalState['topic-faqs']} onClose={() => closeModal('topic-faqs')} title={selectedTopic ? `${selectedTopic.topic} FAQs` : ''}>
         {selectedTopic && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -742,7 +718,6 @@ export const CustomerSuccessCommunity: React.FC = () => {
   const [newPost, setNewPost] = useState({ title: '', cat: 'Security', body: '' });
   const [selectedPost, setSelectedPost] = useState<any>(null);
   
-  // Custom timeline replies state for discussions modal
   const [replies, setReplies] = useState([
     { author: 'Ravi Sharma', text: 'I agree, SSO endpoints need specific certificate syncs.', time: '2 hours ago' },
     { author: 'Jessica Patel', text: 'Will post the setup checklist for rotations tomorrow.', time: '1 hour ago' }
@@ -828,7 +803,7 @@ export const CustomerSuccessCommunity: React.FC = () => {
                   <td style={thCell}><span style={badge(row.catColor)}>{row.cat}</span></td>
                   <td style={{ ...thCell, color: '#666666' }}>{row.time}</td>
                   <td style={thCell}>
-                    <button onClick={() => handleSelectPost(row)} style={{ border: 'none', backgroundColor: '#222222', border: '1px solid #333333', color: '#ffffff', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer' }}>View replies</button>
+                    <button onClick={() => handleSelectPost(row)} style={{ backgroundColor: '#222222', border: '1px solid #333333', color: '#ffffff', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer' }}>View replies</button>
                   </td>
                 </tr>
               ))}
@@ -923,7 +898,7 @@ export const CustomerSuccessLiveSupport: React.FC = () => {
   const [isOnline, setIsOnline] = useState(true);
   const [modalState, setModalState] = useState<{ [key: string]: boolean }>({});
   
-  const [agents, setAgents] = useState([
+  const [agents] = useState([
     { name: 'Alex Mercer', slots: '2 / 3', duration: '4h 12m', status: 'Online', sc: '#10b981' },
     { name: 'Jessica Patel', slots: '3 / 3', duration: '2h 44m', status: 'Busy', sc: '#f59e0b' },
     { name: 'Ravi Sharma', slots: '0 / 3', duration: '0m', status: 'Away', sc: '#6b7280' },
@@ -1026,7 +1001,7 @@ export const CustomerSuccessLiveSupport: React.FC = () => {
                     <button onClick={() => {
                       if (row.status === 'Online' || row.status === 'Busy') openModal('simulate-chat');
                       else window.dispatchEvent(new CustomEvent('show-toast', { detail: `${row.name} is currently offline.` }));
-                    }} style={{ border: 'none', backgroundColor: '#222222', border: '1px solid #333333', color: '#ffffff', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer' }}>
+                    }} style={{ backgroundColor: '#222222', border: '1px solid #333333', color: '#ffffff', padding: '4px 8px', borderRadius: '4px', fontSize: '11px', cursor: 'pointer' }}>
                       Simulate Support
                     </button>
                   </td>
@@ -1357,7 +1332,7 @@ export const CustomerSuccessSla: React.FC = () => {
    9. CUSTOMER HEALTH SCORE
    ---------------------------------------------------- */
 export const CustomerSuccessCustomerHealth: React.FC = () => {
-  const [accounts, setAccounts] = useState([
+  const [accounts] = useState([
     { name: 'Apex Technologies', usage: '94%', tickets: '2 / mo', risk: 'Low Risk', riskC: '#10b981', health: 'Healthy', hC: '#10b981', manager: 'Alex Mercer' },
     { name: 'CloudSystem Inc', usage: '78%', tickets: '5 / mo', risk: 'Moderate', riskC: '#f59e0b', health: 'Good', hC: '#6366f1', manager: 'Jessica Patel' },
     { name: 'TechFlow Ltd', usage: '42%', tickets: '18 / mo', risk: 'High Risk', riskC: '#ef4444', health: 'At Risk', hC: '#ef4444', manager: 'Ravi Sharma' },

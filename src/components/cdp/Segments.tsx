@@ -26,6 +26,8 @@ export const Segments: React.FC = () => {
   const [query, setQuery] = useState('');
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState<Segment | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editDest, setEditDest] = useState<string[]>([]);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [toast, setToast] = useState('');
   const [newName, setNewName] = useState('');
@@ -63,6 +65,15 @@ export const Segments: React.FC = () => {
   };
 
   const toggleDest = (dest: string) => setNewDest(d => d.includes(dest) ? d.filter(x => x !== dest) : [...d, dest]);
+
+  const toggleEditDest = (dest: string) => setEditDest(d => d.includes(dest) ? d.filter(x => x !== dest) : [...d, dest]);
+
+  const saveEdit = () => {
+    if (!showEdit || !editName.trim()) return;
+    setSegments(ss => ss.map(s => s.id === showEdit.id ? { ...s, name: editName, sync: editDest, live: editDest.length > 0 } : s));
+    setShowEdit(null);
+    showToast('✅ Segment updated!');
+  };
 
   const filtered = segments.filter(s => s.name.toLowerCase().includes(query.toLowerCase()));
 
@@ -141,7 +152,11 @@ export const Segments: React.FC = () => {
                       <button className="btn btn-secondary btn-sm" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', minWidth: '90px', justifyContent: 'center' }} onClick={() => syncNow(row.id)} disabled={row.syncing || row.sync.length === 0}>
                         {row.syncing ? <><Loader size={12} style={{ animation: 'spin 1s linear infinite' }}/> Syncing...</> : <><Send size={12}/> Sync Now</>}
                       </button>
-                      <button title="Edit" onClick={() => setShowEdit(row)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '6px' }}><Edit2 size={14}/></button>
+                      <button title="Edit" onClick={() => {
+                        setShowEdit(row);
+                        setEditName(row.name);
+                        setEditDest(row.sync);
+                      }} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '6px' }}><Edit2 size={14}/></button>
                       <button title="Duplicate" onClick={() => duplicateSegment(row)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '6px' }}><Copy size={14}/></button>
                       <button title="Delete" onClick={() => setDeleteId(row.id)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', padding: '6px' }}><Trash2 size={14}/></button>
                     </div>
@@ -181,6 +196,38 @@ export const Segments: React.FC = () => {
             <div style={{ display: 'flex', gap: '12px', marginTop: '24px', justifyContent: 'flex-end' }}>
               <button className="btn btn-secondary" onClick={() => setShowCreate(false)}>Cancel</button>
               <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={createSegment}><Check size={14}/> Create</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {showEdit && (
+        <div className="modal-overlay" onClick={() => setShowEdit(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: 700, margin: 0 }}>Edit Segment</h2>
+              <button onClick={() => setShowEdit(null)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><X size={20}/></button>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div>
+                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: '6px' }}>SEGMENT NAME *</label>
+                <input className="form-control" placeholder="e.g. Trial Users (Last 14d)" value={editName} onChange={e => setEditName(e.target.value)}/>
+              </div>
+              <div>
+                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 600, display: 'block', marginBottom: '10px' }}>SYNC DESTINATIONS</label>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {DESTINATIONS.map(d => (
+                    <button key={d} onClick={() => toggleEditDest(d)} style={{ padding: '6px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: 500, background: editDest.includes(d) ? 'var(--primary)' : 'rgba(255,255,255,0.05)', color: editDest.includes(d) ? '#fff' : 'var(--text-secondary)', border: `1px solid ${editDest.includes(d) ? 'var(--primary)' : 'var(--border-color)'}`, cursor: 'pointer' }}>
+                      {d}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '12px', marginTop: '24px', justifyContent: 'flex-end' }}>
+              <button className="btn btn-secondary" onClick={() => setShowEdit(null)}>Cancel</button>
+              <button className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={saveEdit}><Check size={14}/> Save Changes</button>
             </div>
           </div>
         </div>

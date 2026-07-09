@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Database, DatabaseBackup, Play, RefreshCw, Layers, Plus, 
-  Cpu, Sliders, PlayCircle, Terminal, HardDrive, CheckCircle2, 
-  Activity, X, ShieldAlert
-} from 'lucide-react';
+import { X } from 'lucide-react';
 
 /* Shared Dark UI Styles */
 const cardStyle: React.CSSProperties = {
@@ -156,7 +152,7 @@ const triggerToast = (msg: string) => {
 export const DataWarehouseBigQuery: React.FC = () => {
   const [queryModal, setQueryModal] = useState(false);
   const [sqlQuery, setSqlQuery] = useState("SELECT campaign_id, SUM(spend) FROM `kiaan-bq.ads.daily_spend` GROUP BY 1 LIMIT 10;");
-  const [schema, setSchema] = useState([
+  const [schema] = useState([
     { field: 'campaign_id', type: 'STRING', mode: 'REQUIRED', desc: 'Unique advertiser identifier' },
     { field: 'spend', type: 'NUMERIC', mode: 'NULLABLE', desc: 'Daily currency spend calculated' },
     { field: 'clicks', type: 'INTEGER', mode: 'NULLABLE', desc: 'Accumulated click counts' },
@@ -191,7 +187,7 @@ export const DataWarehouseBigQuery: React.FC = () => {
             <tbody>
               {schema.map((s, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ fontWeight: 600, color: '#ffffff', padding: '14px 16px' }}>{s.field}</td>
+                  <td style={{ ...tableCellStyle, fontWeight: 600, color: '#ffffff', padding: '14px 16px' }}>{s.field}</td>
                   <td style={tableCellStyle}><code>{s.type}</code></td>
                   <td style={tableCellStyle}>{s.mode}</td>
                   <td style={tableCellStyle}>{s.desc}</td>
@@ -265,7 +261,7 @@ export const DataWarehouseSnowflake: React.FC = () => {
             <tbody>
               {warehouses.map((w, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{w.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{w.name}</td>
                   <td style={tableCellStyle}>{w.size}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: w.status === 'Started' ? '#10b981' : '#888888' }}>{w.status}</span>
@@ -388,7 +384,7 @@ export const DataWarehouseClickHouse: React.FC = () => {
             <tbody>
               {replicas.map((r, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.shard}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{r.shard}</td>
                   <td style={tableCellStyle}>{r.replica}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', color: '#10b981' }}>{r.status}</span>
@@ -467,7 +463,7 @@ export const DataWarehouseDataLake: React.FC = () => {
               {partitions.map((p, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}>{p.bucket}</td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontFamily: 'monospace', fontSize: '12px', padding: '14px 16px' }}>{p.path}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontFamily: 'monospace', fontSize: '12px', padding: '14px 16px' }}>{p.path}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', backgroundColor: 'rgba(99,102,241,0.15)', color: '#818cf8', padding: '3px 8px', borderRadius: '4px' }}>{p.format}</span>
                   </td>
@@ -553,7 +549,7 @@ export const DataWarehouseEtl: React.FC = () => {
               {pipelines.map((p, idx) => (
                 <tr key={idx}>
                   <td style={tableCellStyle}><code>{p.id}</code></td>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{p.name}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{p.name}</td>
                   <td style={tableCellStyle}>{p.source}</td>
                   <td style={tableCellStyle}>{p.dest}</td>
                   <td style={tableCellStyle}>
@@ -654,7 +650,7 @@ export const DataWarehouseElt: React.FC = () => {
             <tbody>
               {dbtModels.map((m, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontFamily: 'monospace', fontSize: '12.5px', padding: '14px 16px' }}>{m.model}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontFamily: 'monospace', fontSize: '12.5px', padding: '14px 16px' }}>{m.model}</td>
                   <td style={tableCellStyle}>{m.language}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '11px', backgroundColor: 'rgba(16,185,129,0.15)', color: '#10b981', padding: '3px 8px', borderRadius: '4px' }}>{m.status}</span>
@@ -731,7 +727,7 @@ export const DataWarehouseAnalytics: React.FC = () => {
             <tbody>
               {predictions.map((p, idx) => (
                 <tr key={idx}>
-                  <td style={tableCellStyle} style={{ color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{p.forecastTarget}</td>
+                  <td style={{ ...tableCellStyle, color: '#ffffff', fontWeight: 600, padding: '14px 16px' }}>{p.forecastTarget}</td>
                   <td style={tableCellStyle}>{p.model}</td>
                   <td style={tableCellStyle}>
                     <span style={{ fontSize: '12px', color: p.expectedTrend.includes('Anomalies') ? '#ef4444' : '#10b981' }}>{p.expectedTrend}</span>
