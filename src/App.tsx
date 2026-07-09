@@ -347,7 +347,7 @@ function App() {
       case 'bi-marketing-mix':
       case 'bi-predictive':
       case 'bi-nl-analytics':
-        return <AnalyticsDashboard />;
+        return <AnalyticsDashboard mode={activeId} />;
       case 'bi-revenue':
         return <RevenueReports />;
       // CRO — Conversion Rate Optimization (dedicated components)

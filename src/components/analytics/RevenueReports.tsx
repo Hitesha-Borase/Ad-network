@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { DollarSign, Download, Filter, TrendingUp, ChevronUp, ChevronDown } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LineChart, Line } from 'recharts';
+import { DollarSign, Download, Filter, TrendingUp, ChevronUp, ChevronDown, RefreshCw, Sparkles, Sliders } from 'lucide-react';
 
 const dataByPeriod: Record<string, { label: string; arr: string; mrr: string; ads: string; data: { period: string; recurring: number; oneTime: number; ads: number }[] }> = {
   monthly: {
-    label: 'Monthly (H1 2024)',
+    label: 'Monthly (H1 2026)',
     arr: '$1,420,000', mrr: '$118,333', ads: '$45,210',
     data: [
       { period: 'Jan', recurring: 12000, oneTime: 3000, ads: 4000 },
@@ -16,7 +16,7 @@ const dataByPeriod: Record<string, { label: string; arr: string; mrr: string; ad
     ],
   },
   quarterly: {
-    label: 'Quarterly (2024)',
+    label: 'Quarterly (2026)',
     arr: '$1,840,000', mrr: '$153,333', ads: '$62,100',
     data: [
       { period: 'Q1', recurring: 41500, oneTime: 8500, ads: 13200 },
@@ -26,13 +26,13 @@ const dataByPeriod: Record<string, { label: string; arr: string; mrr: string; ad
     ],
   },
   yearly: {
-    label: 'Yearly (2021-2024)',
+    label: 'Yearly (2023-2026)',
     arr: '$4,200,000', mrr: '$350,000', ads: '$188,400',
     data: [
-      { period: '2021', recurring: 180000, oneTime: 42000, ads: 28000 },
-      { period: '2022', recurring: 320000, oneTime: 68000, ads: 45000 },
-      { period: '2023', recurring: 520000, oneTime: 92000, ads: 78000 },
-      { period: '2024', recurring: 850000, oneTime: 142000, ads: 118000 },
+      { period: '2023', recurring: 180000, oneTime: 42000, ads: 28000 },
+      { period: '2024', recurring: 320000, oneTime: 68000, ads: 45000 },
+      { period: '2025', recurring: 520000, oneTime: 92000, ads: 78000 },
+      { period: '2026', recurring: 850000, oneTime: 142000, ads: 118000 },
     ],
   },
 };
@@ -41,12 +41,12 @@ type SortKey = 'date' | 'name' | 'amount' | 'status';
 type SortDir = 'asc' | 'desc';
 
 const allTransactions = [
-  { date: 'Oct 24, 2024', name: 'Acme Corp', type: 'Annual Subscription', amount: 12000, status: 'Paid' },
-  { date: 'Oct 24, 2024', name: 'Google AdX', type: 'Publisher Payout', amount: 4250, status: 'Pending' },
-  { date: 'Oct 23, 2024', name: 'Stark Industries', type: 'Consulting Retainer', amount: 3500, status: 'Paid' },
-  { date: 'Oct 22, 2024', name: 'Wayne Enterprises', type: 'Monthly Subscription', amount: 1000, status: 'Failed' },
-  { date: 'Oct 21, 2024', name: 'Parker Solutions', type: 'One-Time Setup', amount: 5500, status: 'Paid' },
-  { date: 'Oct 20, 2024', name: 'Umbrella Corp', type: 'Enterprise License', amount: 24000, status: 'Paid' },
+  { date: 'Jul 9, 2026', name: 'Acme Corp', type: 'Annual Subscription', amount: 12000, status: 'Paid' },
+  { date: 'Jul 9, 2026', name: 'Google AdX', type: 'Publisher Payout', amount: 4250, status: 'Pending' },
+  { date: 'Jul 8, 2026', name: 'Stark Industries', type: 'Consulting Retainer', amount: 3500, status: 'Paid' },
+  { date: 'Jul 8, 2026', name: 'Wayne Enterprises', type: 'Monthly Subscription', amount: 1000, status: 'Failed' },
+  { date: 'Jul 7, 2026', name: 'Parker Solutions', type: 'One-Time Setup', amount: 5500, status: 'Paid' },
+  { date: 'Jul 6, 2026', name: 'Umbrella Corp', type: 'Enterprise License', amount: 24000, status: 'Paid' },
 ];
 
 export const RevenueReports: React.FC = () => {
@@ -54,6 +54,10 @@ export const RevenueReports: React.FC = () => {
   const [sortKey, setSortKey] = useState<SortKey>('date');
   const [sortDir, setSortDir] = useState<SortDir>('desc');
   const [toast, setToast] = useState('');
+
+  /* --- Revenue Forecasting States --- */
+  const [growthRate, setGrowthRate] = useState(12); // Growth rate in percentage
+  const [forecastMonths, setForecastMonths] = useState(6);
 
   const p = dataByPeriod[period];
 
@@ -82,6 +86,27 @@ export const RevenueReports: React.FC = () => {
     showToast('✅ Revenue report exported!');
   };
 
+  /* Generate dynamic forecasting points */
+  const forecastData = React.useMemo(() => {
+    const lastItem = p.data[p.data.length - 1];
+    let baseVal = lastItem ? lastItem.recurring + lastItem.oneTime + lastItem.ads : 30000;
+    const list = p.data.map(item => ({
+      period: item.period,
+      Revenue: item.recurring + item.oneTime + item.ads,
+      type: 'Actual'
+    }));
+
+    for (let i = 1; i <= forecastMonths; i++) {
+      const nextVal = baseVal * (1 + (growthRate / 100) * i);
+      list.push({
+        period: `F+${i}`,
+        Revenue: Math.round(nextVal),
+        type: 'Forecast'
+      });
+    }
+    return list;
+  }, [p, growthRate, forecastMonths]);
+
   const SortIcon = ({ col }: { col: SortKey }) => sortKey === col
     ? (sortDir === 'asc' ? <ChevronUp size={12}/> : <ChevronDown size={12}/>)
     : <ChevronDown size={12} style={{ opacity: 0.3 }}/>;
@@ -93,9 +118,9 @@ export const RevenueReports: React.FC = () => {
       <div className="glass-card" style={{ background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%)', border: '1px solid rgba(16, 185, 129, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', padding: '20px 24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 6px 0', letterSpacing: '-0.5px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <DollarSign size={22} color="var(--success)"/> Revenue Analytics
+            <DollarSign size={22} color="var(--success)"/> Revenue Analytics &amp; Forecasting
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>Detailed breakdown of your recurring, one-time, and ad revenue streams.</p>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '13px', margin: 0 }}>Detailed breakdown of your recurring, one-time, and ad revenue streams with AI projections.</p>
         </div>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border-color)', borderRadius: '8px', overflow: 'hidden' }}>
@@ -124,7 +149,47 @@ export const RevenueReports: React.FC = () => {
         ))}
       </div>
 
-      <div className="glass-card" style={{ height: '380px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      {/* Revenue Forecasting Simulator */}
+      <div className="glass-card" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Sparkles size={16} color="var(--success)" /> AI Revenue Forecasting Projections
+            </h2>
+            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Target Period: next {forecastMonths} intervals</span>
+          </div>
+          <div style={{ height: '260px', width: '100%' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={forecastData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <XAxis dataKey="period" stroke="var(--text-muted)" fontSize={11} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--text-muted)" fontSize={11} tickLine={false} axisLine={false} />
+                <Tooltip contentStyle={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)', borderRadius: '8px', color: '#fff' }} />
+                <Legend wrapperStyle={{ fontSize: '11px' }} />
+                <Line type="monotone" dataKey="Revenue" stroke="var(--success)" strokeWidth={3} dot={{ fill: 'var(--success)' }} name="Projected Revenue Stream" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', borderLeft: '1px solid var(--border-color)', paddingLeft: '20px' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: 600, margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Sliders size={14} color="var(--primary)" /> Forecast Parameters
+          </h3>
+          <div>
+            <label style={{ fontSize: '11px', color: '#6b7280', display: 'block', marginBottom: '6px' }}>Target Growth Rate: <strong style={{ color: '#ffffff' }}>{growthRate}%</strong></label>
+            <input type="range" min="0" max="100" value={growthRate} onChange={e => setGrowthRate(parseInt(e.target.value))} style={{ width: '100%', cursor: 'pointer' }} />
+          </div>
+          <div>
+            <label style={{ fontSize: '11px', color: '#6b7280', display: 'block', marginBottom: '6px' }}>Forecast Steps: <strong style={{ color: '#ffffff' }}>{forecastMonths} intervals</strong></label>
+            <input type="range" min="1" max="12" value={forecastMonths} onChange={e => setForecastMonths(parseInt(e.target.value))} style={{ width: '100%', cursor: 'pointer' }} />
+          </div>
+          <button className="btn btn-primary btn-sm" style={{ marginTop: 'auto' }} onClick={() => triggerToast('Projections calculated based on historical trend weights.')}>
+            <RefreshCw size={12} /> Recalculate Projections
+          </button>
+        </div>
+      </div>
+
+      <div className="glass-card" style={{ height: '320px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Revenue by Source ({p.label})</h2>
         <div style={{ flex: 1, width: '100%' }}>
           <ResponsiveContainer width="100%" height="100%">
