@@ -60,34 +60,8 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ activeId, setActiveId })
         fontSize: '15px',
         marginBottom: '32px'
       }}>
-        This module is currently stubbed out for the dashboard outline. You can explore the fully-functional CRM & Sales experience in the sidebar.
+        This module is currently stubbed out for the dashboard outline. Explore the active AI & E-commerce modules in the sidebar.
       </p>
-
-      <div style={{
-        padding: '24px',
-        borderRadius: '16px',
-        background: 'linear-gradient(135deg, rgba(99,102,241,0.07) 0%, rgba(168,85,247,0.07) 100%)',
-        border: '1px solid rgba(99, 102, 241, 0.15)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '16px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--primary)', fontWeight: 600 }}>
-          <Sparkles size={16} />
-          <span>Active Demo Module Available</span>
-        </div>
-        <button 
-          onClick={() => setActiveId('crm-overview')}
-          className="btn btn-primary"
-          style={{
-            boxShadow: '0 4px 15px rgba(99, 102, 241, 0.4)'
-          }}
-        >
-          <Users size={18} />
-          Go to CRM & Sales
-        </button>
-      </div>
 
       <style>{`
         @keyframes pulse {

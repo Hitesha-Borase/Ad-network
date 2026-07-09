@@ -633,8 +633,8 @@ export const Header: React.FC<HeaderProps> = ({ setMobileOpen, activeId, onLogou
           fontWeight: 500,
           whiteSpace: 'nowrap'
         }}>
-          <Compass size={14} />
-          <span>CRM Sandbox Active</span>
+          <Sparkles size={14} />
+          <span>AI Engine Sandbox Active</span>
         </div>
 
         {/* Notifications Icon with dropdown */}

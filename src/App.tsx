@@ -4,11 +4,7 @@ import { Header } from './components/Header';
 import { EmptyState } from './components/EmptyState';
 import { Login } from './components/Login';
 
-import { 
-  CrmLeadManagement, CrmPipelineBoard, CrmOpportunityTracking, CrmSalesAutomation, 
-  CrmProposalGenerator, CrmContractManagement, CrmQuoteBuilder, CrmAiSalesAssistant, 
-  CrmForecastingDashboard, CrmCommissionTracking 
-} from './components/crm/CrmSalesPlatformPages';
+
 import { MarketplaceDashboard } from './components/marketplace/MarketplaceDashboard';
 import { 
   CommunicationInbox, CommunicationEmail, CommunicationWhatsApp, 
@@ -143,9 +139,9 @@ import { Customer360 } from './components/cdp/Customer360';
 import { IdentityGraph } from './components/cdp/IdentityGraph';
 import { AudienceBuilder } from './components/cdp/AudienceBuilder';
 import { Segments } from './components/cdp/Segments';
-
+import { ProjectDirectory } from './components/dashboard/ProjectDirectory';
 // Lucide icons for Dashboard
-import { LayoutGrid, Sparkles, Shield, ArrowRight } from 'lucide-react';
+import { LayoutGrid, Sparkles, Shield, ArrowRight, Bot } from 'lucide-react';
 
 function App() {
   // Auth state — check localStorage (remember me) or sessionStorage
@@ -168,6 +164,7 @@ function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showDirectoryModal, setShowDirectoryModal] = useState<boolean>(false);
 
   // Shared Communication States (managed internally in CommunicationPages components)
 
@@ -216,9 +213,22 @@ function App() {
               <h1 style={{ fontSize: '28px', fontWeight: 800, margin: '0 0 8px 0', letterSpacing: '-0.75px' }}>
                 Welcome to Ad Network OS
               </h1>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '15px', maxWidth: '640px', lineHeight: 1.6, margin: 0 }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '15px', maxWidth: '640px', lineHeight: 1.6, margin: '0 0 16px 0' }}>
                 A premium, unified hub built for high-performance organizations. Connect your campaigns, sales workflows, design studios, and data infrastructure within a single integrated environment.
               </p>
+              <button 
+                onClick={() => setShowDirectoryModal(true)}
+                className="btn btn-primary"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 15px rgba(99, 102, 241, 0.35)'
+                }}
+              >
+                <Sparkles size={16} />
+                Explore Project Directory & Guide
+              </button>
             </div>
 
             {/* General OS overview items */}
@@ -226,18 +236,18 @@ function App() {
               {/* Card 1 */}
               <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--primary)' }}>
-                  <LayoutGrid size={18} />
-                  <strong style={{ fontSize: '14px', fontWeight: 600 }}>Active Sandbox Modules</strong>
+                  <Bot size={18} />
+                  <strong style={{ fontSize: '14px', fontWeight: 600 }}>AI Agents Fleet Active</strong>
                 </div>
                 <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
-                  Explore the fully-functional CRM & Sales module. The other sections serve as layout indicators.
+                  Deploy and monitor dedicated autonomous agents for SEO, Marketing Copywriting, Yield Operations, and DevOps automation.
                 </p>
                 <button 
-                  onClick={() => setActiveId('crm-overview')}
+                  onClick={() => setActiveId('agent-marketing')}
                   className="btn btn-secondary btn-sm"
                   style={{ alignSelf: 'flex-start', marginTop: '6px' }}
                 >
-                  Open Sales Module <ArrowRight size={12} />
+                  Configure AI Agents <ArrowRight size={12} />
                 </button>
               </div>
 
@@ -660,6 +670,8 @@ function App() {
                   </button>
                 </div>
               </div>
+
+
 
               {config.component}
             </div>
@@ -1959,97 +1971,7 @@ function App() {
           component: <EcomProductRecommendation />
         };
 
-      // CRM & Sales Platform cases
-      case 'crm-leads':
-        return {
-          breadcrumb: 'Lead Management',
-          title: 'CRM Lead Management Center',
-          subtitle: 'Track inbound marketing leads, score quality indicators, and assign representatives.',
-          primaryCta: 'Add Inbound Lead',
-          secondaryCta: 'Export Leads CSV',
-          component: <CrmLeadManagement />
-        };
-      case 'crm-deals':
-        return {
-          breadcrumb: 'Pipeline',
-          title: 'Sales Opportunity Pipeline Kanban',
-          subtitle: 'Visualize stages of negotiation, drag deals across statuses, and monitor pipeline health.',
-          primaryCta: 'Add Deal Opportunity',
-          secondaryCta: 'Pipeline Stats',
-          component: <CrmPipelineBoard />
-        };
-      case 'crm-opp':
-        return {
-          breadcrumb: 'Opportunity Tracking',
-          title: 'High-Value Enterprise Opportunities',
-          subtitle: 'Track expected close dates, contract estimates, and deal stages for active buyers.',
-          primaryCta: 'Register Opportunity',
-          secondaryCta: 'Opportunity metrics',
-          component: <CrmOpportunityTracking />
-        };
-      case 'crm-automation':
-        return {
-          breadcrumb: 'Sales Automation',
-          title: 'Trigger-based Sales Workflow Automation',
-          subtitle: 'Configure automated actions (email, tasks creation) triggered by lead status transitions.',
-          primaryCta: 'Create Automation Rule',
-          secondaryCta: 'Execution Logs',
-          component: <CrmSalesAutomation />
-        };
-      case 'crm-proposals':
-        return {
-          breadcrumb: 'Proposal Generator',
-          title: 'Sales Proposals & SLA Contract Generator',
-          subtitle: 'Design, review, and generate dynamic business proposals with pricing details.',
-          primaryCta: 'Generate Business Proposal',
-          secondaryCta: 'Proposal Templates',
-          component: <CrmProposalGenerator />
-        };
-      case 'crm-contracts':
-        return {
-          breadcrumb: 'Contract Management',
-          title: 'Legal SLA Contracts Registry',
-          subtitle: 'Track signature statuses, review legal terms, and schedule renewal dates.',
-          primaryCta: 'Request Contract Review',
-          secondaryCta: 'Contract Templates',
-          component: <CrmContractManagement />
-        };
-      case 'crm-quotes':
-        return {
-          breadcrumb: 'Quote Builder',
-          title: 'Price Quote Builder Sheet',
-          subtitle: 'Generate pricing sheets, apply custom discounts, and calculate customer tax totals.',
-          primaryCta: 'Generate Pricing Quote',
-          secondaryCta: 'Quote Settings',
-          component: <CrmQuoteBuilder />
-        };
-      case 'crm-sales-assistant':
-        return {
-          breadcrumb: 'AI Sales Assistant',
-          title: 'AI Smart Co-Pilot Sales Assistant',
-          subtitle: 'Train response recommendations, configure email draft prompts, and sync CRM data.',
-          primaryCta: 'Train Assistant Model',
-          secondaryCta: 'Assistant Prompts',
-          component: <CrmAiSalesAssistant />
-        };
-      case 'crm-forecasting':
-        return {
-          breadcrumb: 'Forecasting',
-          title: 'Revenue Projections & Forecasting Calculations',
-          subtitle: 'Forecast quarterly revenue lifts based on historic deals conversions.',
-          primaryCta: 'Run Forecast Model',
-          secondaryCta: 'Export Forecasts',
-          component: <CrmForecastingDashboard />
-        };
-      case 'crm-commission':
-        return {
-          breadcrumb: 'Commission Tracking',
-          title: 'Sales Rep Commissions Ledger',
-          subtitle: 'Monitor individual seller target margins, calculate payouts, and review tier rates.',
-          primaryCta: 'Configure Commission Rates',
-          secondaryCta: 'Payout History',
-          component: <CrmCommissionTracking />
-        };
+
 
       // AI Search Engine cases
       case 'search-semantic':
@@ -2325,6 +2247,68 @@ function App() {
           {renderContentBody()}
         </main>
       </div>
+
+      {showDirectoryModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          backdropFilter: 'blur(10px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2000,
+          padding: '24px'
+        }}>
+          <div className="glass-card" style={{
+            width: '100%',
+            maxWidth: '1200px',
+            height: '85vh',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            padding: '24px',
+            overflow: 'hidden',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.6)'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Sparkles size={20} style={{ color: 'var(--primary)' }} />
+                <h2 style={{ fontSize: '18px', fontWeight: 700, margin: 0, color: '#fff' }}>Ad Network OS Module Catalog & Guide</h2>
+              </div>
+              <button 
+                onClick={() => setShowDirectoryModal(false)}
+                style={{
+                  background: 'rgba(255,255,255,0.05)',
+                  border: 'none',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'}
+              >
+                ✕
+              </button>
+            </div>
+            <div style={{ flex: 1, overflowY: 'auto', paddingRight: '4px' }}>
+              <ProjectDirectory setActiveId={(id) => { setActiveId(id); setShowDirectoryModal(false); }} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
